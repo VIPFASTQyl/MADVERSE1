@@ -2,9 +2,9 @@ import { supabase } from "./supabaseClient";
 
 // List of admin emails - customize these 3
 const ADMIN_EMAILS = [
-  "klestdrancolli@gmail.com", // Replace with first admin email
-  "admin2@example.com",        // Replace with second admin email
-  "admin3@example.com",        // Replace with third admin email
+  "klestdrancolli@gmail.com", 
+  "gurigaca13@gmail.com",        
+  "erijonGashi@gmail.com",        
 ];
 
 export const checkIsAdmin = async (userId: string) => {

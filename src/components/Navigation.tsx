@@ -319,6 +319,49 @@ const Navigation = () => {
                   </button>
                 </div>
               </div>
+
+              {/* Auth Buttons Mobile */}
+              <div className="pt-4 border-t border-border space-y-2">
+                {session ? (
+                  <>
+                    <Link
+                      to="/profile"
+                      className="block py-2 text-muted-foreground hover:text-foreground transition-colors"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Profile
+                    </Link>
+                    {isAdmin && (
+                      <Link
+                        to="/admin/dashboard"
+                        className="block py-2 text-muted-foreground hover:text-foreground transition-colors"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        Admin Dashboard
+                      </Link>
+                    )}
+                    <button
+                      onClick={async () => {
+                        await signOut();
+                        navigate('/');
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="w-full text-left py-2 text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
+                    >
+                      <LogOut size={16} />
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <Link
+                    to="/login"
+                    className="block py-2 px-4 bg-white text-black rounded hover:bg-gray-200 transition-colors text-center"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Login
+                  </Link>
+                )}
+              </div>
             </div>
           </motion.div>
         )}
