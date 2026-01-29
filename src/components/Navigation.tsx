@@ -1,9 +1,10 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X, LogOut } from "lucide-react";
 import { Button } from "./ui/button";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useLanguage } from "../contexts/LanguageContext";
+import { useAuth } from "../contexts/AuthContext";
 
 const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -12,6 +13,7 @@ const Navigation = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t, setLanguage, language } = useLanguage();
+  const { session, signOut } = useAuth();
 
   useEffect(() => {
     if (location.hash === '#showcase') {
@@ -143,6 +145,27 @@ const Navigation = () => {
                 ENG
               </button>
             </div>
+
+            {/* Auth Buttons */}
+            {session ? (
+              <button
+                onClick={async () => {
+                  await signOut();
+                  navigate('/');
+                }}
+                className="ml-4 px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
+              >
+                <LogOut size={16} />
+                Logout
+              </button>
+            ) : (
+              <Link
+                to="/login"
+                className="ml-4 px-4 py-2 text-sm bg-white text-black rounded hover:bg-gray-200 transition-colors"
+              >
+                Login
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
