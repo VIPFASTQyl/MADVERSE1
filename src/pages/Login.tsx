@@ -50,7 +50,8 @@ const Login = () => {
                   anchorTextColorHover: "#ccc",
                 },
               },
-            }}
+            },
+          }}
           providers={["github"]}
           redirectTo={`${window.location.origin}/`}
         />

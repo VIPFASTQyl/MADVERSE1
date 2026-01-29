@@ -148,16 +148,30 @@ const Navigation = () => {
 
             {/* Auth Buttons */}
             {session ? (
-              <button
-                onClick={async () => {
-                  await signOut();
-                  navigate('/');
-                }}
-                className="ml-4 px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
-              >
-                <LogOut size={16} />
-                Logout
-              </button>
+              <div className="flex items-center gap-2 ml-4">
+                <Link
+                  to="/profile"
+                  className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Profile
+                </Link>
+                <Link
+                  to="/admin/dashboard"
+                  className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Admin
+                </Link>
+                <button
+                  onClick={async () => {
+                    await signOut();
+                    navigate('/');
+                  }}
+                  className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
+                >
+                  <LogOut size={16} />
+                  Logout
+                </button>
+              </div>
             ) : (
               <Link
                 to="/login"
