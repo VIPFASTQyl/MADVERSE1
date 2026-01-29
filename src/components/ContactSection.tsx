@@ -10,6 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Send } from "lucide-react";
 import { useLanguage } from "../contexts/LanguageContext";
+import { supabase } from "@/lib/supabaseClient";
 
 // Form validation schema
 const contactSchema = z.object({
@@ -39,34 +40,37 @@ const ContactSection = () => {
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3001";
-      const response = await fetch(`${apiUrl}/api/contact`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      // Save to Supabase
+      const { error } = await supabase
+        .from('contact_messages')
+        .insert([
+          {
+            name: data.name,
+            email: data.email,
+            subject: data.subject,
+            message: data.message,
+            created_at: new Date().toISOString(),
+          }
+        ]);
 
-      if (response.ok) {
+      if (error) {
+        toast({
+          title: t('failedSend') || "Failed to send message",
+          description: error.message || t('failedSendDesc') || "Please try again",
+          variant: "destructive",
+        });
+      } else {
         toast({
           title: t('successSend') || "Message sent successfully!",
           description: t('successSendDesc') || "We'll get back to you soon.",
         });
         form.reset();
-      } else {
-        const errorData = await response.json();
-        toast({
-          title: t('failedSend'),
-          description: errorData.error || t('failedSendDesc'),
-          variant: "destructive",
-        });
       }
     } catch (error) {
       console.error('Contact form error:', error);
       toast({
-        title: "Network error",
-        description: "Please check your connection and try again. Make sure the backend server is running on port 3001.",
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
         variant: "destructive",
       });
     } finally {
