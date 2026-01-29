@@ -51,7 +51,6 @@ const Login = () => {
                 },
               },
             }}
-          }}
           providers={["github"]}
           redirectTo={`${window.location.origin}/`}
         />
