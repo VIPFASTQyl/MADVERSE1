@@ -1,0 +1,189 @@
+export const translations = {
+  en: {
+    // Navigation
+    activities: "Activities",
+    about: "About",
+    contact: "Contact",
+    language: "Language",
+    youth: "Youth",
+    arts: "Arts",
+    culture: "Culture",
+    sports: "Sports",
+    exhibition: "Exhibition",
+    volunteering: "Volunteering",
+
+    // HeroSection
+    scrollDown: "Scroll Down",
+    welcomeMadverse: "MADVERSE",
+    heroSubtitle: "An Organization Where Youth, Culture, Arts and Sports are Displayed",
+
+    // FeatureSection
+    madverseBadge: "MADVERSE",
+    whatIsMadverse: "WHAT IS MADVERSE",
+    whatIsMadverseDesc: "Madverse is an organization that develops events and activities for youth, culture, arts and sports, creating spaces where talent is expressed, connections are strengthened and the community benefits.",
+    whatIsMadverseDescAbout: "Madverse is an organization dedicated to developing and promoting youth, cultural, artistic, and sports events. Its mission is to create spaces where young people can express their talents, share ideas, and build strong community connections. Through cultural and artistic activities, Madverse encourages creativity and helps preserve heritage, while in sports it promotes a healthy lifestyle and teamwork. In addition to events, the organization also engages in volunteer work for the good of the city, organizing initiatives that improve community life and strengthen social solidarity. Every event is designed not only as entertainment but also as an opportunity for personal growth, professional development, and active contribution to positive social change.",
+    whatIsMadverseOld: "MADVERSE is a cultural and community platform dedicated to empowering local artists, athletes and young people, creating spaces for collaboration where talent can be expressed freely and develop sustainably. Our goal is to build bridges between creators and the community, offering real opportunities for presentation, growth and positive impact.\n\nThrough direct collaboration with local artists from different fields visual art, music, performance, sport and urban culture MADVERSE gives them a platform where their voice and work are valued, showcased and experienced by the public. We believe that local talent deserves space, support and visibility.",
+    communityBadge: "COMMUNITY & EVENTS",
+    feelCulture: "Culture You Can Feel and Interact",
+    feelCultureDesc: "From performances art installations to workshops and street culture, MADVERSE creates moments that connect people through raw creativity and expression.",
+    feelCultureDetail: "MADVERSE is a cultural and community-driven platform dedicated to empowering local artists, athletes, and youth by creating collaborative spaces where talent can be freely expressed and sustainably developed. Our mission is to build strong bridges between creators and the community, offering real opportunities for exposure, growth, and positive impact.\n\nThrough direct collaboration with local creatives across visual arts, music, performance, sports, and urban culture, MADVERSE provides a platform where their voices and work are valued, showcased, and experienced by the public. We believe local talent deserves space, support, and visibility.",
+    about: "About",
+
+    // ShowcaseGrid
+    eventsActivitiesBadge: "Events & Activities",
+    youthPrograms: "Youth Programs",
+    youth: "Youth",
+    artWorkshops: "Art Workshops",
+    arts: "Arts",
+    culturalEvents: "Cultural Events",
+    culture: "Culture",
+    sportsActivities: "Sports Activities",
+    sports: "Sports",
+    exhibitions: "Exhibitions",
+    exhibition: "Exhibition",
+    volunteering: "Volunteering",
+
+    // TabsSection - MAIN PAGE (Short)
+    madverseMembers: "MADVERSE MEMBERS",
+    ourTeam: "OUR TEAM",
+    klest: "Klest Drançolli",
+    klestDesc: "Klest Drançolli is the Founder and Lead of MADVERSE, responsible for setting the vision, guiding growth, and driving innovation. Under his leadership, MADVERSE empowers local talent, strengthens community engagement, and develops sustainable cultural initiatives.",
+    guri: "Guri Gacaferi",
+    guriDesc: "Guri Gacaferi is the Finance Administrator at MADVERSE, managing financial operations and supporting sustainable growth.",
+    erion: "Erijon Gashi",
+    erionDesc: "Erijon Gashi is the Research Lead at MADVERSE, exploring future technologies and identifying new opportunities to advance the organization.",
+    
+    // ABOUT PAGE (Detailed)
+    klestTitleAbout: "Founder & Chief Executive Officer (CEO)",
+    klestDescAbout: "Klest Drançolli is the Founder and Chief Executive Officer of MADVERSE. He is responsible for defining the organization's strategic vision, overseeing organizational development, and leading innovation across all operational areas. Through his leadership, MADVERSE advances its mission to empower local talent, strengthen community engagement, and deliver sustainable cultural initiatives.",
+    guriTitleAbout: "Chief Financial Administrator",
+    guriDescAbout: "Guri Gacaferi serves as the Chief Financial Administrator at MADVERSE, overseeing financial operations and ensuring the organization's financial stability. He is responsible for budgeting, financial planning, and resource optimization, contributing directly to the sustainable growth and long-term development of the organization.",
+    erionTitleAbout: "Head of Research & Innovation",
+    erionDescAbout: "Erijon Gashi is the Head of Research and Innovation at MADVERSE, responsible for exploring emerging technologies and future trends. He identifies strategic opportunities that support the advancement of projects and the overall vision of the organization, helping MADVERSE remain adaptive and forward-thinking within a dynamic cultural and technological landscape.",
+    
+    joinMadverse: "Join Madverse",
+    joinDesc: "If you have the skills and passion to join and contribute, feel free to sign up and be part of our growing team!",
+    joinUs: "BashkaNgu me ne!",
+    about: "About",
+    contactUs: "Contact Us",
+
+    // ContactSection
+    letsConnect: "LET'S CONNECT",
+    name: "Name",
+    namePlaceholder: "Your name",
+    email: "Email",
+    emailPlaceholder: "your@email.com",
+    subject: "Subject",
+    subjectPlaceholder: "How can we help?",
+    message: "Message",
+    messagePlaceholder: "Tell us your message...",
+    sendMessage: "Send Message",
+    sending: "Sending...",
+    failedSend: "Failed to send",
+    failedSendDesc: "Please try again later",
+    successSend: "Message sent successfully!",
+    successSendDesc: "We'll get back to you soon.",
+
+    // CTASection
+    callToAction: "Call to Action",
+    ctaHeadline: "Headline Here",
+    ctaDescription: "Supporting text that encourages users to take action. Make it compelling and clear.",
+    getStartedNow: "Get Started Now",
+
+    // Footer
+    copyrightText: "© 2026 madverse. All rights reserved.",
+  },
+  al: {
+    // Navigation
+    activities: "Aktivitete",
+    about: "Rreth Nesh",
+    contact: "Kontakti",
+    language: "Gjuha",
+    youth: "Rinia",
+    arts: "Artet",
+    culture: "Kultura",
+    sports: "Sporti",
+    exhibition: "Ekspozita",
+    volunteering: "Vullnetarizmi",
+
+    // HeroSection
+    scrollDown: "Rrëshqit Poshtë",
+    welcomeMadverse: "MADVERSE",
+    heroSubtitle: "Organizatë e Rinis, Kultures, Arti dhe Sportiit",
+
+    // FeatureSection
+    madverseBadge: "MADVERSE",
+    whatIsMadverse: "ÇKA ËSHTË MADVERSE",
+    whatIsMadverseDesc: "MADVERSE është një organizatë që zhvillon evente dhe aktivitete për rininë, kulturën, artin dhe sportin, duke krijuar hapësira gjithëpërfshirëse ku talenti shprehet, lidhjet forcohen dhe komuniteti përfiton.",
+    whatIsMadverseDescAbout: "Madverse osht një organizatë që merret me zhvillimin e eventeve e aktiviteteve për të rinjtë, kulturën, artin edhe sportin. Qëllimi i saj osht me kriju hapësina ku rinia mundet me shpreh talentin, me u lidh mes veti edhe me kontribu për komunitetin. Përveç eventeve, Madverse angazhohet edhe në punë vullnetare për të mirën e qytetit, tu organizu aksione që ndihmojnë me bo vendin ma të gjallë e ma pozitiv për krejt shoqninë.",
+    whatIsMadverseOld: "Madverse osht një organizatë që merret me zhvillimin e eventeve e aktiviteteve për të rinjtë, kulturën, artin edhe sportin. Qëllimi i saj osht me kriju hapësina ku rinia mundet me shpreh talentin, me u lidh mes veti edhe me kontribu për komunitetin. Përveç eventeve, Madverse angazhohet edhe në punë vullnetare për të mirën e qytetit, tu organizu aksione që ndihmojnë me bo vendin ma të gjallë e ma pozitiv për krejt shoqninë.",    communityBadge: "KOMUNITETI & EVENTET",
+    feelCulture: "Kulturë që e ndjen dhe e përjeton",
+    feelCultureDesc: "Prej performancave dhe instalacioneve artistike, deri te punëtoritë dhe kultura e rrugës, MADVERSE krijon momente që i lidhin njerëzit përmes kreativitetit të pastër dhe shprehjes autentike.",
+    feelCultureDetail: "MADVERSE është një platformë kulturore dhe komunitare e përkushtuar ndaj fuqizimit të artistëve, sportistëve dhe të rinjve vendorë, duke krijuar hapësira bashkëpunimi ku talenti mund të shprehet lirshëm dhe të zhvillohet në mënyrë të qëndrueshme. Qëllimi ynë është të ndërtojmë ura mes krijuesve dhe komunitetit, duke ofruar mundësi reale për prezantim, rritje dhe ndikim pozitiv.\n\nPërmes bashkëpunimit të drejtpërdrejtë me artistë lokalë nga fusha të ndryshme art vizual, muzikë, performancë, sport dhe kultura urbane MADVERSE u jep atyre një platformë ku zëri dhe puna e tyre vlerësohen, ekspozohen dhe përjetohen nga publiku. Ne besojmë se talenti lokal meriton hapësirë, mbështetje dhe dukshmëri.",
+    about: "Rreth Nesh",
+
+    // ShowcaseGrid
+    eventsActivitiesBadge: "Eventet & Aktivitetet",
+    youthPrograms: "Programet për Rinj",
+    youth: "Rini",
+    artWorkshops: "Punëtoritë e Artit",
+    arts: "Art",
+    culturalEvents: "Ngjarjet Kulturore",
+    culture: "Kultur",
+    sportsActivities: "Aktivitetet Sportive",
+    sports: "Sport",
+    exhibitions: "Ekspozit",
+    exhibition: "Ekspozita",
+    volunteering: "Vullnetarizmi",
+
+    // TabsSection - MAIN PAGE (Short)
+    madverseMembers: "ANËTARËT E MADVERSE",
+    ourTeam: "EKIPI I JONË",
+    klest: "Klest Drançolli",
+    klestDesc: "Klest Drançolli osht themelues edhe udhëheqës kryesor i MADVERSE. Ai e drejton vizionin, zhvillimin edhe risitë e organizatës, duke fuqizu talentin lokal, angazhimin komunitar edhe iniciativat kulturore të qëndrueshme.",
+    guri: "Guri Gacaferi",
+    guriDesc: "Guri Gacaferi osht Administratori i Financave në MADVERSE, përgjegjës për menaxhimin e financave edhe rritjen e qëndrueshme.",
+    erion: "Erijon Gashi",
+    erionDesc: "Erijon Gashi osht kërkues në MADVERSE, tu eksploru teknologji t'ardhshme edhe tu gjet mundësi t'reja për zhvillimin e organizatës.",
+    
+    // ABOUT PAGE (Detailed)
+    klestTitleAbout: "Themelues & Drejtor Ekzekutiv (CEO)",
+    klestDescAbout: "Klest Drançolli osht themelues edhe Drejtor Ekzekutiv i MADVERSE. Ai osht përgjegjës për përcaktimin e vizionit strategjik, mbikëqyrjen e zhvillimit organizativ edhe udhëheqjen e inovacionit në të gjitha fushat operative. Përmes udhëheqjes së tij, MADVERSE e avancon misionin për me fuqizu talentin vendor, me forcu angazhimin komunitar edhe me realizu iniciativa kulturore të qëndrueshme.",
+    guriTitleAbout: "Drejtor i Administrimit Financiar",
+    guriDescAbout: "Guri Gacaferi osht Drejtor i Administrimit Financiar në MADVERSE, përgjegjës për menaxhimin e operacioneve financiare edhe sigurimin e stabilitetit financiar të organizatës. Ai e mbikëqyr planifikimin buxhetor, kontrollin financiar edhe optimizimin e burimeve, duke kontribu drejtpërdrejt në rritjen e qëndrueshme edhe zhvillimin afatgjatë të MADVERSE.",
+    erionTitleAbout: "Udhëheqës i Kërkimit & Inovacionit",
+    erionDescAbout: "Erijon Gashi osht udhëheqës i Kërkimit edhe Inovacionit në MADVERSE. Ai merret me eksplorimin e teknologjive t'reja edhe trendeve t'ardhshme, duke identifiku mundësi strategjike që e ndihmojnë avancimin e projekteve edhe vizionit të organizatës, si dhe përshtatjen e MADVERSE në një mjedis kulturor edhe teknologjik dinamik.",
+    
+    joinMadverse: "Bashkohu në Madverse",
+    joinDesc: "Nëse keni aftësi dhe pasion për të bashkuar dhe kontribuar, mos ngurroni të regjistroheni dhe të bëheni pjesë e ekipit tonë në rritje!",
+    joinUs: "Bashkangjitu!",
+    about: "Rreth Nesh",
+    contactUs: "Kontaktoni ",
+
+    // ContactSection
+    letsConnect: "NA KONTAKTONI",
+    name: "Emri",
+    namePlaceholder: "Emri juaj",
+    email: "Email",
+    emailPlaceholder: "juaji@email.com",
+    subject: "Tema",
+    subjectPlaceholder: "Si mund t'ju ndihmojmë?",
+    message: "Mesazhi",
+    messagePlaceholder: "Na tregoni mesazhin tuaj...",
+    sendMessage: "Dërgoni Mesazhin",
+    sending: "Po dërgohet...",
+    failedSend: "Dështoi të dërgohej",
+    failedSendDesc: "Ju lutem provoni përsëri më vonë",
+
+    // CTASection
+    callToAction: "Thirrje për Veprim",
+    ctaHeadline: "Titulli këtu",
+    ctaDescription: "Tekst mbështetës që inkurajon përdoruesit të marrin veprim. Bëjeni tërheqës dhe të qartë.",
+    getStartedNow: "Fillo Tani",
+
+    // Footer
+    copyrightText: "© 2026 madverse. Të gjitha të drejtat e rezervuara.",
+  },
+};
+
+export type Language = "en" | "al";
