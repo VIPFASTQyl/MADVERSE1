@@ -1,11 +1,13 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { Session } from "@supabase/supabase-js";
 import { supabase } from "../lib/supabaseClient";
+import { createOrUpdateUser } from "../lib/adminService";
 
 interface AuthContextType {
   session: Session | null;
   loading: boolean;
   user: any;
+  isAdmin: boolean;
   signOut: () => Promise<void>;
 }
 
@@ -14,6 +16,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     // Check current session
@@ -22,6 +25,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         data: { session },
       } = await supabase.auth.getSession();
       setSession(session);
+      if (session?.user) {
+        const adminStatus = await createOrUpdateUser(session.user.id, session.user.email || "");
+        setIsAdmin(adminStatus);
+      }
       setLoading(false);
     };
 
@@ -30,8 +37,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     // Listen for auth changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setSession(session);
+      if (session?.user) {
+        const adminStatus = await createOrUpdateUser(session.user.id, session.user.email || "");
+        setIsAdmin(adminStatus);
+      } else {
+        setIsAdmin(false);
+      }
       setLoading(false);
     });
 
@@ -43,10 +56,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const signOut = async () => {
     await supabase.auth.signOut();
     setSession(null);
+    setIsAdmin(false);
   };
 
   return (
-    <AuthContext.Provider value={{ session, loading, user: session?.user, signOut }}>
+    <AuthContext.Provider value={{ session, loading, user: session?.user, isAdmin, signOut }}>
       {children}
     </AuthContext.Provider>
   );

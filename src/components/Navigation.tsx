@@ -13,7 +13,7 @@ const Navigation = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t, setLanguage, language } = useLanguage();
-  const { session, signOut } = useAuth();
+  const { session, signOut, isAdmin } = useAuth();
 
   useEffect(() => {
     if (location.hash === '#showcase') {
@@ -155,12 +155,14 @@ const Navigation = () => {
                 >
                   Profile
                 </Link>
-                <Link
-                  to="/admin/dashboard"
-                  className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Admin
-                </Link>
+                {isAdmin && (
+                  <Link
+                    to="/admin/dashboard"
+                    className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    Admin
+                  </Link>
+                )}
                 <button
                   onClick={async () => {
                     await signOut();

@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import { AdminRoute } from "./components/AdminRoute";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -46,9 +47,9 @@ const App = () => (
               <Route
                 path="/admin/dashboard"
                 element={
-                  <ProtectedRoute>
+                  <AdminRoute>
                     <AdminDashboard />
-                  </ProtectedRoute>
+                  </AdminRoute>
                 }
               />
               <Route path="/activity/youth" element={<Youth />} />
