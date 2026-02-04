@@ -1,43 +1,47 @@
 import ActivityTemplate from "./ActivityTemplate";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useState, useEffect } from "react";
+import { getActivityContentByType } from "@/lib/contentService";
 
 const Exhibition = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const [activities, setActivities] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const activities = [
-    {
-      name: "Emerging Artists Showcase",
-      description: "A dedicated exhibition platform for up-and-coming artists to display their innovative work.",
-      date: "January 20 - February 15, 2026",
-      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
-    },
-    {
-      name: "Contemporary Art Biennial",
-      description: "A major exhibition celebrating contemporary art movements and artistic trends.",
-      date: "March 1 - April 30, 2026",
-      image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80",
-    },
-    {
-      name: "Photography Exhibition",
-      description: "Explore stunning photographs capturing moments from around the world.",
-      date: "May 10 - June 10, 2026",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
-    },
-    {
-      name: "Digital Art & Design Expo",
-      description: "Experience cutting-edge digital art, graphic design, and multimedia creations.",
-      date: "June 20 - July 20, 2026",
-      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
-    },
-    {
-      name: "Youth Artist Exhibition",
-      description: "A celebration of young talented artists presenting their creative visions.",
-      date: "July 25 - August 25, 2026",
-      image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80",
-    },
-  ];
+  useEffect(() => {
+    const fetchActivities = async () => {
+      try {
+        setLoading(true);
+        const data = await getActivityContentByType("exhibition", language);
+        setActivities(data || []);
+      } catch (error) {
+        console.error("Error fetching exhibition activities:", error);
+        setActivities([]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  return <ActivityTemplate title={t('exhibition')} activities={activities} />;
+    fetchActivities();
+  }, [language]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+      </div>
+    );
+  }
+
+  const formattedActivities = activities.map((item) => ({
+    name: item.item_name,
+    description: item.description,
+    date: item.date,
+    image: item.image_url || "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
+    link_url: item.link_url,
+  }));
+
+  return <ActivityTemplate title={t('exhibition')} activities={formattedActivities} hideDots />;
 };
 
 export default Exhibition;

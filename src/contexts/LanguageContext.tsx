@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { translations, Language } from '../translations';
+import { initializeDefaultContent } from '@/lib/contentService';
 
 interface LanguageContextType {
   language: Language;
@@ -25,7 +26,12 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   const [language, setLanguage] = useState<Language>('al');
 
   useEffect(() => {
-    // Load language from localStorage on mount
+    // Initialize database content on mount
+    initializeDefaultContent().catch(error => {
+      console.error('Error initializing content:', error);
+    });
+
+    // Load language from localStorage
     const savedLanguage = localStorage.getItem('language') as Language;
     if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'al')) {
       setLanguage(savedLanguage);

@@ -1,14 +1,17 @@
 import { motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 const ShowcaseGrid = () => {
   const isMobile = useIsMobile();
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [api, setApi] = useState<any>(null);
 
   const items = [
     { titleKey: "youthPrograms", categoryKey: "youth", image: "/src/assets/project-1.jpg", link: "/activity/youth" },
@@ -18,6 +21,29 @@ const ShowcaseGrid = () => {
     { titleKey: "exhibitions", categoryKey: "exhibition", image: "/src/assets/project-2.jpg", link: "/activity/exhibition" },
     { titleKey: "volunteering", categoryKey: "volunteering", image: "/src/assets/project-3.jpg", link: "/activity/volunteering" },
   ];
+
+  const handlePrevious = () => {
+    api?.scrollPrev();
+  };
+
+  const handleNext = () => {
+    api?.scrollNext();
+  };
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    const onSelect = () => {
+      setCurrentIndex(api.selectedScrollSnap());
+    };
+
+    api.on("select", onSelect);
+    return () => {
+      api.off("select", onSelect);
+    };
+  }, [api]);
 
   if (isMobile) {
     // Mobile: Keep carousel with drag function
@@ -44,6 +70,8 @@ const ShowcaseGrid = () => {
               loop: true,
             }}
             className="w-full max-w-6xl mx-auto"
+            onSelect={(index) => setCurrentIndex(index)}
+            setApi={setApi}
           >
             <CarouselContent>
               {items.map((item, index) => (
@@ -83,6 +111,48 @@ const ShowcaseGrid = () => {
               ))}
             </CarouselContent>
           </Carousel>
+
+          {/* Pagination Dots with Arrows */}
+          <div className="flex justify-center items-center gap-4 mt-8">
+            {/* Left Arrow */}
+            <motion.button
+              animate={{ x: [-5, 5, -5] }}
+              transition={{ duration: 3.5, repeat: Infinity }}
+              onClick={handlePrevious}
+              className="flex-shrink-0 hover:text-primary transition-colors"
+            >
+              <ChevronLeft size={24} className="text-white" />
+            </motion.button>
+
+            {/* Dots */}
+            <div className="flex items-center gap-2">
+              {items.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    setCurrentIndex(index);
+                    api?.scrollTo(index);
+                  }}
+                  className={`transition-all duration-300 rounded-full ${
+                    currentIndex === index
+                      ? "w-3 h-3 bg-white"
+                      : "w-2.5 h-2.5 border-2 border-white"
+                  }`}
+                  aria-label={`Go to activity ${index + 1}`}
+                />
+              ))}
+            </div>
+
+            {/* Right Arrow */}
+            <motion.button
+              animate={{ x: [5, -5, 5] }}
+              transition={{ duration: 3.5, repeat: Infinity }}
+              onClick={handleNext}
+              className="flex-shrink-0 hover:text-primary transition-colors"
+            >
+              <ChevronRight size={24} className="text-white" />
+            </motion.button>
+          </div>
         </div>
       </section>
     );

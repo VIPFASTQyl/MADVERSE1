@@ -11,9 +11,11 @@ import Index from "./pages/Index";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
 import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
+import Activities from "./pages/Activities";
 import Youth from "./pages/activities/Youth";
 import Arts from "./pages/activities/Arts";
 import Culture from "./pages/activities/Culture";
@@ -36,6 +38,7 @@ const App = () => (
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
               <Route
                 path="/profile"
                 element={
@@ -52,6 +55,7 @@ const App = () => (
                   </AdminRoute>
                 }
               />
+              <Route path="/activities" element={<Activities />} />
               <Route path="/activity/youth" element={<Youth />} />
               <Route path="/activity/arts" element={<Arts />} />
               <Route path="/activity/culture" element={<Culture />} />

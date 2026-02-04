@@ -60,6 +60,21 @@ const ContactSection = () => {
           variant: "destructive",
         });
       } else {
+        // Send email notification to admin
+        try {
+          await supabase.functions.invoke('send-contact-email', {
+            body: {
+              name: data.name,
+              email: data.email,
+              subject: data.subject,
+              message: data.message,
+            },
+          });
+        } catch (emailError) {
+          console.log('Email notification could not be sent:', emailError);
+          // Don't fail the form submission if email fails
+        }
+
         toast({
           title: t('successSend') || "Message sent successfully!",
           description: t('successSendDesc') || "We'll get back to you soon.",
@@ -79,7 +94,7 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="relative py-32 px-6 overflow-hidden">
+    <section id="contact" className="relative py-32 px-6 overflow-hidden mt-16">
       {/* Background glow */}
     
       {/* Hero image with 2% transparency */}

@@ -21,15 +21,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     // Check current session
     const checkSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      setSession(session);
-      if (session?.user) {
-        const adminStatus = await createOrUpdateUser(session.user.id, session.user.email || "");
-        setIsAdmin(adminStatus);
+      try {
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+        setSession(session);
+        if (session?.user) {
+          try {
+            const adminStatus = await createOrUpdateUser(session.user.id, session.user.email || "");
+            setIsAdmin(adminStatus);
+          } catch (error) {
+            console.error("Error checking admin status:", error);
+            setIsAdmin(false);
+          }
+        }
+      } catch (error) {
+        console.error("Error checking session:", error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     checkSession();
@@ -40,8 +50,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setSession(session);
       if (session?.user) {
-        const adminStatus = await createOrUpdateUser(session.user.id, session.user.email || "");
-        setIsAdmin(adminStatus);
+        try {
+          const adminStatus = await createOrUpdateUser(session.user.id, session.user.email || "");
+          setIsAdmin(adminStatus);
+        } catch (error) {
+          console.error("Error checking admin status:", error);
+          setIsAdmin(false);
+        }
       } else {
         setIsAdmin(false);
       }

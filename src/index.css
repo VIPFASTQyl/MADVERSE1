@@ -45,11 +45,15 @@
 
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    width: 100%;
   }
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Space Grotesk', sans-serif;
+    overflow-x: hidden;
+    width: 100%;
   }
 }
 
@@ -68,11 +72,11 @@
   }
 
   .marquee {
-    animation: marquee 30s linear infinite;
+    animation: marquee 7s linear infinite;
   }
 
   .marquee-reverse {
-    animation: marquee-reverse 30s linear infinite;
+    animation: marquee-reverse 7s linear infinite;
   }
 
   @keyframes marquee {

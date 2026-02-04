@@ -4,12 +4,15 @@ import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { supabase } from "@/lib/supabaseClient";
 import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { Eye, EyeOff } from "lucide-react";
 
 const Login = () => {
   const navigate = useNavigate();
   const { session } = useAuth();
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (session) {
@@ -21,7 +24,29 @@ const Login = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       <div className="max-w-md mx-auto py-20 px-6">
-        <h1 className="text-3xl font-bold mb-8 text-center">Sign In to Madverse</h1>
+        <style>{`
+          .supabase-auth input[type="password"],
+          .supabase-auth input[type="text"] {
+            padding-right: 40px !important;
+          }
+
+          .supabase-auth button[type="button"][aria-label*="password"] {
+            position: absolute !important;
+            right: 10px !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            background: none !important;
+            border: none !important;
+            cursor: pointer !important;
+            color: #fff !important;
+            padding: 5px !important;
+          }
+
+          .supabase-auth button[type="button"][aria-label*="password"]:hover {
+            color: #ccc !important;
+          }
+        `}</style>
+        <h1 className="text-3xl font-bold mb-8 text-center">{t('signInToMadverse')}</h1>
         <Auth
           supabaseClient={supabase}
           appearance={{

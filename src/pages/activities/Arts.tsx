@@ -1,43 +1,47 @@
 import ActivityTemplate from "./ActivityTemplate";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useState, useEffect } from "react";
+import { getActivityContentByType } from "@/lib/contentService";
 
 const Arts = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const [activities, setActivities] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const activities = [
-    {
-      name: "Contemporary Art Exhibition",
-      description: "Discover works from emerging and established local artists showcasing diverse artistic visions and techniques.",
-      date: "January 25 - February 28, 2026",
-      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
-    },
-    {
-      name: "Painting & Drawing Workshops",
-      description: "Learn fundamental and advanced techniques in painting and drawing from professional artists.",
-      date: "Every Wednesday 6-8 PM",
-      image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80",
-    },
-    {
-      name: "Digital Art Masterclass",
-      description: "Explore digital illustration, graphic design, and animation with industry experts.",
-      date: "March 1 - April 15, 2026",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
-    },
-    {
-      name: "Street Art Festival",
-      description: "Witness and participate in collaborative street art projects that transform urban spaces into galleries.",
-      date: "May 10-12, 2026",
-      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
-    },
-    {
-      name: "Sculpture & 3D Art Workshop",
-      description: "Create stunning sculptural pieces using various materials and 3D modeling techniques.",
-      date: "April 5 - May 17, 2026",
-      image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80",
-    },
-  ];
+  useEffect(() => {
+    const fetchActivities = async () => {
+      try {
+        setLoading(true);
+        const data = await getActivityContentByType("arts", language);
+        setActivities(data || []);
+      } catch (error) {
+        console.error("Error fetching arts activities:", error);
+        setActivities([]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  return <ActivityTemplate title={t('arts')} activities={activities} />;
+    fetchActivities();
+  }, [language]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+      </div>
+    );
+  }
+
+  const formattedActivities = activities.map((item) => ({
+    name: item.item_name,
+    description: item.description,
+    date: item.date,
+    image: item.image_url || "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
+    link_url: item.link_url,
+  }));
+
+  return <ActivityTemplate title={t('arts')} activities={formattedActivities} hideDots />;
 };
 
 export default Arts;

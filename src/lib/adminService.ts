@@ -20,20 +20,34 @@ export const createOrUpdateUser = async (userId: string, email: string) => {
   try {
     const isAdmin = ADMIN_EMAILS.includes(email);
 
-    const { error } = await supabase.from("users").upsert(
-      {
-        id: userId,
-        email,
-        is_admin: isAdmin,
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: "id" }
-    );
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
 
-    if (error) throw error;
-    return isAdmin;
+    try {
+      const { error } = await supabase.from("users").upsert(
+        {
+          id: userId,
+          email,
+          is_admin: isAdmin,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: "id" }
+      );
+
+      clearTimeout(timeoutId);
+
+      if (error) {
+        console.error("Database error:", error);
+        return isAdmin;
+      }
+      return isAdmin;
+    } catch (timeoutError) {
+      clearTimeout(timeoutId);
+      console.error("Database operation timeout:", timeoutError);
+      return isAdmin;
+    }
   } catch (error) {
     console.error("Error creating/updating user:", error);
-    return false;
+    return ADMIN_EMAILS.includes(email);
   }
 };

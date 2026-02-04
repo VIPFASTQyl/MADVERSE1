@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { useLanguage } from "../contexts/LanguageContext";
 
 const tabs = [
@@ -24,6 +24,18 @@ const TabsSection = () => {
     { id: "tab4", labelKey: "joinMadverse", descKey: "joinDesc", buttonLabelKey: "joinUs", buttonLink: "/contact" },
     { id: "tab5", labelKey: "joinMadverse", descKey: "joinDesc", buttonLabelKey: "joinUs", buttonLink: "/contact" },
   ];
+
+  const handlePrevious = () => {
+    const currentIndex = tabs.findIndex(tab => tab.id === activeTab);
+    const prevIndex = currentIndex === 0 ? tabs.length - 1 : currentIndex - 1;
+    setActiveTab(tabs[prevIndex].id);
+  };
+
+  const handleNext = () => {
+    const currentIndex = tabs.findIndex(tab => tab.id === activeTab);
+    const nextIndex = (currentIndex + 1) % tabs.length;
+    setActiveTab(tabs[nextIndex].id);
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -56,26 +68,48 @@ const TabsSection = () => {
           </h2>
         </motion.div>
 
-        {/* Tab Buttons */}
+        {/* Tab Buttons with Arrows */}
         <motion.div
-        
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="flex justify-center gap-4 mb-12"
+          className="flex justify-center items-center gap-4 mb-12"
         >
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`w-4 h-4 rounded-full transition-all duration-300 ${
-                activeTab === tab.id
-                  ? "bg-white"
-                  : "bg-black border-2 border-white"
-              }`}
-            />
-          ))}
+          {/* Left Arrow */}
+          <motion.button
+            animate={{ x: [-5, 5, -5] }}
+            transition={{ duration: 3.5, repeat: Infinity }}
+            onClick={handlePrevious}
+            className="flex-shrink-0 hover:text-primary transition-colors"
+          >
+            <ChevronLeft size={24} className="text-white" />
+          </motion.button>
+
+          {/* Dots */}
+          <div className="flex justify-center gap-4">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`w-4 h-4 rounded-full transition-all duration-300 ${
+                  activeTab === tab.id
+                    ? "bg-white"
+                    : "bg-black border-2 border-white"
+                }`}
+              />
+            ))}
+          </div>
+
+          {/* Right Arrow */}
+          <motion.button
+            animate={{ x: [5, -5, 5] }}
+            transition={{ duration: 3.5, repeat: Infinity }}
+            onClick={handleNext}
+            className="flex-shrink-0 hover:text-primary transition-colors"
+          >
+            <ChevronRight size={24} className="text-white" />
+          </motion.button>
         </motion.div>
 
         {/* Tab Content */}

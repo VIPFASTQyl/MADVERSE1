@@ -1,43 +1,47 @@
 import ActivityTemplate from "./ActivityTemplate";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useState, useEffect } from "react";
+import { getActivityContentByType } from "@/lib/contentService";
 
 const Youth = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const [activities, setActivities] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const activities = [
-    {
-      name: "Youth Leadership Workshop",
-      description: "An intensive workshop designed to develop leadership skills and inspire young leaders to make a positive impact in their communities.",
-      date: "February 15, 2026",
-      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
-    },
-    {
-      name: "Creative Expression Camp",
-      description: "A dynamic summer camp where youth explore their creativity through art, music, dance, and digital media.",
-      date: "June 20 - July 10, 2026",
-      image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80",
-    },
-    {
-      name: "Youth Mentorship Program",
-      description: "Connect with experienced mentors who guide you through personal development, career planning, and life skills.",
-      date: "Ongoing",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
-    },
-    {
-      name: "Digital Innovation Series",
-      description: "Learn cutting-edge digital skills including coding, web design, and digital marketing from industry professionals.",
-      date: "March - May 2026",
-      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
-    },
-    {
-      name: "Community Service Initiative",
-      description: "Engage in meaningful volunteer work that strengthens your community and develops your sense of social responsibility.",
-      date: "Every Saturday",
-      image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80",
-    },
-  ];
+  useEffect(() => {
+    const fetchActivities = async () => {
+      try {
+        setLoading(true);
+        const data = await getActivityContentByType("youth", language);
+        setActivities(data || []);
+      } catch (error) {
+        console.error("Error fetching youth activities:", error);
+        setActivities([]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  return <ActivityTemplate title={t('youth')} activities={activities} />;
+    fetchActivities();
+  }, [language]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+      </div>
+    );
+  }
+
+  const formattedActivities = activities.map((item) => ({
+    name: item.item_name,
+    description: item.description,
+    date: item.date,
+    image: item.image_url || "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
+    link_url: item.link_url,
+  }));
+
+  return <ActivityTemplate title={t('youth')} activities={formattedActivities} hideDots />;
 };
 
 export default Youth;

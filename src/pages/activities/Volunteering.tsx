@@ -1,43 +1,47 @@
 import ActivityTemplate from "./ActivityTemplate";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useState, useEffect } from "react";
+import { getActivityContentByType } from "@/lib/contentService";
 
 const Volunteering = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const [activities, setActivities] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const activities = [
-    {
-      name: "Community Clean-Up Initiative",
-      description: "Help clean and beautify public spaces while making a positive environmental impact.",
-      date: "Every Saturday 9 AM",
-      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
-    },
-    {
-      name: "Youth Mentorship Program",
-      description: "Volunteer as a mentor and guide young people through their personal and academic journey.",
-      date: "Flexible schedule",
-      image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80",
-    },
-    {
-      name: "Event Support Volunteers",
-      description: "Assist in organizing and running MADVERSE events as a volunteer team member.",
-      date: "Various event dates",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
-    },
-    {
-      name: "Community Outreach Program",
-      description: "Engage with underserved communities and help provide resources and support.",
-      date: "Ongoing",
-      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
-    },
-    {
-      name: "Arts Education Volunteers",
-      description: "Teach and share your artistic skills with students who need support and guidance.",
-      date: "Multiple times weekly",
-      image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80",
-    },
-  ];
+  useEffect(() => {
+    const fetchActivities = async () => {
+      try {
+        setLoading(true);
+        const data = await getActivityContentByType("volunteering", language);
+        setActivities(data || []);
+      } catch (error) {
+        console.error("Error fetching volunteering activities:", error);
+        setActivities([]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  return <ActivityTemplate title={t('volunteering')} activities={activities} />;
+    fetchActivities();
+  }, [language]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+      </div>
+    );
+  }
+
+  const formattedActivities = activities.map((item) => ({
+    name: item.item_name,
+    description: item.description,
+    date: item.date,
+    image: item.image_url || "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
+    link_url: item.link_url,
+  }));
+
+  return <ActivityTemplate title={t('volunteering')} activities={formattedActivities} hideDots />;
 };
 
 export default Volunteering;
