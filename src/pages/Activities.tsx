@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import LiquidEther from '@/components/LiquidEther';
+import AnimatedBackground from '@/components/AnimatedBackground';
 import ActivityCard from '@/components/ActivityCard';
 import { historyService } from '@/lib/phase1Service';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { getAllActivities, Activity } from '@/lib/activityService';
@@ -16,9 +19,18 @@ const ACTIVITY_CATEGORIES = ['Arts', 'Culture', 'Sports', 'Volunteering', 'Youth
 export default function Activities() {
   const { user } = useAuth();
   const { t, language } = useLanguage();
+  const isMobile = useIsMobile();
+  const [liquidEtherFailed, setLiquidEtherFailed] = useState(false);
   const [activities, setActivities] = useState<Activity[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  // Error listener for WebGL issues
+  useEffect(() => {
+    const handleError = () => setLiquidEtherFailed(true);
+    window.addEventListener('error', handleError);
+    return () => window.removeEventListener('error', handleError);
+  }, []);
 
   // Load activities from database
   useEffect(() => {
@@ -77,10 +89,42 @@ export default function Activities() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <Navigation />
+    <div className="min-h-screen bg-background flex flex-col relative">
+      <div className="fixed inset-0 top-0 z-0 h-screen w-full pointer-events-none">
+        {isMobile ? (
+          <div className="w-full h-full bg-black" />
+        ) : liquidEtherFailed ? (
+          <div className="w-full h-full bg-gradient-to-br from-cyan-900 via-black to-black animate-pulse" />
+        ) : (
+          <LiquidEther
+            colors={['#00CED1', '#AFEEEE', '#FFFFFF']}
+            mouseForce={15}
+            cursorSize={100}
+            isViscous={false}
+            viscous={25}
+            iterationsViscous={16}
+            iterationsPoisson={16}
+            resolution={0.4}
+            isBounce={false}
+            autoDemo={true}
+            autoSpeed={0.4}
+            autoIntensity={1}
+            takeoverDuration={0.25}
+            autoResumeDelay={3000}
+            autoRampDuration={0.6}
+            onError={(error) => {
+              console.error('LiquidEther error on Activities page:', error);
+              setLiquidEtherFailed(true);
+            }}
+          />
+        )}
+      </div>
+      
+      <div className="relative z-20">
+        <Navigation />
+      </div>
 
-      <div className="flex-1 mt-16">
+      <div className="flex-1 mt-16 relative z-10">
         <div className="container mx-auto max-w-7xl py-10 px-4">
           {/* Header */}
           <div className="mb-12">
@@ -169,7 +213,9 @@ export default function Activities() {
         </div>
       </div>
 
-      <Footer />
+      <div className="relative z-10">
+        <Footer />
+      </div>
     </div>
   );
 }

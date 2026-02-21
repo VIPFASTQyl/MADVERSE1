@@ -118,10 +118,10 @@ const ActivityTemplate = ({ title, activities, hideDots = false }: ActivityPageP
               <button
                 key={index}
                 onClick={() => handleDotClick(index)}
-                className={`transition-all duration-300 rounded-full ${
+                className={`transition-all duration-200 rounded-full cursor-pointer ${
                   currentIndex === index
-                    ? "w-3 h-3 bg-white"
-                    : "w-2.5 h-2.5 border-2 border-white"
+                    ? "w-3 h-3 bg-[#0b0b0b]"
+                    : "w-2.5 h-2.5 bg-[#0b0b0b] hover:bg-gray-400"
                 }`}
                 aria-label={`Go to activity ${index + 1}`}
               />

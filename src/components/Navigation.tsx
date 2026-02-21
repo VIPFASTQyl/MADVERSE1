@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform, useMotionValue, useMotionTemplate } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { ChevronDown, Menu, X, LogOut, ArrowLeft, User } from "lucide-react";
 import { Button } from "./ui/button";
@@ -18,6 +18,17 @@ const Navigation = () => {
   const location = useLocation();
   const { t, setLanguage, language } = useLanguage();
   const { session, signOut, isAdmin } = useAuth();
+
+  // Scroll-based navbar animation
+  const { scrollY } = useScroll();
+  
+  // Create a motion value that maps scroll to background opacity (0-1)
+  // When scrollY = 0, opacity = 0 (transparent)
+  // When scrollY = 100, opacity = 1 (solid)
+  const navOpacity = useTransform(scrollY, [0, 100], [0, 0.95]);
+  
+  // Create a template string with the opacity for rgba color
+  const backgroundColor = useMotionTemplate`rgba(0, 0, 0, ${navOpacity})`;
 
   useEffect(() => {
     if (location.hash === '#showcase') {
@@ -58,7 +69,12 @@ const Navigation = () => {
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border/50"
+      className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 backdrop-blur-sm"
+      style={{
+        // Dynamic opacity for the navbar background
+        // At scroll 0: transparent, at scroll 100px: semi-opaque dark background
+        backgroundColor: backgroundColor,
+      }}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">

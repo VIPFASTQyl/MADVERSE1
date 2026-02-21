@@ -18,16 +18,56 @@ export interface UserProfile {
 export const profileService = {
   // Get user profile
   async getProfile(userId: string): Promise<UserProfile | null> {
-    const { data, error } = await supabase
-      .from('user_profiles')
-      .select('*')
-      .eq('id', userId)
-      .single();
+    try {
+      console.log('📦 Fetching profile for user:', userId);
+      const { data, error } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .eq('id', userId)
+        .maybeSingle(); // Use maybeSingle instead of single to handle missing profiles
 
-    if (error && error.code !== 'PGRST116') {
-      throw error;
+      if (error) {
+        console.error('❌ Profile fetch error:', error.code, error.message);
+        throw error;
+      }
+
+      if (data) {
+        console.log('✅ Profile found:', {
+          id: data.id,
+          full_name: data.full_name,
+          phone: data.phone,
+        });
+        return data;
+      } else {
+        console.log('⚠️ No profile found, attempting to create default profile...');
+        // Try to create an empty profile if it doesn't exist
+        try {
+          const { data: newProfile, error: createError } = await supabase
+            .from('user_profiles')
+            .insert({
+              id: userId,
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString(),
+            })
+            .select()
+            .single();
+
+          if (createError) {
+            console.error('⚠️ Could not create profile:', createError.message);
+            return null;
+          }
+
+          console.log('✅ Profile created successfully');
+          return newProfile;
+        } catch (createErr) {
+          console.error('⚠️ Error creating profile:', createErr);
+          return null;
+        }
+      }
+    } catch (error) {
+      console.error('❌ Error in getProfile:', error);
+      return null;
     }
-    return data || null;
   },
 
   // Update user profile
@@ -139,7 +179,7 @@ export interface ActivityRegistration {
 }
 
 export const registrationService = {
-  // Get user registrations
+  // Get user registrations (deduplicated - removes duplicate language versions)
   async getUserRegistrations(userId: string): Promise<ActivityRegistration[]> {
     const { data, error } = await supabase
       .from('activity_registrations')
@@ -148,7 +188,41 @@ export const registrationService = {
       .order('registered_at', { ascending: false });
 
     if (error) throw error;
-    return data || [];
+    
+    if (!data || data.length === 0) return [];
+
+    // Fetch activity details to deduplicate by item_name and activity_type
+    const { data: activityDetails } = await supabase
+      .from('activity_content')
+      .select('id, item_name, activity_type');
+
+    if (!activityDetails) return data;
+
+    // Create a map of activity_id to item_name+activity_type
+    const activityMap: Record<string, { itemName: string; type: string }> = {};
+    activityDetails.forEach((act: any) => {
+      activityMap[act.id] = { itemName: act.item_name, type: act.activity_type };
+    });
+
+    // Deduplicate: keep only the first registration for each unique activity
+    const seenActivities = new Set<string>();
+    const deduplicatedData: ActivityRegistration[] = [];
+
+    for (const reg of data) {
+      const activity = activityMap[reg.activity_id];
+      if (activity) {
+        const activityKey = `${activity.itemName}|${activity.type}`;
+        if (!seenActivities.has(activityKey)) {
+          seenActivities.add(activityKey);
+          deduplicatedData.push(reg);
+        }
+      } else {
+        // Include registrations without activity data
+        deduplicatedData.push(reg);
+      }
+    }
+
+    return deduplicatedData;
   },
 
   // Get registered activities for a user
@@ -237,7 +311,7 @@ export const registrationService = {
     // Track in history
     await historyService.trackAction(userId, activityId, 'registered');
 
-    // Send email notification to admin
+    // Send email notification to admin and confirmation to user
     try {
       const { data: userProfile } = await supabase
         .from('user_profiles')
@@ -251,12 +325,22 @@ export const registrationService = {
         .eq('id', activityId)
         .single();
 
+      // Get user email from auth (optional, may fail if not authenticated)
+      let userEmail = '';
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        userEmail = user?.email || '';
+      } catch (e) {
+        console.warn('Could not get user email from auth');
+      }
+
       await supabase.functions.invoke('send-registration-email', {
         body: {
           userId,
           activityId,
           userName: userProfile?.full_name || 'User',
           programName: activityData?.item_name || 'Unknown Program',
+          userEmail: userEmail,
         },
       });
     } catch (emailError) {

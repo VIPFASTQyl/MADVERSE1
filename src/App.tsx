@@ -7,23 +7,68 @@ import { LanguageProvider } from "./contexts/LanguageContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { AdminRoute } from "./components/AdminRoute";
-import Index from "./pages/Index";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
-import Profile from "./pages/Profile";
-import AdminDashboard from "./pages/AdminDashboard";
-import NotFound from "./pages/NotFound";
-import Activities from "./pages/Activities";
-import Youth from "./pages/activities/Youth";
-import Arts from "./pages/activities/Arts";
-import Culture from "./pages/activities/Culture";
-import Sports from "./pages/activities/Sports";
-import Exhibition from "./pages/activities/Exhibition";
-import Volunteering from "./pages/activities/Volunteering";
+import ScrollToTop from "./components/ScrollToTop";
+import { lazy, Suspense } from "react";
+import BackToTop from "@/components/BackToTop";
 
-const queryClient = new QueryClient();
+// Lazy load all page components to reduce initial bundle
+const Index = lazy(() => import("./pages/Index"));
+const About = lazy(() => import("./pages/About"));
+const Contact = lazy(() => import("./pages/Contact"));
+const Register = lazy(() => import("./pages/SignUp"));
+const Login = lazy(() => import("./pages/Login"));
+const Verify = lazy(() => import("./pages/Verify"));
+const VerificationPending = lazy(() => import("./pages/VerificationPending"));
+const Profile = lazy(() => import("./pages/Profile"));
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const Activities = lazy(() => import("./pages/Activities"));
+// Activity sub-pages (simple pages) restored below
+const Youth = lazy(() => import("./pages/activities/Youth"));
+const Arts = lazy(() => import("./pages/activities/Arts"));
+const Culture = lazy(() => import("./pages/activities/Culture"));
+const Sports = lazy(() => import("./pages/activities/Sports"));
+const Exhibition = lazy(() => import("./pages/activities/Exhibition"));
+const Volunteering = lazy(() => import("./pages/activities/Volunteering"));
+
+// Loading fallback component
+const LoadingFallback = () => (
+  <div className="flex items-center justify-center min-h-screen bg-background">
+    <style>{`
+      @keyframes dotToCylinder {
+        0%, 100% {
+          transform: scaleY(1);
+        }
+        50% {
+          transform: scaleY(2.5);
+        }
+      }
+      .dot-animation {
+        animation: dotToCylinder 1.4s ease-in-out infinite;
+      }
+      .dot-1 { animation-delay: 0s; }
+      .dot-2 { animation-delay: 0.2s; }
+      .dot-3 { animation-delay: 0.4s; }
+    `}</style>
+    <div className="text-center">
+      <div className="flex justify-center gap-2 mb-4">
+        <div className="dot-animation dot-1 w-2 h-2 bg-primary rounded-full"></div>
+        <div className="dot-animation dot-2 w-2 h-2 bg-primary rounded-full"></div>
+        <div className="dot-animation dot-3 w-2 h-2 bg-primary rounded-full"></div>
+      </div>
+      <p className="text-lg font-semibold text-muted-foreground">Loading...</p>
+    </div>
+  </div>
+);
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      gcTime: 1000 * 60 * 10, // 10 minutes
+    },
+  },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -32,39 +77,43 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route
-                path="/profile"
-                element={
-                  <ProtectedRoute>
-                    <Profile />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/dashboard"
-                element={
-                  <AdminRoute>
-                    <AdminDashboard />
-                  </AdminRoute>
-                }
-              />
-              <Route path="/activities" element={<Activities />} />
-              <Route path="/activity/youth" element={<Youth />} />
-              <Route path="/activity/arts" element={<Arts />} />
-              <Route path="/activity/culture" element={<Culture />} />
-              <Route path="/activity/sports" element={<Sports />} />
-              <Route path="/activity/exhibition" element={<Exhibition />} />
-              <Route path="/activity/volunteering" element={<Volunteering />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+          <BrowserRouter future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
+            <ScrollToTop />
+            <Suspense fallback={<LoadingFallback />}>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/signup" element={<Register />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/verify" element={<Verify />} />
+                <Route path="/verification-pending" element={<VerificationPending />} />
+                <Route
+                  path="/profile"
+                  element={<Profile />}
+                />
+                <Route
+                  path="/admin/dashboard"
+                  element={
+                    <AdminRoute>
+                      <AdminDashboard />
+                    </AdminRoute>
+                  }
+                />
+                <Route path="/activities" element={<Activities />} />
+                {/* Simple activity detail pages (title + LiquidEther) */}
+                <Route path="/activity/youth" element={<Youth />} />
+                <Route path="/activity/arts" element={<Arts />} />
+                <Route path="/activity/culture" element={<Culture />} />
+                <Route path="/activity/sports" element={<Sports />} />
+                <Route path="/activity/exhibition" element={<Exhibition />} />
+                <Route path="/activity/volunteering" element={<Volunteering />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+            <BackToTop />
           </BrowserRouter>
         </TooltipProvider>
       </AuthProvider>

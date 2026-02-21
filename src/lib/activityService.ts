@@ -1,5 +1,20 @@
 import { supabase } from "./supabaseClient";
 
+// Helper function to generate a deterministic UUID from email
+const generateUUIDFromEmail = (email: string): string => {
+  // Use a simple deterministic UUID-like format: hash the email
+  // Format: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
+  let hash = 0;
+  for (let i = 0; i < email.length; i++) {
+    const char = email.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32-bit integer
+  }
+  
+  const hashStr = Math.abs(hash).toString(16).padStart(8, '0');
+  return `${hashStr}-0000-4000-8000-000000000000`;
+};
+
 // Helper function to get total participants across all language versions
 const getTotalParticipants = async (itemName: string, activityType: string): Promise<number> => {
   try {
@@ -228,10 +243,9 @@ export const createActivity = async (
   activity: Omit<Activity, "id" | "created_at" | "updated_at">
 ): Promise<Activity | null> => {
   try {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) throw new Error("Not authenticated");
+    // Get admin email from localStorage (custom JWT auth)
+    const registrationEmail = localStorage.getItem('registrationEmail');
+    if (!registrationEmail) throw new Error("Not authenticated");
 
     // Generate unique ID
     const activityId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
@@ -247,11 +261,12 @@ export const createActivity = async (
       language: activity.language,
       link_url: activity.location || "", // Store location as link_url
       max_participants: activity.max_participants || 50,
-      updated_by: user.id,
+      updated_by: generateUUIDFromEmail(registrationEmail),
     };
 
     console.log("Creating activity with data:", dbActivity);
-    console.log("User ID:", user.id);
+    console.log("Admin email:", registrationEmail);
+    console.log("Generated UUID:", generateUUIDFromEmail(registrationEmail));
 
     const { data, error: insertError } = await supabase
       .from("activity_content")

@@ -2,9 +2,9 @@ import { supabase } from "./supabaseClient";
 
 // List of admin emails - customize these 3
 const ADMIN_EMAILS = [
-  "klestdrancolli@gmail.com", 
-  "gurigaca13@gmail.com",        
-  "erijonGashi@gmail.com",        
+  "klestdrancolli@gmail.com",
+  "gurigaca13@gmail.com",
+  "erijonGashi@gmail.com",
 ];
 
 export const checkIsAdmin = async (userId: string) => {
@@ -16,38 +16,37 @@ export const checkIsAdmin = async (userId: string) => {
   }
 };
 
-export const createOrUpdateUser = async (userId: string, email: string) => {
+export const createOrUpdateUser = async (userId: string, email: string): Promise<boolean> => {
   try {
+    // The ADMIN_EMAILS list is the source of truth
     const isAdmin = ADMIN_EMAILS.includes(email);
-
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 5000);
-
-    try {
-      const { error } = await supabase.from("users").upsert(
-        {
-          id: userId,
-          email,
-          is_admin: isAdmin,
-          updated_at: new Date().toISOString(),
-        },
-        { onConflict: "id" }
-      );
-
-      clearTimeout(timeoutId);
-
-      if (error) {
-        console.error("Database error:", error);
-        return isAdmin;
+    console.log('👑 ADMIN CHECK - Email:', email);
+    console.log('👑 ADMIN CHECK - Result:', isAdmin, '(', ADMIN_EMAILS.includes(email) ? 'ADMIN' : 'USER', ')');
+    
+    // Return admin status immediately based on email list
+    // Database update happens in background (fire and forget)
+    supabase.from("users").upsert(
+      {
+        id: userId,
+        email,
+        is_admin: isAdmin,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: "id" }
+    ).then((result) => {
+      if (result.error) {
+        console.error('❌ Database upsert error:', result.error);
+      } else {
+        console.log('✅ Database upsert success');
       }
-      return isAdmin;
-    } catch (timeoutError) {
-      clearTimeout(timeoutId);
-      console.error("Database operation timeout:", timeoutError);
-      return isAdmin;
-    }
+    }).catch((error) => {
+      console.error('❌ Database upsert catch error:', error);
+    });
+    
+    return isAdmin; // Return immediately, don't wait for database
   } catch (error) {
-    console.error("Error creating/updating user:", error);
+    console.error("Error checking admin status:", error);
+    // Fallback: check email list directly
     return ADMIN_EMAILS.includes(email);
   }
 };

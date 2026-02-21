@@ -1,7 +1,10 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import TrustMarquee from "@/components/TrustMarquee";
+import LiquidEther from "@/components/LiquidEther";
 import { motion } from "framer-motion";
 import { useLanguage } from "../contexts/LanguageContext";
+import { useIsMobile } from "../hooks/use-mobile";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
@@ -11,7 +14,17 @@ import TabsSection from "@/components/TabsSection";
 
 const About = () => {
   const { t, language } = useLanguage();
-  const [aboutContent, setAboutContent] = useState<any>({});
+  const isMobile = useIsMobile();
+  const [liquidEtherFailed, setLiquidEtherFailed] = useState(false);
+  
+  
+  // Initialize with translation fallbacks to show content immediately
+  const [aboutContent, setAboutContent] = useState<any>({
+    whatTitle: t("whatIsMadverse"),
+    whatDesc: t("whatIsMadverseDescAbout"),
+    feelTitle: t("feelCulture"),
+    feelDesc: t("feelCultureDetail"),
+  });
   const [teamMembers, setTeamMembers] = useState<any[]>([]);
 
   useEffect(() => {
@@ -83,8 +96,36 @@ const About = () => {
   }, [language, t]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen relative">
       <Navigation />
+      <div className="fixed inset-0 top-0 z-0 h-screen w-full pointer-events-none">
+        {liquidEtherFailed ? (
+          <div className="w-full h-full bg-gradient-to-br from-purple-900 via-black to-black animate-pulse" />
+        ) : (
+          <LiquidEther
+            colors={['#00CED1', '#AFEEEE', '#FFFFFF']}
+            mouseForce={isMobile ? 8 : 15}
+            cursorSize={isMobile ? 60 : 100}
+            isViscous={false}
+            viscous={isMobile ? 15 : 25}
+            iterationsViscous={isMobile ? 8 : 16}
+            iterationsPoisson={isMobile ? 8 : 16}
+            resolution={isMobile ? 0.25 : 0.4}
+            isBounce={false}
+            autoDemo={!isMobile}
+            autoSpeed={isMobile ? 0.25 : 0.4}
+            autoIntensity={1}
+            takeoverDuration={0.25}
+            autoResumeDelay={3000}
+            autoRampDuration={0.6}
+            onError={(error) => {
+              console.error('LiquidEther error on About page:', error);
+              setLiquidEtherFailed(true);
+            }}
+          />
+        )}
+      </div>
+      <div className="relative z-10 pointer-events-auto">
       
       {/* What is Madverse Section */}
       <section className="py-24 lg:py-32 mt-16">
@@ -131,7 +172,11 @@ const About = () => {
       {/* Team Members Section */}
       <TabsSection />
 
+      {/* Partners Section */}
+      <TrustMarquee />
+
       <Footer />
+      </div>
     </div>
   );
 };

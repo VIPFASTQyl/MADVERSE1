@@ -482,8 +482,19 @@ export const getAllContent = async () => {
   }
 };
 
+// Simple cache for content
+let contentCache: { [key: string]: { data: WebContent[]; timestamp: number } } = {};
+const CONTENT_CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
 export const getContentByLanguage = async (language: string) => {
   try {
+    // Check cache first
+    const cached = contentCache[language];
+    if (cached && Date.now() - cached.timestamp < CONTENT_CACHE_DURATION) {
+      console.log(`📦 Content served from cache for language: ${language}`);
+      return cached.data;
+    }
+
     const { data, error } = await supabase
       .from("web_content1")
       .select("*")
@@ -491,6 +502,12 @@ export const getContentByLanguage = async (language: string) => {
       .order("section", { ascending: true });
 
     if (error) throw error;
+    
+    // Cache the result
+    if (data) {
+      contentCache[language] = { data, timestamp: Date.now() };
+    }
+    
     return data as WebContent[];
   } catch (error) {
     console.error("Error fetching content by language:", error);

@@ -1,26 +1,17 @@
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
 
 interface AdminRouteProps {
   children: React.ReactNode;
 }
 
+const ADMIN_EMAIL = "fastvip02@gmail.com";
+
 export const AdminRoute = ({ children }: AdminRouteProps) => {
-  const { session, isAdmin, loading } = useAuth();
+  const registrationEmail = localStorage.getItem('registrationEmail');
+  const isAdmin = registrationEmail === ADMIN_EMAIL;
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!session) {
-    return <Navigate to="/login" replace />;
+  if (!registrationEmail) {
+    return <Navigate to="/" replace />;
   }
 
   if (!isAdmin) {

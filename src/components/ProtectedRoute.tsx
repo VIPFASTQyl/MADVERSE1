@@ -12,15 +12,18 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading...</p>
+          <img
+            src="/hover.png"
+            alt="Loading"
+            className="h-32 w-32 mx-auto"
+          />
         </div>
       </div>
     );
   }
 
   if (!session) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return <>{children}</>;

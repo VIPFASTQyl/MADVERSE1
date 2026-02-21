@@ -36,7 +36,6 @@ const AdminDashboard = () => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const navigate = useNavigate();
-  const { signOut } = useAuth();
   const { t } = useLanguage();
 
   useEffect(() => {
@@ -84,9 +83,8 @@ const AdminDashboard = () => {
           </div>
           <Button
             variant="destructive"
-            onClick={async () => {
-              await signOut();
-              navigate('/');
+            onClick={() => {
+              navigate('/', { replace: true });
             }}
             className="flex items-center gap-2"
           >

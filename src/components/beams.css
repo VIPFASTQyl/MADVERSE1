@@ -1,0 +1,190 @@
+.beams-container {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background: #000000;
+}
+
+.beam {
+  position: absolute;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(99, 102, 241, 0.4),
+    transparent
+  );
+  opacity: 0.6;
+}
+
+.beam-1 {
+  width: 40%;
+  height: 2px;
+  top: 20%;
+  left: -20%;
+  animation: beam-slide-1 15s ease-in-out infinite;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(139, 92, 246, 0.5),
+    transparent
+  );
+}
+
+.beam-2 {
+  width: 50%;
+  height: 3px;
+  top: 35%;
+  right: -25%;
+  animation: beam-slide-2 20s ease-in-out infinite;
+  background: linear-gradient(
+    to left,
+    transparent,
+    rgba(99, 102, 241, 0.5),
+    transparent
+  );
+}
+
+.beam-3 {
+  width: 45%;
+  height: 2px;
+  top: 50%;
+  left: -22.5%;
+  animation: beam-slide-3 18s ease-in-out infinite;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(168, 85, 247, 0.5),
+    transparent
+  );
+}
+
+.beam-4 {
+  width: 48%;
+  height: 3px;
+  top: 65%;
+  right: -24%;
+  animation: beam-slide-4 17s ease-in-out infinite;
+  background: linear-gradient(
+    to left,
+    transparent,
+    rgba(139, 92, 246, 0.5),
+    transparent
+  );
+}
+
+.beam-5 {
+  width: 42%;
+  height: 2px;
+  top: 80%;
+  left: -21%;
+  animation: beam-slide-5 19s ease-in-out infinite;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(99, 102, 241, 0.5),
+    transparent
+  );
+}
+
+.beam-6 {
+  width: 52%;
+  height: 3px;
+  top: 40%;
+  left: -26%;
+  animation: beam-slide-6 22s ease-in-out infinite;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(99, 102, 241, 0.4),
+    transparent
+  );
+  opacity: 0.4;
+}
+
+@keyframes beam-slide-1 {
+  0% {
+    left: -20%;
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    left: 120%;
+    opacity: 0;
+  }
+}
+
+@keyframes beam-slide-2 {
+  0% {
+    right: -25%;
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    right: 125%;
+    opacity: 0;
+  }
+}
+
+@keyframes beam-slide-3 {
+  0% {
+    left: -22.5%;
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    left: 122.5%;
+    opacity: 0;
+  }
+}
+
+@keyframes beam-slide-4 {
+  0% {
+    right: -24%;
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    right: 124%;
+    opacity: 0;
+  }
+}
+
+@keyframes beam-slide-5 {
+  0% {
+    left: -21%;
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    left: 121%;
+    opacity: 0;
+  }
+}
+
+@keyframes beam-slide-6 {
+  0% {
+    left: -26%;
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    left: 126%;
+    opacity: 0;
+  }
+}

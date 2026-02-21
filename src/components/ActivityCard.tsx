@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Heart, Users, MapPin, Calendar, Zap } from 'lucide-react';
+import { Users, MapPin, Calendar, Zap } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { favoriteService, registrationService } from '@/lib/phase1Service';
+import { registrationService } from '@/lib/phase1Service';
+import { supabase } from '@/lib/supabaseClient';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { toast } from '@/hooks/use-toast';
 
 interface ActivityCardProps {
@@ -34,91 +37,113 @@ export const ActivityCard = ({
   onParticipantsChange,
 }: ActivityCardProps) => {
   const { user } = useAuth();
-  const [isFavorited, setIsFavorited] = useState(false);
+  const { t } = useLanguage();
+  const navigate = useNavigate();
   const [isRegistered, setIsRegistered] = useState(false);
   const [loading, setLoading] = useState(false);
   const [currentParticipants, setCurrentParticipants] = useState(participants);
+  const [hasProfile, setHasProfile] = useState(false);
 
   useEffect(() => {
-    if (user) {
-      checkStatus();
-    }
+    // Check if user has Supabase auth OR localStorage registration
+    checkStatus();
+    checkProfileStatus();
   }, [user, id]);
+
+  const checkProfileStatus = () => {
+    const registrationId = localStorage.getItem('registrationId');
+    setHasProfile(!!registrationId);
+  };
 
   const checkStatus = async () => {
     try {
-      const favorited = await favoriteService.isFavorited(user!.id, id);
-      setIsFavorited(favorited);
-
-      const registered = await registrationService.isRegistered(user!.id, id);
-      setIsRegistered(registered);
+      // Check Supabase auth status
+      if (user) {
+        const registered = await registrationService.isRegistered(user.id, id);
+        setIsRegistered(registered);
+      } else {
+        // Check localStorage registration status
+        const registrationId = localStorage.getItem('registrationId');
+        if (registrationId) {
+          const { data } = await supabase
+            .from('activity_registrations')
+            .select('id')
+            .eq('registration_id', registrationId)
+            .eq('activity_id', id)
+            .maybeSingle();
+          setIsRegistered(!!data);
+        }
+      }
     } catch (error) {
       console.error('Error checking status:', error);
     }
   };
 
-  const handleFavorite = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (!user) {
-      toast({
-        title: 'Login Required',
-        description: 'Please log in to save favorites',
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    try {
-      setLoading(true);
-      if (isFavorited) {
-        await favoriteService.removeFavorite(user.id, id);
-        setIsFavorited(false);
-        toast({ description: 'Removed from favorites' });
-      } else {
-        await favoriteService.addFavorite(user.id, id);
-        setIsFavorited(true);
-        toast({ description: 'Added to favorites' });
-      }
-    } catch (error) {
-      console.error('Error toggling favorite:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to update favorite',
-        variant: 'destructive',
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleRegister = async (e: React.MouseEvent) => {
     e.preventDefault();
-    if (!user) {
+
+    // Check for either Supabase auth or localStorage registration
+    const registrationId = localStorage.getItem('registrationId');
+    if (!user && !registrationId) {
       toast({
-        title: 'Login Required',
-        description: 'Please log in to register for activities',
+        title: t('registrationRequired'),
+        description: t('registerFirstToJoin'),
         variant: 'destructive',
       });
+      navigate('/register');
       return;
     }
 
     try {
       setLoading(true);
+      
       if (isRegistered) {
-        await registrationService.cancelRegistration(user.id, id);
+        // Unregister from activity
+        if (user) {
+          await registrationService.cancelRegistration(user.id, id);
+        } else if (registrationId) {
+          await supabase
+            .from('activity_registrations')
+            .delete()
+            .eq('registration_id', registrationId)
+            .eq('activity_id', id);
+        }
         setIsRegistered(false);
         const newCount = currentParticipants - 1;
         setCurrentParticipants(newCount);
         onParticipantsChange?.(newCount);
-        toast({ description: 'Registration cancelled' });
+        toast({ description: t('unregisteredFromActivity') });
       } else {
-        // Allow registration without requiring profile completion
-        await registrationService.registerForActivity(user.id, id);
+        // Register for activity
+        if (currentParticipants >= maxParticipants) {
+          toast({
+            title: t('activityFull'),
+            description: t('activityFullDesc'),
+            variant: 'destructive',
+          });
+          return;
+        }
+
+        if (user) {
+          await registrationService.registerForActivity(user.id, id);
+        } else if (registrationId) {
+          await supabase
+            .from('activity_registrations')
+            .insert({
+              registration_id: registrationId,
+              activity_id: id,
+              activity_title: title,
+              activity_category: category,
+              activity_date: date,
+              activity_location: location,
+            });
+        }
+
         setIsRegistered(true);
         const newCount = currentParticipants + 1;
         setCurrentParticipants(newCount);
         onParticipantsChange?.(newCount);
-        toast({ description: 'Successfully registered for activity' });
+        toast({ description: t('registrationSuccess') });
         onRegisterSuccess?.();
       }
     } catch (error) {
@@ -143,13 +168,6 @@ export const ActivityCard = ({
             {category}
           </span>
         </div>
-        <button
-          onClick={handleFavorite}
-          disabled={loading}
-          className="absolute top-3 right-3 p-2 bg-white/80 hover:bg-white rounded-full transition-colors"
-        >
-          <Heart size={20} className={isFavorited ? 'fill-red-500 text-red-500' : 'text-gray-600'} />
-        </button>
       </div>
 
       <CardContent className="p-4">
@@ -167,7 +185,7 @@ export const ActivityCard = ({
           </div>
           <div className="flex items-center gap-2">
             <Users size={16} />
-            <span>{currentParticipants}/{maxParticipants} participants</span>
+            <span>{currentParticipants}/{maxParticipants} {t('participants')}</span>
           </div>
         </div>
 
@@ -178,7 +196,7 @@ export const ActivityCard = ({
             variant={isRegistered ? 'outline' : 'default'}
             className="flex-1"
           >
-            {isRegistered ? 'Registered' : 'Register Now'}
+            {isRegistered ? t('registered') : t('registerNow')}
           </Button>
           {isRegistered && (
             <div className="flex items-center gap-1 px-2 text-green-600 text-sm font-medium">

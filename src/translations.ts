@@ -27,21 +27,14 @@ export const translations = {
     feelCulture: "Culture You Can Feel and Interact",
     feelCultureDesc: "From performances art installations to workshops and street culture, MADVERSE creates moments that connect people through raw creativity and expression.",
     feelCultureDetail: "MADVERSE is a cultural and community-driven platform dedicated to empowering local artists, athletes, and youth by creating collaborative spaces where talent can be freely expressed and sustainably developed. Our mission is to build strong bridges between creators and the community, offering real opportunities for exposure, growth, and positive impact.\n\nThrough direct collaboration with local creatives across visual arts, music, performance, sports, and urban culture, MADVERSE provides a platform where their voices and work are valued, showcased, and experienced by the public. We believe local talent deserves space, support, and visibility.",
-    about: "About",
 
     // ShowcaseGrid
     eventsActivitiesBadge: "Events & Activities",
     youthPrograms: "Youth Programs",
-    youth: "Youth",
     artWorkshops: "Art Workshops",
-    arts: "Arts",
     culturalEvents: "Cultural Events",
-    culture: "Culture",
     sportsActivities: "Sports Activities",
-    sports: "Sports",
     exhibitions: "Exhibitions",
-    exhibition: "Exhibition",
-    volunteering: "Volunteering",
 
     // TabsSection - MAIN PAGE (Short)
     madverseMembers: "MADVERSE MEMBERS",
@@ -63,8 +56,7 @@ export const translations = {
     
     joinMadverse: "Join Madverse",
     joinDesc: "If you have the skills and passion to join and contribute, feel free to sign up and be part of our growing team!",
-    joinUs: "BashkaNgu me ne!",
-    about: "About",
+    joinUs: "Join Us",
     contactUs: "Contact Us",
 
     // ContactSection
@@ -79,8 +71,6 @@ export const translations = {
     messagePlaceholder: "Tell us your message...",
     sendMessage: "Send Message",
     sending: "Sending...",
-    failedSend: "Failed to send",
-    failedSendDesc: "Please try again later",
     successSend: "Message sent successfully!",
     successSendDesc: "We'll get back to you soon.",
 
@@ -95,8 +85,32 @@ export const translations = {
     signUpToMadverse: "Sign Up to Madverse",
     doNotHaveAccount: "Don't have an account? Sign up",
     alreadyHaveAccount: "Already have an account? Sign in",
+    signIn: "Sign In",
+    
+    // Email Verification Page
+    checkYourEmail: "Check Your Email",
+    emailVerifiedSuccessfully: "Email Verified Successfully",
+    emailVerified: "Email Verified!",
+    goToLogin: "Go to Login",
+    goToLoginNow: "Go to Login Now",
+    backToSignUp: "Back to Sign Up",
+    emailVerifiedSuccessMsg: "Your email has been verified successfully!",
+    canNowLogin: "You can now log in to your account",
+    redirectingToLogin: "Redirecting to login page in",
+    verificationFailed: "Verification Failed",
+    verificationExpiredMsg: "Your verification link may have expired or is invalid. Please try signing up again.",
+    successfullyVerified: "Successfully Verified",
+    verifyEmailAddress: "Verify Your Email Address",
+    sentVerificationLink: "We have sent a verification link to:",
+    nextSteps: "Next steps:",
+    verificationStep1: "1. Click the verification link in the email",
+    verificationStep2: "2. You'll be verified and redirected to login",
+    verificationStep3: "3. Use your email and password to log in",
+    verificationExpireTime: "The verification link will expire in 24 hours.",
+    didNotReceiveEmail: "Didn't receive the email? Check your spam folder or",
 
     // Profile Page
+    viewProfile: "View Profile",
     editProfile: "Edit Profile",
     cancel: "Cancel",
     logout: "Logout",
@@ -147,7 +161,10 @@ export const translations = {
 
     // Activity Cards
     register: "Register",
+    registerNow: "Register Now",
     registered: "Registered",
+    cancelRegistration: "Cancel Registration",
+    seePrograms: "See Programs",
     addToFavorites: "Add to Favorites",
     removeFavorites: "Remove from Favorites",
     viewDetails: "View Details",
@@ -163,10 +180,16 @@ export const translations = {
     messageMinLength: "Message must be at least 10 characters",
 
     // Success Messages
+    registrationRequired: "Registration Required",
+    registerFirstToJoin: "Please register first to join activities",
     registrationSuccess: "Successfully registered for activity",
+    unregisteredFromActivity: "Unregistered from activity",
+    activityFull: "Activity Full",
+    activityFullDesc: "This activity has reached maximum capacity",
     registrationError: "Failed to register for activity",
     favoritesSuccess: "Added to favorites",
     favoritesError: "Failed to update favorites",
+    participants: "participants",
 
     // Activity Management
     manageActivities: "Manage Activities",
@@ -191,14 +214,74 @@ export const translations = {
     activityMaxParticipants: "Max Participants",
     activityImageUrl: "Image URL",
     activityImageUrlPlaceholder: "Image URL",
-    save: "Save",
-    delete: "Delete",
-    edit: "Edit",
+    saveActivity: "Save",
+    deleteActivity: "Delete",
     close: "Close",
     noActivitiesYet: "No activities yet. Create one to get started!",
     maxParticipants: "Max",
     Success: "Success",
-    language: "Language",
+
+    // 404 Not Found Page
+    pageNotFound: "Page Not Found",
+    pageNotFoundCode: "404",
+    pageNotFoundMessage: "Oops! Page not found",
+    returnToHome: "Return to Home",
+
+    // Activity Pages - Youth
+    youthTitle: "Youth",
+    leadershipDevelopment: "Leadership Development",
+    leadershipDesc: "Empower the next generation with core leadership skills, mentorship programs and real-world experience. Young leaders at MADVERSE shape the future of our community through hands-on project management and decision-making opportunities.",
+    creativeExpression: "Creative Expression",
+    creativeExpressionDesc: "Unleash your creativity through arts, music and cultural activities. We provide platforms for young artists to showcase their talents, collaborate with peers, and develop their artistic vision within a supportive community.",
+    sportsWellness: "Sports & Wellness",
+    sportsWellnessDesc: "Build strength, character and teamwork through diverse sports programs. From competitive athletics to recreational activities, we promote a healthy lifestyle and the values of discipline, perseverance and community.",
+    communityService: "Community Service",
+    communityServiceDesc: "Make a lasting impact through volunteer opportunities that strengthen our community. Young volunteers gain valuable experience while contributing to meaningful projects that address real community needs.",
+
+    // Activity Pages - Arts
+    artsTitle: "Arts",
+    unleashingCreativity: "Unleashing Creativity",
+    unleashingCreativityDesc: "Arts open doors to limitless creativity and self-expression. Our programs showcase diverse artistic disciplines including visual art, performing art, music and digital media. We provide a platform for artists to share their passion and inspire others through their unique perspectives.",
+    artisticCollaboration: "Artistic Collaboration",
+    artisticCollaborationDesc: "Seek powerful partnerships with your fellow artists. Collaboration amplifies creativity, pushes boundaries and creates unforgettable artworks. MADVERSE connects artists from different nations and cultures to create and share.",
+    communityThroughArt: "Community Through Art",
+    communityThroughArtDesc: "Art unites communities. Our collaborative projects foster connection, understanding and collective growth. From community murals to public performances, we believe in the transformative power of art to build stronger and more connected communities.",
+
+    // Activity Pages - Sports
+    sportsTitle: "Sports",
+    athleteExcellence: "Athletic Excellence",
+    athleteExcellenceDesc: "Cultivate champion qualities through professional training and competition. Our sports programs develop physical skills, leadership and teamwork. Whether in football, basketball, athletics or other sports, we bring athletes to their peak performance levels.",
+    fitnessWellness: "Fitness & Wellness",
+    fitnessWellnessDesc: "Discover the joy of a healthy life through fitness classes and wellness programs. Our activities include yoga, aerobics, weight training and more, all aimed at your overall wellbeing.",
+    teamworkSpirit: "Teamwork Spirit",
+    teamworkSpiritDesc: "Build strong bonds through team sports. Through shared experiences of victories and defeats, we learn how to work towards common goals. These lessons shape champions and leaders of tomorrow.",
+
+    // Activity Pages - Culture
+    cultureTitle: "Culture",
+    culturalHeritage: "Cultural Heritage",
+    culturalHeritageDesc: "Learn and celebrate diverse cultural heritage. Through exhibitions, lectures and discussion sessions, we foster intercultural dialogue and increase respect for traditions. Culture is our identity; preserving it is preserving our roots.",
+    culturalExchange: "Cultural Exchange",
+    culturalExchangeDesc: "Join others to share cultural practices, traditions and experiences. Cultural exchanges broaden our perspectives, challenge preconceptions and build bridges between communities. MADVERSE focuses on authentic exchange experiences.",
+    culturalArts: "Cultural Arts",
+    culturalArtsDesc: "Explore traditional and contemporary arts that shape our cultures. From music and song to dance and theatre, cultural arts are the expression of a people's spirit. Our artists pursue these arts with passion and excellence.",
+
+    // Activity Pages - Exhibition
+    exhibitionTitle: "Exhibition",
+    artExhibitions: "Art Exhibitions",
+    artExhibitionsDesc: "Discover inspiring works by local and international artists in diverse exhibitions. Each exhibition is carefully curated to present the best of artistic achievement. From originals to modern installations, exhibitions are showcases of creative spirit.",
+    interactiveExhibits: "Interactive Exhibits",
+    interactiveExhibitsDesc: "More than just viewing; these exhibits invite you to participate, explore and experience. Interactive installations engage audiences of all ages, making art accessible and emotional. Our goal: experience art, not just observe it.",
+    exhibitionVenues: "Exhibition Venues",
+    exhibitionVenuesDesc: "From small galleries to large public spaces, MADVERSE uses diverse venues. Each location is chosen to enhance the exhibition experience and bring art to different audiences, making art accessible to all.",
+
+    // Activity Pages - Volunteering
+    volunteeringTitle: "Volunteering",
+    communityImpact: "Community Impact",
+    communityImpactDesc: "Make a difference in your community through volunteering. Our programs enable volunteers to address real needs - from education to environmental cleanup. Every volunteer project is a step toward a better community.",
+    socialCause: "Social Cause",
+    socialCauseDesc: "Work for social causes that matter. MADVERSE partners with various organizations to address social issues. Young groups work through volunteering to learn how to be agents of positive change.",
+    youthEmpowerment: "Youth Empowerment",
+    youthEmpowermentDesc: "Volunteering empowers young people to take control of their futures. Through volunteer work, youth develop new skills, gain confidence and see how their contribution can create real change. This is empowerment through action.",
 
     // Footer
     copyrightText: "© 2026 madverse. All rights reserved.",
@@ -230,21 +313,14 @@ export const translations = {
     feelCulture: "Kulturë që e ndjen dhe e përjeton",
     feelCultureDesc: "Prej performancave dhe instalacioneve artistike, deri te punëtoritë dhe kultura e rrugës, MADVERSE krijon momente që i lidhin njerëzit përmes kreativitetit të pastër dhe shprehjes autentike.",
     feelCultureDetail: "MADVERSE është një platformë kulturore dhe komunitare e përkushtuar ndaj fuqizimit të artistëve, sportistëve dhe të rinjve vendorë, duke krijuar hapësira bashkëpunimi ku talenti mund të shprehet lirshëm dhe të zhvillohet në mënyrë të qëndrueshme. Qëllimi ynë është të ndërtojmë ura mes krijuesve dhe komunitetit, duke ofruar mundësi reale për prezantim, rritje dhe ndikim pozitiv.\n\nPërmes bashkëpunimit të drejtpërdrejtë me artistë lokalë nga fusha të ndryshme art vizual, muzikë, performancë, sport dhe kultura urbane MADVERSE u jep atyre një platformë ku zëri dhe puna e tyre vlerësohen, ekspozohen dhe përjetohen nga publiku. Ne besojmë se talenti lokal meriton hapësirë, mbështetje dhe dukshmëri.",
-    about: "Rreth Nesh",
 
     // ShowcaseGrid
     eventsActivitiesBadge: "Eventet & Aktivitetet",
     youthPrograms: "Programet për Rinj",
-    youth: "Rini",
     artWorkshops: "Punëtoritë e Artit",
-    arts: "Art",
     culturalEvents: "Ngjarjet Kulturore",
-    culture: "Kultur",
     sportsActivities: "Aktivitetet Sportive",
-    sports: "Sport",
     exhibitions: "Ekspozit",
-    exhibition: "Ekspozita",
-    volunteering: "Vullnetarizmi",
 
     // TabsSection - MAIN PAGE (Short)
     madverseMembers: "ANËTARËT E MADVERSE",
@@ -267,7 +343,6 @@ export const translations = {
     joinMadverse: "Bashkohu në Madverse",
     joinDesc: "Nëse keni aftësi dhe pasion për të bashkuar dhe kontribuar, mos ngurroni të regjistroheni dhe të bëheni pjesë e ekipit tonë në rritje!",
     joinUs: "Bashkangjitu!",
-    about: "Rreth Nesh",
     contactUs: "Kontaktoni ",
 
     // ContactSection
@@ -296,8 +371,33 @@ export const translations = {
     signUpToMadverse: "Regjistrohu në Madverse",
     doNotHaveAccount: "Nuk keni llogari? Regjistrohu",
     alreadyHaveAccount: "Keni tashmë llogari? Hyni",
+    signIn: "Hyni",
+    agreeToTerms: "Duke u regjistruar, ju pajtoheni me Kushtet e Shërbimit tonë dhe Politikën e Privatësisë",
+    
+    // Email Verification Page
+    checkYourEmail: "Kontrolloni Email-in Tuaj",
+    emailVerifiedSuccessfully: "Email u Verifikua me Sukses",
+    emailVerified: "Email u Verifikua!",
+    goToLogin: "Shko tek Hyreja",
+    goToLoginNow: "Shko tek Hyreja Tani",
+    backToSignUp: "Kthehu në Regjistrim",
+    emailVerifiedSuccessMsg: "Email-i juaj u verifikua me sukses!",
+    canNowLogin: "Tani mund të hyni në llogarinë tuaj",
+    redirectingToLogin: "Po ridrejtoheni në faqen e hyjes në",
+    verificationFailed: "Verifikimi Dështoi",
+    verificationExpiredMsg: "Lidhja juaj e verifikimit mund të jetë e skaduar ose e pavlefshme. Ju lutem provoni të regjistrohet përsëri.",
+    successfullyVerified: "U Verifikua me Sukses",
+    verifyEmailAddress: "Verifikoni Adresën E-mail Tuaj",
+    sentVerificationLink: "Ne kemi dërguar një lidhje verifikimi në:",
+    nextSteps: "Hapat tjerë:",
+    verificationStep1: "1. Klikoni lidhjen e verifikimit në email",
+    verificationStep2: "2. Do të verifikoheni dhe do të ridrejtoheni në hylje",
+    verificationStep3: "3. Përdorni email-in dhe fjalëkalimin tuaj për t'u regjistruar",
+    verificationExpireTime: "Lidhja e verifikimit do të skadojë në 24 orë.",
+    didNotReceiveEmail: "Nuk keni marrë email-in? Kontrolloni dosjen e spam-it ose",
 
     // Profile Page
+    viewProfile: "Shiko Profilin",
     editProfile: "Ndrysho Profilin",
     cancel: "Anulo",
     logout: "Dilni",
@@ -348,7 +448,10 @@ export const translations = {
 
     // Activity Cards
     register: "Regjistrohu",
+    registerNow: "Regjistrohu Tani",
     registered: "Regjistruar",
+    cancelRegistration: "Anulo Regjistrimin",
+    seePrograms: "Shiko Programet",
     addToFavorites: "Shto në të Parapëlqyerat",
     removeFavorites: "Hiq nga të Parapëlqyerat",
     viewDetails: "Shiko Detajet",
@@ -364,10 +467,16 @@ export const translations = {
     messageMinLength: "Mesazhi duhet të jetë të paktën 10 karaktere",
 
     // Success Messages
+    registrationRequired: "Regjistrim i Kërkuar",
+    registerFirstToJoin: "Ju lutem regjistrohu fillimisht për të bashkuar në aktivitete",
     registrationSuccess: "Regjistrohu me sukses për aktivitetin",
+    unregisteredFromActivity: "Nuk u regjistrohe nga aktiviteti",
+    activityFull: "Aktiviteti Është Plot",
+    activityFullDesc: "Ky aktivitet ka arritur kapacitetin maksimal",
     registrationError: "Nuk ishte e mundur të regjistrohet për aktivitetin",
     favoritesSuccess: "U shtua në të parapëlqyerat",
     favoritesError: "Nuk ishte e mundur të përditësohen të parapëlqyerat",
+    participants: "pjesëmarrës",
 
     // Activity Management
     manageActivities: "Menaxho Aktivitetet",
@@ -392,17 +501,77 @@ export const translations = {
     activityMaxParticipants: "Pjesëmarrës Maksimal",
     activityImageUrl: "URL i Fotos",
     activityImageUrlPlaceholder: "URL i fotos",
-    save: "Ruaj",
-    delete: "Fshi",
-    edit: "Ndrysho",
+    saveActivity: "Ruaj",
+    deleteActivity: "Fshi",
     close: "Mbyll",
     noActivitiesYet: "Asnjë aktivitet akoma. Krijoni një për të filluar!",
     maxParticipants: "Maksimal",
     Success: "Sukses",
-    language: "Gjuha",
+
+    // 404 Not Found Page
+    pageNotFound: "Faqja nuk gjendet",
+    pageNotFoundCode: "404",
+    pageNotFoundMessage: "Oops! Faqja nuk gjendet",
+    returnToHome: "Kthehu në Shtëpi",
 
     // Footer
     copyrightText: "© 2026 madverse. Të gjitha të drejtat e rezervuara.",
+
+    // Activity Pages - Youth
+    youthTitle: "Rinia",
+    leadershipDevelopment: "Zhvillimi i Udhëheqjes",
+    leadershipDesc: "Fuqizimi i brezit të ardhshëm me aftësi thelbore udhëheqjeje, programe mentori dhe përvojë në botën reale. Udhëheqësit e rinj të MADVERSE formojnë të ardhmen e komunitetit tonë përmes menaxhimit praktik të projekteve dhe mundësive të vendimmarrjes.",
+    creativeExpression: "Shprehja Krijuese",
+    creativeExpressionDesc: "Çlironi kreativitetin tuaj përmes arteve, muzikës dhe aktiviteteve kulturore. Ne ofrojmë platforma për artistët e rinj që të shfaqin talentet e tyre, të bashkëpunojnë me bashkëmoshataret dhe të zhvillojnë vizionin artistik të tyre në një komunitet mbështetës.",
+    sportsWellness: "Sporti & Mirësia",
+    sportsWellnessDesc: "Ndërtoni forcë, karakter dhe punë në ekip përmes programeve të ndryshme sportive. Nga atletika konkuruese deri në aktivitetet rekreative, ne promovojmë një jetë të shëndetshme dhe vlerat e disiplinës, përsistencës dhe komunitetit.",
+    communityService: "Shërbimi për Komunitetin",
+    communityServiceDesc: "Bëni një ndikim të qëndrueshëm përmes mundësive vullnetare që forcojnë komunitetin tonë. Vullnetarët e rinj fitojnë përvojë të vlefshme ndërsa kontribuojnë në projekte kuptimplëne që i adresojnë nevojat reale të komunitetit.",
+
+    // Activity Pages - Arts
+    artsTitle: "Artet",
+    unleashingCreativity: "Çlirimi i Kreativitetit",
+    unleashingCreativityDesc: "Artet hapen dera për kreativitet të pakufishëm dhe vetëshprehje. Programet tona paraqesin disiplina të ndryshme artistike duke përfshirë artin vizual, artin performativ, muzikën dhe median dixhitale. Ne ofrojmë një platformë për artistët që të ndajnë pasionin e tyre dhe të inspirojnë të tjerët përmes perspektivave unike të tyra.",
+    artisticCollaboration: "Bashkëpunimi Artistik",
+    artisticCollaborationDesc: "Kërkoni partneritete të fuqishme me shokët juaj artistik. Bashkëpunimi shton kreativitetin, i shtyn kufijtë dhe krijon vepra artimi të paharrueshme. MADVERSE i lidhë artistët nga shtetet dhe kultura të ndryshme për të krijuar dhe për të ndajë.",
+    communityThroughArt: "Komuniteti përmes Artit",
+    communityThroughArtDesc: "Arti i bashkon komunitetet. Projektet tona kolaborative nxisin lidhjen, kuptimin dhe rritjen kolektive. Nga murale komuniteti deri në performanca publike, ne besojmë në fuqinë transformuese të artit për të ndërtuar komunitete më të forta dhe më të lidhura.",
+
+    // Activity Pages - Sports
+    sportsTitle: "Sporti",
+    athleteExcellence: "Përparim Atletik",
+    athleteExcellenceDesc: "Kultivoni kualitete të kampit me trajnim profesional dhe kompeticion. Programet tona sportive zhvillojnë aftësi fizike, udhëheqje dhe punë në ekip. Qoftë në futboll, basketboll, atletikë ose sport tjetër, ne i prezantojmë atletët ndaj nivelit të tyre më të lartë.",
+    fitnessWellness: "Forma Fizike & Mirësia",
+    fitnessWellnessDesc: "Zbuloni dëlirësinë e një jete të shëndetshme përmes klasave të kushtëzimit dhe programeve të mirësies. Veprimtaritë tona hartim përfshijnë yoga, aerobikë, trajnim me dumbëll dhe shumë të tjera, të gjitha të drejtuara drejt mirësies tuaj të përgjithshme.",
+    teamworkSpirit: "Shpirti i Punës në Ekip",
+    teamworkSpiritDesc: "Ndërtoni lidhje të forta përmes sporteve në ekip. Mesozja e përvojave të ndarjes, fitimeve dhe humbjeve, mësojmë se si të punojmë drejt objektives të përbashkës. Këto mësime jetojnë përumë kampionet dhe liderë të së nesërmes.",
+
+    // Activity Pages - Culture
+    cultureTitle: "Kultura",
+    culturalHeritage: "Trashëgimia Kulturore",
+    culturalHeritageDesc: "Njohuni dhe nderojeni trashëgiminë kulturore të ndryshme. Përmes ekspozitave, përkthimeve dhe sesionesh diskutimi, ne e hapim dialogun ndërkulturor dhe e rritim respektin për traditat. Kultura është identiteti ynë; të ruajmë atë është të ruajmë rrënjët tona.",
+    culturalExchange: "Këmbimi Kultuor",
+    culturalExchangeDesc: "Bashkohu në ato të tjera për të ndarë praktika kulturore, tradita dhe përvojat. Këmbimet kulturore zgjerojnë perspektivat tona, sfidojnë paraparaqitjeve dhe ndërtojnë ura ndërmjet komuniteteve. MADVERSE fokuason përvojat e këmbimit autentik.",
+    culturalArts: "Artet Kulturore",
+    culturalArtsDesc: "Eksploroni artet tradicionale dhe moderne ndërkah formojnë kulturat tonë. Nga muzika dhe kënga deri te kërcim dhe teatro, artet kulturore janë shprehje e shpirtit të një populli. Artsit tona zbor këto arje me pasion dhe përparim.",
+
+    // Activity Pages - Exhibition
+    exhibitionTitle: "Ekspozita",
+    artExhibitions: "Ekspozita të Arteve",
+    artExhibitionsDesc: "Zbuloni veprat arrsinuese të banuar dhe artistëve ndërkombëtarë në ekspozita të ndryshme. Secilit ekspozitë është përzgjedhur me kujdes për t'u paraqitur përbindëset e çmimit artistik. Nga origjinalë deri te instalacionet moderne, ekspozita janë strehë e frymës krijuese.",
+    interactiveExhibits: "Eksponate Interaktive",
+    interactiveExhibitsDesc: "Nuk jenë vetëm për shikimin; këto eksponate t'i parim, ndjekje dhe përvojë. Instalacionet interaktive ngjallin besim në shumë dhjetoret e vizitorave, duke bërë artë të arritshme dhe emocionuese. Qëllimi jonë: të ndjekni artë, jo vetëm ta shikoni atë.",
+    exhibitionVenues: "Vendet e Ekspozitave",
+    exhibitionVenuesDesc: "Ekspozitave nanga në galerile të vogla deri te hapësirat e mëdha publike, MADVERSE i përdor vendet të ndryshme. Secilit vend i zgjedhet për të përsosur përvqojën e ekspozitës dhe për të nxitur artin drejt audiencat të ndryshme dhe t'i afrojë njerëzit ndaj artit.",
+
+    // Activity Pages - Volunteering
+    volunteeringTitle: "Vullnetarizmi",
+    communityImpact: "Ndikimi në Komunitet",
+    communityImpactDesc: "Të bësh ndryshim në komunitetin tënd përmes vullnetarizmit. Programet tona u aftësojnë vullnetarëve t'i adresojnë nevojat reale - nga edukima deri te pastrimi mjedisor. Çdo projekt vullnetarje është hap drejt komunitetit më të mirë.",
+    socialCause: "Qëllim Shoqëror",
+    socialCauseDesc: "Të punosh për qëllime shoqërore që kanë mënd. MADVERSE partnerohet me organizata të ndryshme për të adresuar çështjet shoqërore. Grupe rinia aktive përmes vullnetarizmit meson se si të jesh shitës i mirë ndryshimi.",
+    youthEmpowerment: "Fuqizimi i Të Rinjve",
+    youthEmpowermentDesc: "Vullnetarizmi i fuqizon të rinjtë t'i marrin fatet në duart e tyre. Përmes peshës vullnetare, të rinjtë zhvillojnë aftësi të reja, fitojnë vetëbesim dhe shohin se si kontributi i tyre mund të kthehet në ndryshim të vërtetë. Ky është fuqizim përmes veprimit.",
   },
 };
 
