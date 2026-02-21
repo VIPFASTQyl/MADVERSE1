@@ -10,12 +10,12 @@ const ShowcaseGrid = () => {
   const navigate = useNavigate();
 
   const items = [
-    { titleKey: "youthPrograms", categoryKey: "youth", image: "/src/assets/project-1.jpg", link: "/activity/youth" },
-    { titleKey: "artWorkshops", categoryKey: "arts", image: "/src/assets/project-2.jpg", link: "/activity/arts" },
-    { titleKey: "culturalEvents", categoryKey: "culture", image: "/src/assets/project-3.jpg", link: "/activity/culture" },
-    { titleKey: "sportsActivities", categoryKey: "sports", image: "/src/assets/project-1.jpg", link: "/activity/sports" },
-    { titleKey: "exhibitions", categoryKey: "exhibition", image: "/src/assets/project-2.jpg", link: "/activity/exhibition" },
-    { titleKey: "volunteering", categoryKey: "volunteering", image: "/src/assets/project-3.jpg", link: "/activity/volunteering" },
+    { titleKey: "youthPrograms", categoryKey: "youth", image: "/project-1.jpg", link: "/activity/youth" },
+    { titleKey: "artWorkshops", categoryKey: "arts", image: "/project-2.jpg", link: "/activity/arts" },
+    { titleKey: "culturalEvents", categoryKey: "culture", image: "/project-3.jpg", link: "/activity/culture" },
+    { titleKey: "sportsActivities", categoryKey: "sports", image: "/project-1.jpg", link: "/activity/sports" },
+    { titleKey: "exhibitions", categoryKey: "exhibition", image: "/project-2.jpg", link: "/activity/exhibition" },
+    { titleKey: "volunteering", categoryKey: "volunteering", image: "/project-3.jpg", link: "/activity/volunteering" },
   ];
 
   if (isMobile) {

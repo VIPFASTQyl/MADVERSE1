@@ -1,61 +1,55 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Auth } from "@supabase/auth-ui-react";
-import { ThemeSupa } from "@supabase/auth-ui-shared";
-import { supabase } from "@/lib/supabaseClient";
-import { useAuth } from "@/contexts/AuthContext";
+import { SignIn } from "@clerk/clerk-react";
+import { useAuth } from "@clerk/clerk-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { session } = useAuth();
+  const { isSignedIn } = useAuth();
 
   useEffect(() => {
-    if (session) {
+    if (isSignedIn) {
       navigate("/");
     }
-  }, [session, navigate]);
+  }, [isSignedIn, navigate]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-black">
       <Navigation />
-      <div className="max-w-md mx-auto py-20 px-6">
-        <h1 className="text-3xl font-bold mb-8 text-center">Sign In</h1>
-        <Auth
-          supabaseClient={supabase}
+      
+      <div className="flex items-center justify-center min-h-[calc(100vh-200px)] py-20 px-6">
+        <SignIn 
           appearance={{
-            theme: ThemeSupa,
-            variables: {
-              default: {
-                colors: {
-                  brand: "#fff",
-                  brandAccent: "#000",
-                  brandButtonText: "#000",
-                  defaultButtonBackground: "#2d2d2d",
-                  defaultButtonBackgroundHover: "#1a1a1a",
-                  defaultButtonBorder: "#555",
-                  defaultButtonText: "#fff",
-                  dividerBackground: "#3a3a3a",
-                  inputBackground: "#1a1a1a",
-                  inputBorder: "#3a3a3a",
-                  inputBorderHover: "#555",
-                  inputBorderFocus: "#fff",
-                  inputText: "#fff",
-                  inputPlaceholder: "#888",
-                  inputLabelText: "#fff",
-                  messageText: "#888",
-                  messageTextDanger: "#ff6b6b",
-                  anchorTextColor: "#fff",
-                  anchorTextColorHover: "#ccc",
-                },
-              },
+            elements: {
+              rootBox: "mx-auto",
+              card: "bg-black border border-white/20 shadow-2xl",
+              headerTitle: "text-white text-2xl",
+              headerSubtitle: "text-slate-400",
+              socialButtonsBlockButton: "bg-slate-800 hover:bg-slate-700 text-white border-white/30",
+              socialButtonsBlockButtonText: "text-white font-medium",
+              socialButtonsIconButton: "border-white/30",
+              dividerLine: "bg-white/20",
+              dividerText: "text-slate-400",
+              formButtonPrimary: "bg-slate-800 hover:bg-slate-700 text-white",
+              footerActionLink: "text-white hover:text-slate-300",
+              footerActionText: "text-slate-400",
+              formFieldLabel: "text-white",
+              formFieldInput: "bg-black border-white/30 text-white placeholder:text-slate-500 focus:border-white",
+              formFieldInputShowPasswordButton: "text-slate-400 hover:text-white",
+              identityPreviewText: "text-white",
+              identityPreviewEditButton: "text-slate-400 hover:text-white",
+              footer: "hidden",
             },
           }}
-          providers={["github"]}
-          redirectTo={`${window.location.origin}/`}
+          routing="path"
+          path="/login"
+          signUpUrl="/signup"
+          afterSignInUrl="/"
         />
       </div>
+      
       <Footer />
     </div>
   );

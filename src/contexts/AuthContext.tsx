@@ -1,10 +1,7 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { Session } from "@supabase/supabase-js";
-import { supabase } from "../lib/supabaseClient";
-import { createOrUpdateUser } from "../lib/adminService";
+import { createContext, useContext, useState, useEffect } from "react";
 
 interface AuthContextType {
-  session: Session | null;
+  session: any;
   loading: boolean;
   user: any;
   isAdmin: boolean;
@@ -12,67 +9,66 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [session, setSession] = useState<Session | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
-
-  useEffect(() => {
-    // Check current session
-    const checkSession = async () => {
-      try {
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
-        setSession(session);
-        if (session?.user) {
-          try {
-            const adminStatus = await createOrUpdateUser(session.user.id, session.user.email || "");
-            setIsAdmin(adminStatus);
-          } catch (error) {
-            console.error("Error checking admin status:", error);
-            setIsAdmin(false);
-          }
-        }
-      } catch (error) {
-        console.error("Error checking session:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkSession();
-
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      setSession(session);
-      if (session?.user) {
-        try {
-          const adminStatus = await createOrUpdateUser(session.user.id, session.user.email || "");
-          setIsAdmin(adminStatus);
-        } catch (error) {
-          console.error("Error checking admin status:", error);
-          setIsAdmin(false);
-        }
-      } else {
-        setIsAdmin(false);
-      }
-      setLoading(false);
-    });
-
-    return () => {
-      subscription?.unsubscribe();
-    };
-  }, []);
-
+// Fallback provider without Clerk
+export const FallbackAuthProvider = ({ children }: { children: React.ReactNode }) => {
   return (
-    <AuthContext.Provider value={{ session, loading, user: session?.user, isAdmin }}>
+    <AuthContext.Provider 
+      value={{ 
+        session: null, 
+        loading: false, 
+        user: null, 
+        isAdmin: false 
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
+
+// Clerk-based provider
+export const ClerkAuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [authState, setAuthState] = useState<AuthContextType>({
+    session: null,
+    loading: true,
+    user: null,
+    isAdmin: false
+  });
+
+  useEffect(() => {
+    // Dynamically import and use Clerk hooks
+    const initClerk = async () => {
+      try {
+        const { useUser, useAuth: useClerkAuth } = await import("@clerk/clerk-react");
+        // Note: We can't use hooks in useEffect, so we'll just set loading to false
+        setAuthState({
+          session: null,
+          loading: false,
+          user: null,
+          isAdmin: false
+        });
+      } catch (error) {
+        console.error('Failed to initialize Clerk:', error);
+        setAuthState({
+          session: null,
+          loading: false,
+          user: null,
+          isAdmin: false
+        });
+      }
+    };
+    
+    initClerk();
+  }, []);
+
+  return (
+    <AuthContext.Provider value={authState}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+// Default export based on environment
+export const AuthProvider = FallbackAuthProvider;
 
 export const useAuth = () => {
   const context = useContext(AuthContext);

@@ -519,12 +519,12 @@ class App {
   ) {
     // Default gallery items focused on activity categories
     const defaultItems = [
-      { image: '/src/assets/project-2.jpg', text: 'Arts' },
-      { image: '/src/assets/project-3.jpg', text: 'Culture' },
-      { image: '/src/assets/project-1.jpg', text: 'Sports' },
-      { image: '/src/assets/project-2.jpg', text: 'Exhibition' },
-      { image: '/src/assets/project-3.jpg', text: 'Volunteering' },
-      { image: '/src/assets/project-1.jpg', text: 'Youth' }
+      { image: '/project-2.jpg', text: 'Arts' },
+      { image: '/project-3.jpg', text: 'Culture' },
+      { image: '/project-1.jpg', text: 'Sports' },
+      { image: '/project-2.jpg', text: 'Exhibition' },
+      { image: '/project-3.jpg', text: 'Volunteering' },
+      { image: '/project-1.jpg', text: 'Youth' }
     ];
     const galleryItems = items && items.length ? items : defaultItems;
     this.mediasImages = galleryItems.concat(galleryItems);

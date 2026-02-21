@@ -5,19 +5,17 @@ import { Button } from "./ui/button";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useAuth } from "../contexts/AuthContext";
+import { UserButton, useAuth as useClerkAuth } from "@clerk/clerk-react";
 
 const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileActivitiesOpen, setIsMobileActivitiesOpen] = useState(false);
-  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
-  const userDropdownRef = useRef<HTMLDivElement>(null);
-  const mobileUserDropdownRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
   const { t, setLanguage, language } = useLanguage();
-  const { session, signOut, isAdmin } = useAuth();
+  const { session, isAdmin } = useAuth();
+  const { isSignedIn } = useClerkAuth();
 
   // Scroll-based navbar animation
   const { scrollY } = useScroll();
@@ -46,22 +44,16 @@ const Navigation = () => {
       if (navRef.current && !navRef.current.contains(event.target as Node) && isMobileMenuOpen) {
         setIsMobileMenuOpen(false);
       }
-      if (userDropdownRef.current && !userDropdownRef.current.contains(event.target as Node) && isUserDropdownOpen) {
-        setIsUserDropdownOpen(false);
-      }
-      if (mobileUserDropdownRef.current && !mobileUserDropdownRef.current.contains(event.target as Node) && isUserDropdownOpen) {
-        setIsUserDropdownOpen(false);
-      }
     };
 
-    if (isMobileMenuOpen || isUserDropdownOpen) {
+    if (isMobileMenuOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isMobileMenuOpen, isUserDropdownOpen]);
+  }, [isMobileMenuOpen]);
 
   return (
     <motion.nav
@@ -183,78 +175,39 @@ const Navigation = () => {
             </div>
 
             {/* Auth Buttons */}
-            {session ? (
-              <div className="relative ml-auto" ref={userDropdownRef}>
-                <button
-                  onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
-                  className="p-2 text-white hover:text-white transition-colors"
-                >
-                  <User size={20} />
-                </button>
-                <AnimatePresence>
-                  {isUserDropdownOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.2 }}
-                      className="absolute right-0 mt-2 w-48 bg-background border border-border rounded-lg shadow-lg py-2 z-50"
-                    >
-                      <Link
-                        to="/profile"
-                        className="block px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
-                        onClick={() => setIsUserDropdownOpen(false)}
-                      >
-                        {t('profile')}
-                      </Link>
-                      {isAdmin && (
-                        <Link
-                          to="/admin/dashboard"
-                          className="block px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
-                          onClick={() => setIsUserDropdownOpen(false)}
-                        >
-                          Admin
-                        </Link>
-                      )}
-                      <div className="border-t border-border/50 my-2"></div>
-                      <div className="px-4 py-2 text-sm text-muted-foreground mb-2">
-                        {session.user?.email}
-                      </div>
-                      <button
-                        onClick={async () => {
-                          await signOut();
-                          navigate('/');
-                          setIsUserDropdownOpen(false);
-                        }}
-                        className="w-full text-left px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors flex items-center gap-2"
-                      >
-                        <LogOut size={16} />
-                        Logout
-                      </button>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ) : (
-              <div className="flex items-center gap-2 ml-4">
-                <Link
-                  to="/login"
-                  className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors border border-muted-foreground rounded hover:border-foreground"
-                >
-                  Login
-                </Link>
-                <Link
-                  to="/signup"
-                  className="px-4 py-2 text-sm bg-white text-black rounded hover:bg-gray-200 transition-colors"
-                >
-                  Register
-                </Link>
-              </div>
-            )}
+            <div className="flex items-center gap-4 ml-4">
+              {isSignedIn ? (
+                <UserButton 
+                  afterSignOutUrl="/"
+                  appearance={{
+                    elements: {
+                      avatarBox: "h-8 w-8",
+                      userButtonPopoverCard: "bg-background border-border",
+                      userButtonPopoverActionButton: "text-foreground hover:bg-secondary",
+                    }
+                  }}
+                />
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors border border-muted-foreground rounded hover:border-foreground"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    to="/signup"
+                    className="px-4 py-2 text-sm bg-white text-black rounded hover:bg-gray-200 transition-colors"
+                  >
+                    Register
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
 
           {/* Mobile Language Switcher */}
-          <div className="md:hidden flex items-center gap-2 mr-2" ref={mobileUserDropdownRef}>
+          <div className="md:hidden flex items-center gap-2 mr-2">
             <button
               onClick={() => setLanguage('al')}
               className={`px-2 py-1 text-xs transition-all border border-white ${
@@ -277,60 +230,20 @@ const Navigation = () => {
             </button>
 
             {/* Mobile User Icon */}
-            {session && (
-              <button
-                onClick={() => setIsUserDropdownOpen(prev => !prev)}
-                className="p-2 text-white hover:text-white transition-colors"
-              >
-                <User size={20} />
-              </button>
+            {isSignedIn && (
+              <div className="p-2">
+                <UserButton 
+                  afterSignOutUrl="/"
+                  appearance={{
+                    elements: {
+                      avatarBox: "h-6 w-6",
+                      userButtonPopoverCard: "bg-background border-border",
+                      userButtonPopoverActionButton: "text-foreground hover:bg-secondary",
+                    }
+                  }}
+                />
+              </div>
             )}
-
-            {/* Mobile User Dropdown - Inside ref */}
-            <AnimatePresence>
-              {isUserDropdownOpen && session && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="absolute top-full right-0 mt-2 w-48 bg-background border border-border rounded-lg shadow-lg py-2 z-50"
-                >
-                  <Link
-                    to="/profile"
-                    className="block px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
-                    onClick={() => setIsUserDropdownOpen(false)}
-                  >
-                    {t('profile')}
-                  </Link>
-                  {isAdmin && (
-                    <Link
-                      to="/admin/dashboard"
-                      className="block px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
-                      onClick={() => setIsUserDropdownOpen(false)}
-                    >
-                      Admin
-                    </Link>
-                  )}
-                  <div className="border-t border-border/50 px-4 py-2">
-                    <p className="text-sm text-muted-foreground">
-                      {session.user?.email}
-                    </p>
-                  </div>
-                  <button
-                    onClick={async () => {
-                      await signOut();
-                      navigate('/');
-                      setIsUserDropdownOpen(false);
-                    }}
-                    className="w-full text-left px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors flex items-center gap-2"
-                  >
-                    <LogOut size={16} />
-                    Logout
-                  </button>
-                </motion.div>
-              )}
-            </AnimatePresence>
           </div>
 
           {/* Mobile Menu Button */}
@@ -466,7 +379,20 @@ const Navigation = () => {
 
               {/* Auth Buttons Mobile */}
               <div className="pt-4 border-t border-border space-y-2">
-                {!session ? (
+                {isSignedIn ? (
+                  <div className="flex items-center justify-center py-2">
+                    <UserButton 
+                      afterSignOutUrl="/"
+                      appearance={{
+                        elements: {
+                          avatarBox: "h-10 w-10",
+                          userButtonPopoverCard: "bg-background border-border",
+                          userButtonPopoverActionButton: "text-foreground hover:bg-secondary",
+                        }
+                      }}
+                    />
+                  </div>
+                ) : (
                   <div className="space-y-2">
                     <Link
                       to="/login"
@@ -483,7 +409,7 @@ const Navigation = () => {
                       Register
                     </Link>
                   </div>
-                ) : null}
+                )}
               </div>
             </div>
           </motion.div>
