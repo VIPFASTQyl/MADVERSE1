@@ -61,7 +61,7 @@ const Navigation = () => {
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 backdrop-blur-sm"
+      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm"
       style={{
         // Dynamic opacity for the navbar background
         // At scroll 0: transparent, at scroll 100px: semi-opaque dark background
@@ -89,13 +89,6 @@ const Navigation = () => {
                 'MADVERSE'
               )}
             </div>
-            <motion.div
-              whileHover={{ scale: 1.09  }}
-              className="cursor-pointer"
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            >
-              <img src="/PNG.png" alt="Logo" className="h-[30px] w-auto" />
-            </motion.div>
           </div>
 
           {/* Desktop Nav */}
@@ -106,46 +99,40 @@ const Navigation = () => {
                   e.preventDefault();
                   navigate("/#showcase");
                 }}
-                className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
+                className="px-4 py-2 text-sm text-white hover:text-white transition-colors flex items-center gap-1">
                 {t('activities')}
                 <ChevronDown size={16} className="group-hover:rotate-180 transition-transform" />
               </button>
               <div className="absolute left-0 mt-0 w-48 bg-background border border-border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 py-2">
-                <Link to="/activity/youth" className="block px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors">
+                <Link to="/activity/youth" className="block px-4 py-2 text-sm text-white hover:text-white hover:bg-secondary transition-colors">
                   {t('youth')}
                 </Link>
-                <Link to="/activity/arts" className="block px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors">
+                <Link to="/activity/arts" className="block px-4 py-2 text-sm text-white hover:text-white hover:bg-secondary transition-colors">
                   {t('arts')}
                 </Link>
-                <Link to="/activity/culture" className="block px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors">
+                <Link to="/activity/culture" className="block px-4 py-2 text-sm text-white hover:text-white hover:bg-secondary transition-colors">
                   {t('culture')}
                 </Link>
-                <Link to="/activity/sports" className="block px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors">
+                <Link to="/activity/sports" className="block px-4 py-2 text-sm text-white hover:text-white hover:bg-secondary transition-colors">
                   {t('sports')}
                 </Link>
-                <Link to="/activity/exhibition" className="block px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors">
+                <Link to="/activity/exhibition" className="block px-4 py-2 text-sm text-white hover:text-white hover:bg-secondary transition-colors">
                   {t('exhibition')}
                 </Link>
-                <Link to="/activity/volunteering" className="block px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors">
+                <Link to="/activity/volunteering" className="block px-4 py-2 text-sm text-white hover:text-white hover:bg-secondary transition-colors">
                   {t('volunteering')}
                 </Link>
               </div>
             </div>
             <Link
-              to="/activities"
-              className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Register a Program
-            </Link>
-            <Link
               to="/about"
-              className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="px-4 py-2 text-sm text-white hover:text-white transition-colors"
             >
               {t('about')}
             </Link>
             <Link
               to="/contact"
-              className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="px-4 py-2 text-sm text-white hover:text-white transition-colors"
             >
               {t('contact')}
             </Link>
@@ -191,7 +178,7 @@ const Navigation = () => {
                 <>
                   <Link
                     to="/login"
-                    className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors border border-muted-foreground rounded hover:border-foreground"
+                    className="px-4 py-2 text-sm text-white hover:text-white transition-colors border border-white rounded hover:border-white"
                   >
                     Login
                   </Link>
@@ -213,7 +200,7 @@ const Navigation = () => {
               className={`px-2 py-1 text-xs transition-all border border-white ${
                 language === 'al'
                   ? 'bg-primary text-primary-foreground'
-                  : 'text-muted-foreground hover:text-foreground'
+                  : 'text-white hover:text-white'
               }`}
             >
               ALB
@@ -223,7 +210,7 @@ const Navigation = () => {
               className={`px-2 py-1 text-xs transition-all border border-white ${
                 language === 'en'
                   ? 'bg-primary text-primary-foreground'
-                  : 'text-muted-foreground hover:text-foreground'
+                  : 'text-white hover:text-white'
               }`}
             >
               ENG
@@ -251,7 +238,7 @@ const Navigation = () => {
             className="md:hidden p-2"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isMobileMenuOpen ? <X className="w-6 h-6 text-white" /> : <Menu className="w-6 h-6 text-white" />}
           </button>
         </div>
       </div>
@@ -267,11 +254,11 @@ const Navigation = () => {
               opacity: { duration: 0.15 },
               height: { duration: 0.3 }
             }}
-            className="bg-background border-t border-border"
+            className="bg-transparent border-t border-transparent"
           >
             <div className="px-4 py-4 space-y-2">
               <div
-                className="block py-2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                className="block py-2 text-white hover:text-white transition-colors cursor-pointer"
                 onClick={() => {
                   if (location.pathname !== "/") {
                     navigate("/");
@@ -286,7 +273,7 @@ const Navigation = () => {
               </div>
               <a
                 href="#showcase"
-                className="block py-2 text-muted-foreground hover:text-foreground transition-colors flex items-center justify-between cursor-pointer"
+                className="block py-2 text-white hover:text-white transition-colors flex items-center justify-between cursor-pointer"
                 onClick={(e) => {
                   e.preventDefault();
                   setIsMobileActivitiesOpen(!isMobileActivitiesOpen);
@@ -307,46 +294,46 @@ const Navigation = () => {
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="pl-4 space-y-1 border-l border-border/50"
+                    className="pl-4 space-y-1 border-l border-transparent"
                   >
                     <Link
                       to="/activity/youth"
-                      className="block py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                      className="block py-2 text-sm text-white hover:text-white transition-colors"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       {t('youth')}
                     </Link>
                     <Link
                       to="/activity/arts"
-                      className="block py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                      className="block py-2 text-sm text-white hover:text-white transition-colors"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       {t('arts')}
                     </Link>
                     <Link
                       to="/activity/culture"
-                      className="block py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                      className="block py-2 text-sm text-white hover:text-white transition-colors"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       {t('culture')}
                     </Link>
                     <Link
                       to="/activity/sports"
-                      className="block py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                      className="block py-2 text-sm text-white hover:text-white transition-colors"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       {t('sports')}
                     </Link>
                     <Link
                       to="/activity/exhibition"
-                      className="block py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                      className="block py-2 text-sm text-white hover:text-white transition-colors"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       {t('exhibition')}
                     </Link>
                     <Link
                       to="/activity/volunteering"
-                      className="block py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                      className="block py-2 text-sm text-white hover:text-white transition-colors"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       {t('volunteering')}
@@ -356,29 +343,22 @@ const Navigation = () => {
               </AnimatePresence>
               
               <Link
-                to="/activities"
-                className="block py-2 text-muted-foreground hover:text-foreground transition-colors font-medium"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Register a Program
-              </Link>
-              <Link
                 to="/about"
-                className="block py-2 text-muted-foreground hover:text-foreground transition-colors"
+                className="block py-2 text-white hover:text-white transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {t('about')}
               </Link>
               <Link
                 to="/contact"
-                className="block py-2 text-muted-foreground hover:text-foreground transition-colors"
+                className="block py-2 text-white hover:text-white transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {t('contact')}
               </Link>
 
               {/* Auth Buttons Mobile */}
-              <div className="pt-4 border-t border-border space-y-2">
+              <div className="pt-4 border-t border-transparent space-y-2">
                 {isSignedIn ? (
                   <div className="flex items-center justify-center py-2">
                     <UserButton 
@@ -396,7 +376,7 @@ const Navigation = () => {
                   <div className="space-y-2">
                     <Link
                       to="/login"
-                      className="block py-2 px-4 text-muted-foreground hover:text-foreground border border-muted-foreground rounded hover:border-foreground transition-colors text-center"
+                      className="block py-2 px-4 text-white hover:text-white border border-white rounded hover:border-white transition-colors text-center"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       Login

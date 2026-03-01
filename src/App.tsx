@@ -29,7 +29,6 @@ const VerificationPending = lazy(() => import("./pages/VerificationPending"));
 const Profile = lazy(() => import("./pages/Profile"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const NotFound = lazy(() => import("./pages/NotFound"));
-const Activities = lazy(() => import("./pages/Activities"));
 // Activity sub-pages (simple pages) restored below
 const Youth = lazy(() => import("./pages/activities/Youth"));
 const Arts = lazy(() => import("./pages/activities/Arts"));
@@ -107,7 +106,6 @@ const App = () => {
                         </div>
                       </div>
                     } />
-                    <Route path="/activities" element={<Activities />} />
                     <Route path="/activity/youth" element={<Youth />} />
                     <Route path="/activity/arts" element={<Arts />} />
                     <Route path="/activity/culture" element={<Culture />} />
@@ -158,7 +156,6 @@ const App = () => {
                       </AdminRoute>
                     }
                   />
-                  <Route path="/activities" element={<Activities />} />
                   {/* Simple activity detail pages (title + LiquidEther) */}
                   <Route path="/activity/youth" element={<Youth />} />
                   <Route path="/activity/arts" element={<Arts />} />

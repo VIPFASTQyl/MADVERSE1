@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { Button } from "./ui/button";
-import { ArrowRight, Mouse } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useIsMobile } from "../hooks/use-mobile";
-import { prefersReducedMotion } from "../lib/performanceUtils";
+import TextPressure from "./CircularText";
+import "./HeroSection.css";
 
 interface HeroSectionProps {
   title?: string;
@@ -12,107 +12,70 @@ interface HeroSectionProps {
 }
 
 const HeroSection = ({ title, subtitle }: HeroSectionProps) => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [is3D, setIs3D] = useState(true); // true = 3D mode (with shadows), false = 2D mode (flat)
   const { t } = useLanguage();
   const isMobile = useIsMobile();
-  const prefersReduced = prefersReducedMotion();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 100) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Defer animation initialization slightly for better performance
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 100);
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <section className="relative h-[78vh] md:h-[80vh] pt-16 overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent md:bg-black">
-        <motion.img
-          src="/Hero.png"
-          alt="Hero Background"
-          className="w-full h-full object-cover"
-          initial={{ opacity: 0 }}
-          animate={isVisible ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: prefersReduced ? 0 : 0.6 }}
-        />
-        <div className="absolute inset-0 bg-black/50 hidden md:block" />
-      </div>
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 lg:pt-6 overflow-hidden">
-        <div className="flex flex-col md:flex-row items-center justify-center h-[calc(78vh-4rem)] md:h-[calc(80vh-4rem)]">
-          {/* Text - Centered */}
-          <motion.div
-            initial={{ opacity: 0, x: prefersReduced ? 0 : -50 }}
-            animate={isVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: prefersReduced ? 0 : -50 }}
-            transition={{ duration: prefersReduced ? 0 : 0.8, ease: "easeOut" }}
-            className="flex-1 text-center w-full md:w-auto"
-          >
-            <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold text-white mb-2 sm:mb-4">
-              {title || t('welcomeMadverse')}
-            </h1>
-            <p className="text-sm sm:text-xl md:text-2xl text-white mb-4 sm:mb-8">
-              {subtitle || t('heroSubtitle')}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-              <Button 
-                className="bg-white hover:bg-white/90 text-black px-4 sm:px-8 py-2 sm:py-3 rounded-lg font-semibold text-sm sm:text-base"
-                onClick={() => {
-                  const element = document.getElementById('register-cta');
-                  if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
-                  }
-                }}
-              >
-                {t('registerNow')}
-              </Button>
-              <Button 
-                variant="outline" 
-                className="border-white text-white hover:bg-white/10 px-4 sm:px-8 py-2 sm:py-3 rounded-lg font-semibold text-sm sm:text-base"
-                onClick={() => {
-                  const element = document.getElementById('programs-carousel');
-                  if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
-                  }
-                }}
-              >
-                {t('seePrograms')}
-              </Button>
-            </div>
-          </motion.div>
+    <section className="relative w-full h-screen overflow-hidden homeHero">
+      {/* Animated Gradient Blob Background */}
+      <div className="blob-outer-container">
+        <div className="blob-inner-container">
+          <div className="blob"></div>
         </div>
       </div>
 
-      {/* Scroll Mouse */}
-      {!isScrolled && !isMobile && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.6 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white z-20 flex flex-col items-center"
-          onMouseEnter={() => {}}
-        >
+      {/* Content */}
+      <div className="relative z-10 w-full h-screen flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <div className="flex flex-col items-center justify-center w-full max-w-7xl text-center flex-1">
           <motion.div
-            animate={prefersReduced ? {} : { y: [0, 8, 0] }}
-            transition={prefersReduced ? {} : { duration: 1.5, repeat: Infinity }}
+            initial={{ opacity: 0 }}
+            animate={isVisible ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="w-full h-screen flex flex-col items-center justify-center"
           >
-            <Mouse size={32} />
+            <div 
+              className={`meta-animation ${!is3D ? 'mobile-toggled' : ''}`}
+              onClick={() => setIs3D(!is3D)}
+              style={{ cursor: isMobile ? 'pointer' : 'auto' }}
+              title={isMobile ? `Click to toggle ${is3D ? '2D' : '3D'} mode` : ""}
+            >
+              MADVERSE
+            </div>
           </motion.div>
-        </motion.div>
-      )}
+        </div>
+
+        {/* Bottom Text */}
+        <div className="relative z-10 w-full flex justify-between items-end px-6 sm:px-12 pb-8 bottom-text-container">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={isVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="text-white text-sm font-light youth-culture-text bottom-text-link"
+            onClick={() => navigate('/about')}
+          >
+            <span className="hidden sm:inline">Youth Culture Arts & Sports Organization</span>
+            <span className="sm:hidden">Youth Culture Arts<br />& Sports Organization</span>
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={isVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="text-white text-sm font-light bottom-text-link"
+            onClick={() => navigate('/contact')}
+          >
+            Become a Partner
+          </motion.div>
+        </div>
+      </div>
     </section>
   );
 };

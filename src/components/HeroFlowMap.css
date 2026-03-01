@@ -1,0 +1,48 @@
+.hero-flowmap {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.hero-flowmap canvas {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  display: block;
+}
+
+.mask {
+  position: absolute;
+  z-index: 2;
+  background: white;
+  height: 100vh;
+  width: 100vw;
+  mix-blend-mode: screen;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.mask svg {
+  width: 90%;
+  max-width: 1040px;
+  height: auto;
+  position: relative;
+  fill: white;
+}
+
+@media (max-width: 768px) {
+  .mask svg {
+    width: 95%;
+  }
+}
+
+@media (max-width: 480px) {
+  .mask svg {
+    width: 100%;
+  }
+}

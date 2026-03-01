@@ -1,0 +1,320 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;900&display=swap');
+
+.hero-split {
+  position: relative;
+  width: 100%;
+  min-height: 100dvh;
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  background: #fff;
+  overflow-x: hidden;
+  pointer-events: auto;
+}
+
+/* Ensure any text that might be white becomes black in the hero */
+.hero-split,
+.hero-split * {
+  color: #000;
+}
+
+/* Default SVG text fill to black unless overridden by .cyan or .black classes */
+.hero-split svg text {
+  fill: #000;
+}
+
+/* Big headline */
+.hero-split .headline {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 1200px;
+}
+
+.hero-split svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.hero-split .cyan {
+  fill: #00CED1;
+}
+
+.hero-split .black {
+  fill: #000;
+}
+
+/* Side texts */
+.hero-split .vertical-left {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: rotate(-90deg) translateX(-50%);
+  transform-origin: left top;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 2px;
+}
+
+.hero-split .vertical-right {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: rotate(90deg) translateX(-50%);
+  transform-origin: right top;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 2px;
+}
+
+/* Pagination */
+.hero-split .pagination {
+  position: absolute;
+  bottom: 40px;
+  left: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+/* Social links */
+.hero-split .social {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  display: flex;
+  gap: 15px;
+  font-size: 16px;
+}
+
+.hero-split .social a {
+  color: #000;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+
+.hero-split .social a:hover {
+  color: #00CED1;
+  transform: translateY(-2px);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 1024px) {
+  .hero-split .headline {
+    top: 48%;
+    width: 95%;
+  }
+
+  .hero-split svg {
+    transform: scale(0.9);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-split {
+    min-height: 100dvh;
+    height: auto;
+  }
+
+  .hero-split .headline {
+    top: 48%;
+    width: 100%;
+    padding: 0 10px;
+  }
+
+  .hero-split svg {
+    transform: scale(0.85);
+  }
+
+  .hero-split .vertical-left,
+  .hero-split .vertical-right {
+    font-size: 10px;
+    display: none;
+  }
+
+  .hero-split .pagination {
+    font-size: 12px;
+    bottom: 100px;
+    left: 15px;
+  }
+
+  .hero-split .social {
+    font-size: 13px;
+    bottom: 45px;
+    right: 15px;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .hero-split .social a {
+    padding: 6px 10px;
+  }
+}
+
+/* Mobile-only CTAs positioned under the third headline */
+.hero-split .mobile-hero-ctas {
+  display: none;
+}
+
+/* Language globe inside hero */
+.hero-lang { position: absolute; z-index: 40; }
+.hero-lang .hero-lang-btn { background: transparent; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+.hero-lang .hero-lang-menu { background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 8px; padding: 6px; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 6px 20px rgba(0,0,0,0.12); }
+.hero-lang .hero-lang-item { background: transparent; border: none; padding: 8px 12px; text-align: left; cursor: pointer; font-weight: 600; }
+.hero-lang .hero-lang-item.active { background: rgba(0,0,0,0.04); }
+
+/* Desktop: top-right inside hero */
+.hero-lang .desktop { display: none; }
+.hero-lang .desktop.hero-lang-menu { right: 0; }
+
+@media (min-width: 768px) {
+  .hero-lang { top: 24px; right: 40px; }
+  .hero-lang .desktop { display: inline-flex; }
+  .hero-lang .mobile { display: none; }
+}
+
+/* Mobile: bottom-right inside hero */
+@media (max-width: 767px) {
+  .hero-lang { bottom: 18px; right: 18px; }
+  .hero-lang .mobile { display: inline-flex; background: rgba(255,255,255,0.9); padding: 8px; border-radius: 9999px; }
+  .hero-lang .desktop { display: none; }
+  .hero-lang .hero-lang-menu.mobile { bottom: 56px; right: 0; position: absolute; }
+}
+
+@media (max-width: 768px) {
+  .hero-split .mobile-hero-ctas {
+    display: flex;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 66%;
+    gap: 12px;
+    z-index: 30;
+    width: 70%;
+    max-width: 560px;
+  }
+
+  /* Align hero language globe with pagination on mobile (right side) */
+  .hero-lang { bottom: 100px; right: 15px; left: auto; }
+
+  .hero-split .mobile-cta-btn {
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 15px;
+    text-decoration: none;
+    display: inline-block;
+    flex: 1 1 46%;
+    text-align: center;
+    min-width: 0;
+  }
+
+  .hero-split .mobile-cta-btn.about-btn {
+    background: transparent;
+    color: #000;
+    border: 2px solid #000;
+  }
+
+  .hero-split .mobile-cta-btn.contact-btn {
+    background: #00CED1;
+    color: #fff;
+    border: 2px solid #00CED1;
+  }
+
+  .hero-split .mobile-cta-btn:active,
+  .hero-split .mobile-cta-btn:focus,
+  .hero-split .mobile-cta-btn:hover {
+    opacity: 0.95;
+  }
+}
+
+@media (max-width: 540px) {
+  .hero-split {
+    min-height: 100dvh;
+    height: auto;
+  }
+
+  .hero-split .headline {
+    top: 42%;
+    width: 100%;
+    padding: 0 5px;
+  }
+
+  .hero-split svg {
+    transform: scale(0.75);
+  }
+
+  .hero-split .vertical-left,
+  .hero-split .vertical-right {
+    display: none;
+  }
+
+  .hero-split .pagination {
+    bottom: 90px;
+    left: 10px;
+    font-size: 11px;
+  }
+
+  .hero-split .social {
+    bottom: 30px;
+    right: 10px;
+    left: 10px;
+    font-size: 12px;
+    gap: 8px;
+    justify-content: space-between;
+  }
+
+  /* Align hero language globe with pagination on small mobile (right side) */
+  .hero-lang { bottom: 90px; right: 10px; left: auto; }
+
+  .hero-split .social a {
+    flex: 1;
+    text-align: center;
+    padding: 6px 8px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+  }
+
+  .hero-split .social a:hover {
+    color: #00CED1;
+    background-color: transparent;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero-split .headline {
+    top: 40%;
+    padding: 0 5px;
+  }
+
+  .hero-split svg {
+    transform: scale(0.65);
+  }
+
+  .hero-split .pagination {
+    font-size: 10px;
+    bottom: 85px;
+  }
+
+  .hero-split .social {
+    font-size: 11px;
+    bottom: 25px;
+    gap: 5px;
+  }
+
+  .hero-split .social a {
+    padding: 5px 6px;
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero-lang { bottom: 85px; right: 10px; left: auto; }
+}

@@ -2,6 +2,7 @@ import LiquidEther from "@/components/LiquidEther";
 import PillNav from "@/components/PillNav";
 import StaggeredMenu from "@/components/StaggeredMenu";
 import Footer from "@/components/Footer";
+import PageTitleAnimation from "@/components/PageTitleAnimation";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
@@ -139,7 +140,7 @@ const Youth = () => {
           isFixed={true}
           items={menuItems}
           position="right"
-          colors={['#000', '#1a1a1a']}
+          colors={['#FCF5AF', '#F0A533', '#E44F0A', '#BA011A']}
           menuButtonColor="#fff"
           openMenuButtonColor="#fff"
           accentColor="#00CED1"
@@ -176,11 +177,7 @@ const Youth = () => {
       </div>
 
       {/* Hero Section */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen">
-        <h1 className="text-5xl md:text-7xl font-bold text-white text-center">
-          Youth
-        </h1>
-      </div>
+      <PageTitleAnimation title="Youth" />
 
       {/* Full Size Image */}
       <div className="relative z-10 w-full h-screen flex items-center justify-center">

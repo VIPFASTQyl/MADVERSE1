@@ -1,0 +1,8 @@
+.mobile-hero-section { display: none; }
+
+@media (max-width: 768px) {
+  .mobile-hero-section { display: block; }
+  .mobile-hero-btn { flex: 1; text-align: center; padding: 12px 14px; border-radius: 10px; font-weight: 700; text-decoration: none; }
+  .mobile-hero-btn.about { background: transparent; color: #000; border: 2px solid #000; }
+  .mobile-hero-btn.contact { background: #00CED1; color: #fff; border: 2px solid #00CED1; }
+}

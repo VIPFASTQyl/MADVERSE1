@@ -3,19 +3,18 @@ import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
-import { getAllActivities } from "@/lib/activityService";
+import { getAllActivities, getTotalRegisteredMembers } from "@/lib/activityService";
 
 const RegisterCTA = () => {
   const navigate = useNavigate();
   const { language } = useLanguage();
   const [totalParticipants, setTotalParticipants] = useState(0);
-  const [totalPrograms, setTotalPrograms] = useState(0);
+  const [totalMembers, setTotalMembers] = useState(0);
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
         const activities = await getAllActivities();
-        setTotalPrograms(activities.length);
         
         // Calculate total participants
         const total = activities.reduce(
@@ -23,6 +22,10 @@ const RegisterCTA = () => {
           0
         );
         setTotalParticipants(total);
+
+        // Get total registered members
+        const members = await getTotalRegisteredMembers();
+        setTotalMembers(members);
       } catch (error) {
         console.error("Error fetching stats:", error);
       }
@@ -54,7 +57,7 @@ const RegisterCTA = () => {
               transition={{ duration: 0.5, delay: 0.1 }}
             >
               <span className="inline-block text-xs font-semibold tracking-widest uppercase text-primary mb-6">
-                {language === "en" ? "Join Our Community" : "Bashkohuni me Komunitetin Tonë"}
+                {language === "en" ? "Join MADVERSE Today" : "Bashkohuni me MADVERSE Sot"}
               </span>
             </motion.div>
 
@@ -66,8 +69,8 @@ const RegisterCTA = () => {
               className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-white via-white/90 to-white/70 bg-clip-text text-transparent"
             >
               {language === "en"
-                ? "Create Your MADVERSE PROFILE"
-                : "Krijo Profilin Tuaj në MADVERSE"}
+                ? "Register to Never Miss an Activity"
+                : "Regjistrohu për të Mos Humbur Aktivitete"}
             </motion.h2>
 
             <motion.p
@@ -78,8 +81,8 @@ const RegisterCTA = () => {
               className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto"
             >
               {language === "en"
-                ? "Register with MADVERSE to unlock your access. Once registered, you can explore and enroll in our programs, participate in cultural events, and connect with thousands of community members."
-                : "Regjistrohu me MADVERSE për të hyrë brenda. Pasi të regjistrohesh, mund të eksplorosh dhe të regjistrohet në programet tona, të marrësh pjesë në ngjarjet kulturore dhe të lidhesh me mijëra anëtarë të komunitetit."}
+                ? "Register with us to stay updated on all our amazing activities, exclusive events, and community updates. If you're a sponsor interested in partnering with MADVERSE, we'd love to hear from you!"
+                : "Regjistrohu me ne për të mbetur i përditësuar në të gjitha aktivitetet tona, ngjarjet ekskluzive dhe përditësimet e komunitetit. Nëse jeni sponsor i interesuar të partnerizoheni me MADVERSE, do të donim të dëgjonim nga ju!"}
             </motion.p>
 
             <motion.div
@@ -99,12 +102,15 @@ const RegisterCTA = () => {
                   className="group-hover:translate-x-1 transition-transform"
                 />
               </button>
-
               <button
-                onClick={() => navigate("/activities")}
-                className="px-8 py-4 border border-primary/50 hover:border-primary/100 text-foreground rounded-lg font-semibold transition-all duration-300 hover:bg-primary/5"
+                onClick={() => navigate("/contact")}
+                className="group px-8 py-4 border border-primary hover:bg-primary/10 text-primary rounded-lg font-semibold transition-all duration-300 flex items-center gap-2 hover:gap-3"
               >
-                {language === "en" ? "Explore Programs" : "Eksploroni Programet"}
+                {language === "en" ? "Become Our Sponsor!" : "Bëhuava Sponsor Ynë!"}
+                <ArrowRight
+                  size={18}
+                  className="group-hover:translate-x-1 transition-transform"
+                />
               </button>
             </motion.div>
 
@@ -125,9 +131,9 @@ const RegisterCTA = () => {
                 </p>
               </div>
               <div>
-                <div className="text-3xl font-bold text-primary mb-2">{totalPrograms}</div>
+                <div className="text-3xl font-bold text-primary mb-2">{totalMembers}</div>
                 <p className="text-sm text-muted-foreground">
-                  {language === "en" ? "Programs" : "Programet"}
+                  {language === "en" ? "Total Members" : "Anëtarë Totalë"}
                 </p>
               </div>
             </motion.div>

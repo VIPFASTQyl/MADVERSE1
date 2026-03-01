@@ -4,7 +4,7 @@ import TrustMarquee from "@/components/TrustMarquee";
 import FeatureSection from "@/components/FeatureSection";
 import ProgramsCarousel3D from "@/components/ProgramsCarousel3D";
 import ScrollingText from "@/components/ScrollingText";
-import ShowcaseGrid from "@/components/ShowcaseGrid";
+import FlowingMenu from "@/components/FlowingMenu";
 import TabsSection from "@/components/TabsSection";
 import CTASection from "@/components/CTASection";
 import RegisterCTA from "@/components/RegisterCTA";
@@ -25,6 +25,39 @@ const Index = () => {
   const [aboutHomeTitle, setAboutHomeTitle] = useState("");
   const [aboutHomeDesc, setAboutHomeDesc] = useState("");
   const [aboutHomeBadge, setAboutHomeBadge] = useState("");
+
+  const menuItems = [
+    { 
+      text: 'Youth', 
+      link: '/activity/youth', 
+      image: '/project-1.jpg'
+    },
+    { 
+      text: 'Arts', 
+      link: '/activity/arts', 
+      image: '/project-2.jpg'
+    },
+    { 
+      text: 'Sports', 
+      link: '/activity/sports', 
+      image: '/project-1.jpg'
+    },
+    { 
+      text: 'Exhibition', 
+      link: '/activity/exhibition', 
+      image: '/project-2.jpg'
+    },
+    { 
+      text: 'Culture', 
+      link: '/activity/culture', 
+      image: '/project-3.jpg'
+    },
+    { 
+      text: 'Volunteering', 
+      link: '/activity/volunteering', 
+      image: '/project-3.jpg'
+    }
+  ];
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -105,7 +138,17 @@ const Index = () => {
 
       <ScrollingText />
 
-      <ShowcaseGrid />
+      <div style={{ height: '600px' }}>
+        <FlowingMenu 
+          items={menuItems}
+          speed={15}
+          bgColor="#000000"
+          marqueeBgColor="#ffffff"
+          marqueeTextColor="#000000"
+          textColor="#ffffff"
+          borderColor="#ffffff"
+        />
+      </div>
 
       <RegisterCTA />
 

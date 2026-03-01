@@ -26,7 +26,7 @@ const Contact = () => {
           <div className="w-full h-full bg-gradient-to-br from-purple-900 via-black to-black animate-pulse" />
         ) : (
           <LiquidEther
-            colors={['#00CED1', '#AFEEEE', '#FFFFFF']}
+            colors={['#FCF5AF', '#F0A533', '#E44F0A', '#BA011A']}
             mouseForce={isMobile ? 8 : 15}
             cursorSize={isMobile ? 60 : 100}
             isViscous={false}
