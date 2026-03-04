@@ -110,18 +110,6 @@ const Youth = () => {
       imageUrl:
         "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=600&fit=crop",
     },
-    {
-      title: t("sportsWellness"),
-      description: t("sportsWellnessDesc"),
-      imageUrl:
-        "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&h=600&fit=crop",
-    },
-    {
-      title: t("communityService"),
-      description: t("communityServiceDesc"),
-      imageUrl:
-        "https://images.unsplash.com/photo-1559027615-cd2628902d4a?w=800&h=600&fit=crop",
-    },
   ];
 
   return (
