@@ -130,7 +130,7 @@ const Index = () => {
         badge={aboutHomeBadge}
         title={aboutHomeTitle}
         description={aboutHomeDesc}
-        image="/Featured2nd.jpg"
+        image="/Featured2nd.JPG"
         reversed
       />
 
