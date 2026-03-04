@@ -26,7 +26,9 @@ const Login = () => {
         }}
       />
       
-      <div className="flex-1 flex items-center justify-center w-screen px-4 md:px-8 lg:px-16 pt-[50px] pb-[50px] relative z-20">
+      <Navigation />
+      
+      <div className="flex-1 flex items-center justify-center w-full px-4 md:px-8 lg:px-16 py-12 relative z-20">
         <div className="w-full max-w-md">
           <SignIn 
             appearance={{
