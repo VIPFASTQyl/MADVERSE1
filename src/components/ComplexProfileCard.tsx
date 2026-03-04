@@ -62,9 +62,9 @@ const ComplexProfileCard = ({
       transition={{ duration: 0.6, delay: index * 0.1 }}
       className="h-full"
     >
-      <div className="bg-gradient-to-b from-gray-800 to-black rounded-2xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-300 h-full flex flex-col">
+      <div className="bg-gradient-to-b from-gray-800 to-black rounded-2xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-300 h-[600px] flex flex-col">
         {/* Image Section */}
-        <div className="relative pb-0">
+        <div className="relative pb-0 flex-shrink-0">
           <img
             src={image}
             alt={name}
@@ -75,7 +75,7 @@ const ComplexProfileCard = ({
         </div>
 
         {/* Content Section */}
-        <div className="px-6 py-8 flex-grow flex flex-col justify-between">
+        <div className="px-6 py-8 flex-grow flex flex-col justify-between overflow-y-auto">
           {/* Info */}
           <div>
             <h3 className="text-2xl font-bold text-white mb-1">{name}</h3>
