@@ -347,7 +347,7 @@ const Navigation = () => {
                     }}
                     className={`flex-1 py-2 px-3 rounded text-sm transition-colors ${
                       language === 'en'
-                        ? 'bg-yellow-400 text-black font-semibold'
+                        ? 'bg-white text-black font-semibold'
                         : 'border border-white text-white hover:bg-white/10'
                     }`}
                   >
@@ -360,7 +360,7 @@ const Navigation = () => {
                     }}
                     className={`flex-1 py-2 px-3 rounded text-sm transition-colors ${
                       language === 'al'
-                        ? 'bg-yellow-400 text-black font-semibold'
+                        ? 'bg-white text-black font-semibold'
                         : 'border border-white text-white hover:bg-white/10'
                     }`}
                   >
