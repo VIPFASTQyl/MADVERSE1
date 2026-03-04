@@ -2,6 +2,7 @@ import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { Link } from 'react-router-dom';
 import { Plus } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export interface StaggeredMenuItem {
   label: string;
@@ -29,6 +30,7 @@ export interface StaggeredMenuProps {
   isFixed: boolean;
   changeMenuColorOnOpen?: boolean;
   closeOnClickAway?: boolean;
+  showLanguageSwitcher?: boolean;
   onMenuOpen?: () => void;
   onMenuClose?: () => void;
 }
@@ -48,9 +50,11 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   accentColor = '#00CED1',
   isFixed = false,
   closeOnClickAway = true,
+  showLanguageSwitcher = true,
   onMenuOpen,
   onMenuClose
 }: StaggeredMenuProps) => {
+  const { language, setLanguage } = useLanguage();
   const [open, setOpen] = useState(false);
   const openRef = useRef(false);
 
@@ -463,6 +467,40 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                     </li>
                   ))}
                 </ul>
+              </div>
+            )}
+
+            {showLanguageSwitcher && (
+              <div className="sm-language mt-8 pt-8 flex flex-col gap-3 border-t border-gray-200" aria-label="Language switcher">
+                <h3 className="sm-language-title m-0 text-base font-medium [color:var(--sm-accent,#ff0000)]">Language</h3>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => {
+                      setLanguage('en');
+                      closeMenu();
+                    }}
+                    className={`px-4 py-2 rounded font-semibold transition-colors ${
+                      language === 'en'
+                        ? '[color:var(--sm-accent,#ff0000)] bg-black text-white'
+                        : 'bg-gray-200 text-black hover:bg-gray-300'
+                    }`}
+                  >
+                    ENG
+                  </button>
+                  <button
+                    onClick={() => {
+                      setLanguage('al');
+                      closeMenu();
+                    }}
+                    className={`px-4 py-2 rounded font-semibold transition-colors ${
+                      language === 'al'
+                        ? '[color:var(--sm-accent,#ff0000)] bg-black text-white'
+                        : 'bg-gray-200 text-black hover:bg-gray-300'
+                    }`}
+                  >
+                    ALB
+                  </button>
+                </div>
               </div>
             )}
           </div>
