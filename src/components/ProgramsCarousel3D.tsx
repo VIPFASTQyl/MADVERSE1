@@ -449,15 +449,9 @@ const ProgramsCarousel3D = () => {
         .slide-role {
           font-size: 12px;
           color: #ffffff;
-          padding: 6px 12px;
-          background: rgba(6, 182, 212, 0.2);
-          border: 1.5px solid rgba(6, 182, 212, 0.6);
-          border-radius: 8px;
           margin: 0;
           font-weight: 600;
           letter-spacing: 0.5px;
-          text-transform: uppercase;
-          width: fit-content;
         }
 
         @media (min-width: 768px) {
@@ -468,8 +462,6 @@ const ProgramsCarousel3D = () => {
 
           .slide-role {
             font-size: 14px;
-            padding: 8px 16px;
-            border-radius: 10px;
           }
 
           .slide-stats svg {
