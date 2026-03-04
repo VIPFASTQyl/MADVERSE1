@@ -129,30 +129,6 @@ const Navigation = () => {
               {t('contact')}
             </Link>
 
-            {/* Language Switcher */}
-            <div className="flex items-center gap-2 ml-4">
-              <button
-                onClick={() => setLanguage('al')}
-                className={`px-3 py-1 text-sm transition-all border border-white ${
-                  language === 'al'
-                    ? 'bg-primary text-primary-foreground'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                ALB
-              </button>
-              <button
-                onClick={() => setLanguage('en')}
-                className={`px-3 py-1 text-sm transition-all border border-white ${
-                  language === 'en'
-                    ? 'bg-primary text-primary-foreground'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                ENG
-              </button>
-            </div>
-
             {/* Auth Buttons */}
             <div className="flex items-center gap-4 ml-4">
               {isSignedIn ? (
@@ -185,30 +161,7 @@ const Navigation = () => {
             </div>
           </div>
 
-          {/* Mobile Language Switcher */}
-          <div className="md:hidden flex items-center gap-2 mr-2">
-            <button
-              onClick={() => setLanguage('al')}
-              className={`px-2 py-1 text-xs transition-all border border-white ${
-                language === 'al'
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-white hover:text-white'
-              }`}
-            >
-              ALB
-            </button>
-            <button
-              onClick={() => setLanguage('en')}
-              className={`px-2 py-1 text-xs transition-all border border-white ${
-                language === 'en'
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-white hover:text-white'
-              }`}
-            >
-              ENG
-            </button>
-
-            {/* Mobile User Icon */}
+          {/* Mobile User Icon */}
             {isSignedIn && (
               <div className="p-2">
                 <UserButton 
