@@ -120,7 +120,7 @@ const ContactSection = () => {
     
       {/* Hero image with 2% transparency */}
       <img
-        src="/Hero.png"
+        src="/Hero.svg"
         alt="Hero"
         className="absolute inset-0 w-full h-full object-cover opacity-[0.02] pointer-events-none"
       />

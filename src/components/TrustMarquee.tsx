@@ -1,14 +1,14 @@
 import { motion } from "framer-motion";
 
 const partners = [
-  "/partner1.png",
-  "/partner2.png",
-  "/partner3.png",
-  "/partner4.png",
-  "/partner5.png",
-  "/partner6.png",
-  "/partner7.png",
-  "/partner8.png"
+  "/partner1.svg",
+  "/partner2.svg",
+  "/partner3.svg",
+  "/partner4.svg",
+  "/partner5.svg",
+  "/partner6.svg",
+  "/partner7.svg",
+  "/partner8.svg"
 ];
 
 const TrustMarquee = () => {

@@ -123,14 +123,14 @@ const Index = () => {
         badge={featuresBadge}
         title={featuresTitle}
         description={featuresDesc}
-        image="/Hero.png"
+        image="/Hero.svg"
       />
 
       <FeatureSection
         badge={aboutHomeBadge}
         title={aboutHomeTitle}
         description={aboutHomeDesc}
-        image="/Hero.png"
+        image="/Hero.svg"
         reversed
       />
 
