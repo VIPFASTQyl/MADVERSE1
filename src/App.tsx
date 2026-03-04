@@ -7,7 +7,6 @@ import { ClerkProvider } from "@clerk/clerk-react";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ProtectedRoute } from "./components/ProtectedRoute";
-import { AdminRoute } from "./components/AdminRoute";
 import ScrollToTop from "./components/ScrollToTop";
 import { lazy, Suspense } from "react";
 import BackToTop from "@/components/BackToTop";
@@ -27,7 +26,6 @@ const Login = lazy(() => import("./pages/Login"));
 const Verify = lazy(() => import("./pages/Verify"));
 const VerificationPending = lazy(() => import("./pages/VerificationPending"));
 const Profile = lazy(() => import("./pages/Profile"));
-const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 // Activity sub-pages (simple pages) restored below
 const Youth = lazy(() => import("./pages/activities/Youth"));
@@ -147,14 +145,6 @@ const App = () => {
                   <Route
                     path="/profile"
                     element={<Profile />}
-                  />
-                  <Route
-                    path="/admin/dashboard"
-                    element={
-                      <AdminRoute>
-                        <AdminDashboard />
-                      </AdminRoute>
-                    }
                   />
                   {/* Simple activity detail pages (title + LiquidEther) */}
                   <Route path="/activity/youth" element={<Youth />} />

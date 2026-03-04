@@ -10,6 +10,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ActivityManagement } from "@/components/ActivityManagement";
 import { RegistrationsView } from "@/components/RegistrationsView";
+import { ContentManagement } from "@/components/ContentManagement";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   AlertDialog,
@@ -94,8 +95,9 @@ const AdminDashboard = () => {
         </div>
 
         <Tabs defaultValue="messages" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="messages">{t('messagesTab')}</TabsTrigger>
+            <TabsTrigger value="content">Content</TabsTrigger>
             <TabsTrigger value="programs">{t('programsTab')}</TabsTrigger>
             <TabsTrigger value="registrations">{t('registrationsTab')}</TabsTrigger>
           </TabsList>
@@ -163,6 +165,11 @@ const AdminDashboard = () => {
                 ))}
               </div>
             )}
+          </TabsContent>
+
+          {/* Content Management Tab */}
+          <TabsContent value="content" className="space-y-4 mt-6">
+            <ContentManagement />
           </TabsContent>
 
           {/* Programs Tab */}

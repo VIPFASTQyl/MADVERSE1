@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Loader2, Send } from "lucide-react";
 import { useLanguage } from "../contexts/LanguageContext";
 import { supabase } from "@/lib/supabaseClient";
+import { getContentByLanguage } from "@/lib/contentService";
 
 // Form validation schema
 const contactSchema = z.object({
@@ -25,7 +26,27 @@ type ContactFormData = z.infer<typeof contactSchema>;
 const ContactSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const [successMessage, setSuccessMessage] = useState("Your message was sent successfully! We will be in touch soon.");
+  const [successTitle, setSuccessTitle] = useState("Message sent successfully!");
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        const content = await getContentByLanguage(language, true);
+        
+        const titleItem = content.find((item) => item.key === "contact_success_title");
+        const descItem = content.find((item) => item.key === "contact_success_desc");
+        
+        setSuccessTitle(titleItem?.content || "Message sent successfully!");
+        setSuccessMessage(descItem?.content || "Your message was sent successfully! We will be in touch soon.");
+      } catch (error) {
+        console.error("Error fetching contact messages:", error);
+      }
+    };
+
+    fetchMessages();
+  }, [language]);
 
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
@@ -76,8 +97,8 @@ const ContactSection = () => {
         }
 
         toast({
-          title: t('successSend') || "Message sent successfully!",
-          description: t('successSendDesc') || "We'll get back to you soon.",
+          title: successTitle,
+          description: successMessage,
         });
         form.reset();
       }

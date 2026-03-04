@@ -1,7 +1,6 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import LiquidEther from "@/components/LiquidEther";
-import AnimatedBackground from "@/components/AnimatedBackground";
 import ContactSection from "@/components/ContactSection";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState, useEffect } from "react";
@@ -21,7 +20,7 @@ const Contact = () => {
       <Navigation />
       <div className="fixed inset-0 top-0 z-0 h-screen w-full pointer-events-none">
         {isMobile ? (
-          <AnimatedBackground className="w-full h-full" />
+          <div className="w-full h-full bg-black" />
         ) : liquidEtherFailed ? (
           <div className="w-full h-full bg-gradient-to-br from-purple-900 via-black to-black animate-pulse" />
         ) : (

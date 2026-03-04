@@ -3,7 +3,9 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useIsMobile } from "../hooks/use-mobile";
+import { getContentByLanguage } from "../lib/contentService";
 import TextPressure from "./CircularText";
+import BubbleText from "./BubbleTextComponent";
 import "./HeroSection.css";
 
 interface HeroSectionProps {
@@ -14,14 +16,34 @@ interface HeroSectionProps {
 const HeroSection = ({ title, subtitle }: HeroSectionProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [is3D, setIs3D] = useState(true); // true = 3D mode (with shadows), false = 2D mode (flat)
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const isMobile = useIsMobile();
   const navigate = useNavigate();
+  const [youthCultureText, setYouthCultureText] = useState("Youth Culture Arts & Sports Organization");
+  const [becomePartnerText, setBecomePartnerText] = useState("Become a Partner");
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 100);
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const content = await getContentByLanguage(language, true);
+        
+        const youthCultureItem = content.find((item) => item.key === "hero_youth_culture_text");
+        const becomePartnerItem = content.find((item) => item.key === "hero_become_partner_text");
+        
+        setYouthCultureText(youthCultureItem?.content || "Youth Culture Arts & Sports Organization");
+        setBecomePartnerText(becomePartnerItem?.content || "Become a Partner");
+      } catch (error) {
+        console.error("Error fetching hero content:", error);
+      }
+    };
+
+    fetchContent();
+  }, [language]);
 
   return (
     <section className="relative w-full h-screen overflow-hidden homeHero">
@@ -61,8 +83,7 @@ const HeroSection = ({ title, subtitle }: HeroSectionProps) => {
             className="text-white text-sm font-light youth-culture-text bottom-text-link"
             onClick={() => navigate('/about')}
           >
-            <span className="hidden sm:inline">Youth Culture Arts & Sports Organization</span>
-            <span className="sm:hidden">Youth Culture Arts<br />& Sports Organization</span>
+            <BubbleText text={youthCultureText} className="inline" />
           </motion.div>
           
           <motion.div
@@ -72,7 +93,7 @@ const HeroSection = ({ title, subtitle }: HeroSectionProps) => {
             className="text-white text-sm font-light bottom-text-link"
             onClick={() => navigate('/contact')}
           >
-            Become a Partner
+            <BubbleText text={becomePartnerText} className="inline" />
           </motion.div>
         </div>
       </div>

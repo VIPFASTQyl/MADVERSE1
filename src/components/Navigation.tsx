@@ -6,10 +6,12 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useAuth } from "../contexts/AuthContext";
 import { UserButton, useAuth as useClerkAuth } from "@clerk/clerk-react";
+import ActivitiesDropdown from "./ActivitiesDropdown";
 
 const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileActivitiesOpen, setIsMobileActivitiesOpen] = useState(false);
+  const [isLogoHovered, setIsLogoHovered] = useState(false);
   const navRef = useRef<HTMLElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -73,7 +75,7 @@ const Navigation = () => {
           {/* MADVERSE and Logo */}
           <div className="flex items-center gap-4">
             <div
-              className="px-4 py-2 text-sm text-white hover:text-white transition-colors cursor-pointer flex items-center gap-2"
+              className="px-4 py-2 text-sm text-white hover:text-white transition-colors cursor-pointer flex items-center gap-2 relative"
               onClick={() => {
                 if (location.pathname !== "/") {
                   navigate("/");
@@ -82,48 +84,38 @@ const Navigation = () => {
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
               }}
+              onMouseEnter={() => setIsLogoHovered(true)}
+              onMouseLeave={() => setIsLogoHovered(false)}
             >
-              {location.pathname !== "/" ? (
+              {/* Arrow - show on hover for non-home pages */}
+              <motion.div
+                initial={{ opacity: 0, rotate: 180 }}
+                animate={{ 
+                  opacity: location.pathname !== "/" && isLogoHovered ? 1 : 0,
+                  rotate: location.pathname !== "/" && isLogoHovered ? 0 : 180,
+                }}
+                transition={{ duration: 0.2 }}
+                className="absolute"
+              >
                 <ArrowLeft size={24} className="text-white" />
-              ) : (
-                'MADVERSE'
-              )}
+              </motion.div>
+              
+              {/* MADVERSE Text - hide on hover for non-home pages */}
+              <motion.span
+                initial={{ opacity: 1 }}
+                animate={{ 
+                  opacity: location.pathname !== "/" && isLogoHovered ? 0 : 1,
+                }}
+                transition={{ duration: 0.2 }}
+              >
+                MADVERSE
+              </motion.span>
             </div>
           </div>
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-1 ml-auto">
-            <div className="relative group">
-              <button 
-                onClick={(e) => {
-                  e.preventDefault();
-                  navigate("/#showcase");
-                }}
-                className="px-4 py-2 text-sm text-white hover:text-white transition-colors flex items-center gap-1">
-                {t('activities')}
-                <ChevronDown size={16} className="group-hover:rotate-180 transition-transform" />
-              </button>
-              <div className="absolute left-0 mt-0 w-48 bg-background border border-border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 py-2">
-                <Link to="/activity/youth" className="block px-4 py-2 text-sm text-white hover:text-white hover:bg-secondary transition-colors">
-                  {t('youth')}
-                </Link>
-                <Link to="/activity/arts" className="block px-4 py-2 text-sm text-white hover:text-white hover:bg-secondary transition-colors">
-                  {t('arts')}
-                </Link>
-                <Link to="/activity/culture" className="block px-4 py-2 text-sm text-white hover:text-white hover:bg-secondary transition-colors">
-                  {t('culture')}
-                </Link>
-                <Link to="/activity/sports" className="block px-4 py-2 text-sm text-white hover:text-white hover:bg-secondary transition-colors">
-                  {t('sports')}
-                </Link>
-                <Link to="/activity/exhibition" className="block px-4 py-2 text-sm text-white hover:text-white hover:bg-secondary transition-colors">
-                  {t('exhibition')}
-                </Link>
-                <Link to="/activity/volunteering" className="block px-4 py-2 text-sm text-white hover:text-white hover:bg-secondary transition-colors">
-                  {t('volunteering')}
-                </Link>
-              </div>
-            </div>
+            <ActivitiesDropdown />
             <Link
               to="/about"
               className="px-4 py-2 text-sm text-white hover:text-white transition-colors"

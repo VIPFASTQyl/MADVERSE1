@@ -2,8 +2,8 @@ import Navigation from "@/components/Navigation";
 import HeroSection from "@/components/HeroSection";
 import TrustMarquee from "@/components/TrustMarquee";
 import FeatureSection from "@/components/FeatureSection";
-import ProgramsCarousel3D from "@/components/ProgramsCarousel3D";
 import ScrollingText from "@/components/ScrollingText";
+import CurvedLoop from "@/components/CurvedLoop";
 import FlowingMenu from "@/components/FlowingMenu";
 import TabsSection from "@/components/TabsSection";
 import CTASection from "@/components/CTASection";
@@ -134,9 +134,16 @@ const Index = () => {
         reversed
       />
 
-      <ProgramsCarousel3D />
-
       <ScrollingText />
+
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '-115px', paddingBottom: '200px' }}>
+        <CurvedLoop 
+          marqueeText="MADVERSE Organization"
+          speed={1}
+          curveAmount={400}
+          interactive={false}
+        />
+      </div>
 
       <div style={{ height: '600px' }}>
         <FlowingMenu 

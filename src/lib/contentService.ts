@@ -486,11 +486,11 @@ export const getAllContent = async () => {
 let contentCache: { [key: string]: { data: WebContent[]; timestamp: number } } = {};
 const CONTENT_CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
-export const getContentByLanguage = async (language: string) => {
+export const getContentByLanguage = async (language: string, forceRefresh: boolean = false) => {
   try {
-    // Check cache first
+    // Check cache first (skip if forceRefresh is true)
     const cached = contentCache[language];
-    if (cached && Date.now() - cached.timestamp < CONTENT_CACHE_DURATION) {
+    if (!forceRefresh && cached && Date.now() - cached.timestamp < CONTENT_CACHE_DURATION) {
       console.log(`📦 Content served from cache for language: ${language}`);
       return cached.data;
     }
@@ -513,6 +513,12 @@ export const getContentByLanguage = async (language: string) => {
     console.error("Error fetching content by language:", error);
     return [];
   }
+};
+
+// Clear cache function
+export const clearContentCache = () => {
+  contentCache = {};
+  console.log("✨ Content cache cleared");
 };
 
 // Activity Content Functions

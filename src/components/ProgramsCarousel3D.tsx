@@ -157,7 +157,7 @@ const ProgramsCarousel3D = () => {
 
   // Both mobile and desktop: Same 3D fan layout, responsive sizing
   return (
-    <div className="w-full bg-black py-12 md:py-20">
+    <div className="w-full py-12 md:py-20">
       <style>{`
         .carousel-wrapper {
           position: relative;
@@ -214,7 +214,6 @@ const ProgramsCarousel3D = () => {
         .slick-slider {
           position: relative;
           display: block;
-          background: black;
           padding: 30px 0 60px 0;
           perspective: 1200px;
           height: 280px;
@@ -483,14 +482,14 @@ const ProgramsCarousel3D = () => {
 
       <div className="carousel-wrapper">
         <div className="carousel-header">
-          <h2>{language === "en" ? "Our Programs" : "Programet Tona"}</h2>
+          <h2>{language === "en" ? "Our Team" : "Ekipa"}</h2>
           <div className="divider"></div>
         </div>
 
         <div className="slick-slider">
           <div className="slick-list" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
             <div className="slick-track">
-              {programs.slice(0, 5).map((program, index) => (
+              {programs.slice(0, 3).map((program, index) => (
                 <div
                   key={program.id}
                   className={`slick-slide ${index === currentSlide ? "active" : ""}`}

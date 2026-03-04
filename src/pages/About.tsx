@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { getContentByLanguage } from "@/lib/contentService";
-import TabsSection from "@/components/TabsSection";
+import ProgramsCarousel3D from "@/components/ProgramsCarousel3D";
 
 const About = () => {
   const { t, language } = useLanguage();
@@ -18,12 +18,14 @@ const About = () => {
   const [liquidEtherFailed, setLiquidEtherFailed] = useState(false);
   
   
-  // Initialize with translation fallbacks to show content immediately
+  // Initialize with empty state - will load from database
   const [aboutContent, setAboutContent] = useState<any>({
-    whatTitle: t("whatIsMadverse"),
-    whatDesc: t("whatIsMadverseDescAbout"),
-    feelTitle: t("feelCulture"),
-    feelDesc: t("feelCultureDetail"),
+    whatTitle: "",
+    whatDesc: "",
+    ideaTitle: "",
+    ideaDesc: "",
+    goalsTitle: "",
+    goalsDesc: "",
   });
   const [teamMembers, setTeamMembers] = useState<any[]>([]);
 
@@ -31,22 +33,28 @@ const About = () => {
     const fetchContent = async () => {
       try {
         console.log("Fetching About content for language:", language);
-        const content = await getContentByLanguage(language);
+        // Force refresh to get latest data from Supabase
+        const content = await getContentByLanguage(language, true);
         console.log("Fetched About content:", content);
         
-        // Fetch about sections
+        // Fetch about sections from database
         const whatTitle = content.find((item) => item.key === "about_whatismadverse_title");
         const whatDesc = content.find((item) => item.key === "about_whatismadverse_desc");
-        const feelTitle = content.find((item) => item.key === "about_feelculture_title");
-        const feelDesc = content.find((item) => item.key === "about_feelculture_desc");
+        const ideaTitle = content.find((item) => item.key === "about_idea_title");
+        const ideaDesc = content.find((item) => item.key === "about_idea_desc");
+        const goalsTitle = content.find((item) => item.key === "about_goals_title");
+        const goalsDesc = content.find((item) => item.key === "about_goals_desc");
         
-        console.log("About sections found:", { whatTitle, whatDesc, feelTitle, feelDesc });
+        console.log("About sections found:", { whatTitle, whatDesc, ideaTitle, ideaDesc, goalsTitle, goalsDesc });
         
+        // Set content from database
         setAboutContent({
-          whatTitle: whatTitle?.content || t("whatIsMadverse"),
-          whatDesc: whatDesc?.content || t("whatIsMadverseDescAbout"),
-          feelTitle: feelTitle?.content || t("feelCulture"),
-          feelDesc: feelDesc?.content || t("feelCultureDetail"),
+          whatTitle: whatTitle?.content || "",
+          whatDesc: whatDesc?.content || "",
+          ideaTitle: ideaTitle?.content || "",
+          ideaDesc: ideaDesc?.content || "",
+          goalsTitle: goalsTitle?.content || "",
+          goalsDesc: goalsDesc?.content || "",
         });
         
         // Fetch team members
@@ -76,19 +84,6 @@ const About = () => {
         setTeamMembers(members);
       } catch (error) {
         console.error("Error fetching content:", error);
-        // Fallback to translation keys
-        setAboutContent({
-          whatTitle: t("whatIsMadverse"),
-          whatDesc: t("whatIsMadverseDescAbout"),
-          feelTitle: t("feelCulture"),
-          feelDesc: t("feelCultureDetail"),
-        });
-        
-        setTeamMembers([
-          { key: "klest", name: t("klest"), title: t("klestTitleAbout"), bio: t("klestDescAbout"), image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80" },
-          { key: "guri", name: t("guri"), title: t("guriTitleAbout"), bio: t("guriDescAbout"), image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80" },
-          { key: "erion", name: t("erion"), title: t("erionTitleAbout"), bio: t("erionDescAbout"), image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80" },
-        ]);
       }
     };
 
@@ -148,7 +143,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* Culture You Can Feel and Interact Section */}
+      {/* The Idea Behind MADVERSE Section */}
       <section className="py-24 lg:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -159,18 +154,39 @@ const About = () => {
             className="max-w-3xl"
           >
             <h2 className="text-4xl lg:text-5xl font-bold mb-8 text-left">
-              {aboutContent.feelTitle}
+              {aboutContent.ideaTitle}
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-8 text-left whitespace-pre-line">
-              {aboutContent.feelDesc}
+              {aboutContent.ideaDesc}
             </p>
             <div className="w-full h-px bg-white mb-16"></div>
           </motion.div>
         </div>
       </section>
 
-      {/* Team Members Section */}
-      <TabsSection />
+      {/* Our Goals Section */}
+      <section className="py-24 lg:py-32">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="max-w-3xl"
+          >
+            <h2 className="text-4xl lg:text-5xl font-bold mb-8 text-left">
+              {aboutContent.goalsTitle}
+            </h2>
+            <p className="text-lg text-muted-foreground leading-relaxed mb-8 text-left whitespace-pre-line">
+              {aboutContent.goalsDesc}
+            </p>
+            <div className="w-full h-px bg-white mb-16"></div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Programs Section */}
+      <ProgramsCarousel3D />
 
       {/* Partners Section */}
       <TrustMarquee />
