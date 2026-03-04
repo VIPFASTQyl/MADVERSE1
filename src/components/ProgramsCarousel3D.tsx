@@ -1,58 +1,38 @@
 import { useEffect, useState, useRef } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getActivitiesByLanguage } from "@/lib/activityService";
-import { ChevronLeft, ChevronRight, Users } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface Program {
   id: string;
   title: string;
   category: string;
   image: string;
-  currentParticipants: number;
-  maxParticipants: number;
+  role: string;
 }
 
 // Demo programs shown immediately
 const getDemoPrograms = (language: string): Program[] => [
   {
     id: "demo-1",
-    title: language === "en" ? "Youth Development" : "Zhvillimi i Të Rinjve",
-    category: language === "en" ? "Youth" : "Të Rinj",
-    image: "/activity-youth.svg",
-    currentParticipants: 24,
-    maxParticipants: 50,
+    title: language === "en" ? "Klest" : "Klest",
+    category: language === "en" ? "Team" : "Ekipa",
+    image: "/team-klest.png",
+    role: language === "en" ? "Founder" : "Themelues",
   },
   {
     id: "demo-2",
-    title: language === "en" ? "Arts Workshop" : "Punëtori Arti",
-    category: language === "en" ? "Arts" : "Arti",
-    image: "/activity-arts.svg",
-    currentParticipants: 18,
-    maxParticipants: 40,
+    title: language === "en" ? "Guri" : "Guri",
+    category: language === "en" ? "Team" : "Ekipa",
+    image: "/team-guri.png",
+    role: language === "en" ? "Co-Founder" : "Bashkë-Themelues",
   },
   {
     id: "demo-3",
-    title: language === "en" ? "Cultural Exchange" : "Këmbimi Kulturor",
-    category: language === "en" ? "Culture" : "Kultura",
-    image: "/activity-culture.svg",
-    currentParticipants: 32,
-    maxParticipants: 60,
-  },
-  {
-    id: "demo-4",
-    title: language === "en" ? "Sports Academy" : "Akademia e Sportit",
-    category: language === "en" ? "Sports" : "Sporti",
-    image: "/activity-sports.svg",
-    currentParticipants: 45,
-    maxParticipants: 80,
-  },
-  {
-    id: "demo-5",
-    title: language === "en" ? "Community Service" : "Shërbim Komunitar",
-    category: language === "en" ? "Volunteering" : "Vullnetarizëm",
-    image: "/activity-volunteering.svg",
-    currentParticipants: 36,
-    maxParticipants: 100,
+    title: language === "en" ? "Erion" : "Erion",
+    category: language === "en" ? "Team" : "Ekipa",
+    image: "/team-erion.png",
+    role: language === "en" ? "Manager" : "Menaxher",
   },
 ];
 
@@ -81,8 +61,7 @@ const ProgramsCarousel3D = () => {
           title: activity.title,
           category: activity.category,
           image: activity.image_url || "/activity-" + (activity.category?.toLowerCase() || "youth") + ".svg",
-          currentParticipants: activity.current_participants || 0,
-          maxParticipants: activity.max_participants || 50,
+          role: activity.role || activity.category || "Member",
         }));
         setPrograms(mappedPrograms);
       }
@@ -467,10 +446,30 @@ const ProgramsCarousel3D = () => {
           gap: 4px;
         }
 
+        .slide-role {
+          font-size: 12px;
+          color: #ffffff;
+          padding: 6px 12px;
+          background: rgba(6, 182, 212, 0.2);
+          border: 1.5px solid rgba(6, 182, 212, 0.6);
+          border-radius: 8px;
+          margin: 0;
+          font-weight: 600;
+          letter-spacing: 0.5px;
+          text-transform: uppercase;
+          width: fit-content;
+        }
+
         @media (min-width: 768px) {
           .slide-stats {
             font-size: 14px;
             gap: 8px;
+          }
+
+          .slide-role {
+            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 10px;
           }
 
           .slide-stats svg {
@@ -514,10 +513,7 @@ const ProgramsCarousel3D = () => {
                     <div className="slide-content-inner">
                       <h3 className="slide-title">{program.title}</h3>
                       <div className="slide-stats">
-                        <Users size={14} className="text-white md:w-5 md:h-5" />
-                        <span>
-                          {program.currentParticipants}/{program.maxParticipants}
-                        </span>
+                        <p className="slide-role">{program.role}</p>
                       </div>
                     </div>
                   </div>
