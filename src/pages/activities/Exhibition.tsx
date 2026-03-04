@@ -51,15 +51,6 @@ const Exhibition = () => {
       imageAlt: "Exhibition visitors and interaction",
       reversed: true,
     },
-    {
-      title: "Inspiring New Perspectives",
-      description:
-        "Through carefully curated exhibitions, we challenge perspectives and inspire new ways of thinking. Each exhibition tells stories, explores themes, and invites audiences to look at the world differently. We believe exhibitions have the power to educate, inspire, and transform.",
-      image:
-        "https://images.unsplash.com/photo-1578926078328-123f5474f1d3?w=800&h=600&fit=crop",
-      imageAlt: "Exhibition inspiration",
-      reversed: false,
-    },
   ];
 
   return (
