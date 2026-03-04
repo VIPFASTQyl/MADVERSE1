@@ -11,7 +11,6 @@ import { ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { getContentByLanguage } from "@/lib/contentService";
 import ProgramsCarousel3D from "@/components/ProgramsCarousel3D";
-import ComplexProfileCard from "@/components/ComplexProfileCard";
 
 const About = () => {
   const { t, language } = useLanguage();
@@ -28,7 +27,6 @@ const About = () => {
     goalsTitle: "",
     goalsDesc: "",
   });
-  const [teamMembers, setTeamMembers] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -57,29 +55,6 @@ const About = () => {
           goalsTitle: goalsTitle?.content || "",
           goalsDesc: goalsDesc?.content || "",
         });
-        
-        // Fetch team members
-        const teamContent = content.filter((item) => item.section === "team");
-        console.log("Team content found:", teamContent);
-        
-        const members = ["klest", "guri", "erion"].map((memberKey) => {
-          const nameItem = teamContent.find((item) => item.key === `team_${memberKey}_name`);
-          const titleItem = teamContent.find((item) => item.key === `team_${memberKey}_title`);
-          const bioItem = teamContent.find((item) => item.key === `team_${memberKey}_bio`);
-          const imageItem = teamContent.find((item) => item.key === `team_${memberKey}_image`);
-          
-          console.log(`Team member ${memberKey}:`, { nameItem, titleItem, bioItem, imageItem });
-          
-          return {
-            key: memberKey,
-            name: nameItem?.content || (memberKey === "klest" ? "Klest" : memberKey === "guri" ? "Guri" : "Erion"),
-            title: titleItem?.content || "",
-            bio: bioItem?.content || "",
-            image: imageItem?.content || `/team-${memberKey}.png`,
-          };
-        });
-        
-        setTeamMembers(members);
       } catch (error) {
         console.error("Error fetching content:", error);
       }
@@ -182,42 +157,6 @@ const About = () => {
           </motion.div>
         </div>
       </section>
-
-      {/* Our Team Section */}
-      {teamMembers.length > 0 && (
-        <section className="py-24 lg:py-32">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl lg:text-5xl font-bold mb-4">
-                {language === "en" ? "Our Team" : "Ekipi Ynë"}
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                {language === "en" 
-                  ? "Meet the passionate people behind MADVERSE" 
-                  : "Takoni njerëzit pasionantë prapa MADVERSE"}
-              </p>
-            </motion.div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {teamMembers.map((member, index) => (
-                <ComplexProfileCard
-                  key={member.key}
-                  image={member.image}
-                  name={member.name}
-                  position={member.title}
-                  description={member.bio}
-                  index={index}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* Programs Section */}
       <ProgramsCarousel3D />
