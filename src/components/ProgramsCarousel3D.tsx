@@ -214,17 +214,17 @@ const ProgramsCarousel3D = () => {
         .slick-slider {
           position: relative;
           display: block;
-          padding: 30px 0 60px 0;
+          padding: 20px 0 40px 0;
           perspective: 1200px;
-          height: 280px;
+          height: 320px;
           touch-action: pan-y;
         }
 
         @media (min-width: 768px) {
           /* push the carousel lower so hover lift doesn't overlap the header */
           .slick-slider {
-            padding: 60px 0 128px 0;
-            height: 384px;
+            padding: 40px 0 100px 0;
+            height: 600px;
           }
         }
 
@@ -251,8 +251,8 @@ const ProgramsCarousel3D = () => {
 
         .slick-slide {
           position: relative;
-          width: 200px;
-          height: 240px;
+          width: 140px;
+          height: 280px;
           margin: 0;
           padding: 0;
           transform-style: preserve-3d;
@@ -262,8 +262,8 @@ const ProgramsCarousel3D = () => {
 
         @media (min-width: 768px) {
           .slick-slide {
-            width: 384px;
-            height: 384px;
+            width: 240px;
+            height: 520px;
           }
         }
 
@@ -280,7 +280,7 @@ const ProgramsCarousel3D = () => {
 
         .slick-slide:nth-child(1) {
           transform: rotateY(-20deg) rotateZ(-5deg);
-          margin-right: -40px;
+          margin-right: -20px;
           opacity: 0.5;
           z-index: 1;
         }
@@ -288,13 +288,13 @@ const ProgramsCarousel3D = () => {
         @media (min-width: 768px) {
           .slick-slide:nth-child(1) {
             transform: rotateY(-28deg) rotateZ(-8deg);
-            margin-right: -80px;
+            margin-right: -40px;
           }
         }
 
         .slick-slide:nth-child(2) {
           transform: rotateY(-8deg) rotateZ(-2deg);
-          margin-right: -30px;
+          margin-right: -15px;
           opacity: 0.75;
           z-index: 2;
         }
@@ -302,26 +302,26 @@ const ProgramsCarousel3D = () => {
         @media (min-width: 768px) {
           .slick-slide:nth-child(2) {
             transform: rotateY(-12deg) rotateZ(-3deg);
-            margin-right: -60px;
+            margin-right: -30px;
           }
         }
 
         .slick-slide:nth-child(3) {
           transform: rotateY(0deg) rotateZ(0deg);
-          margin: 0 -20px;
+          margin: 0 -15px;
           opacity: 1;
           z-index: 5;
         }
 
         @media (min-width: 768px) {
           .slick-slide:nth-child(3) {
-            margin: 0 -40px;
+            margin: 0 -30px;
           }
         }
 
         .slick-slide:nth-child(4) {
           transform: rotateY(8deg) rotateZ(2deg);
-          margin-left: -30px;
+          margin-left: -15px;
           opacity: 0.75;
           z-index: 2;
         }
@@ -329,13 +329,13 @@ const ProgramsCarousel3D = () => {
         @media (min-width: 768px) {
           .slick-slide:nth-child(4) {
             transform: rotateY(12deg) rotateZ(3deg);
-            margin-left: -60px;
+            margin-left: -30px;
           }
         }
 
         .slick-slide:nth-child(5) {
           transform: rotateY(20deg) rotateZ(5deg);
-          margin-left: -40px;
+          margin-left: -20px;
           opacity: 0.5;
           z-index: 1;
         }
@@ -343,7 +343,7 @@ const ProgramsCarousel3D = () => {
         @media (min-width: 768px) {
           .slick-slide:nth-child(5) {
             transform: rotateY(28deg) rotateZ(8deg);
-            margin-left: -80px;
+            margin-left: -40px;
           }
         }
 
@@ -351,32 +351,34 @@ const ProgramsCarousel3D = () => {
           position: relative;
           width: 100%;
           height: 100%;
-          border-radius: 12px;
+          border-radius: 16px;
           overflow: hidden;
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 30px rgba(228, 79, 10, 0.05);
           display: flex;
           flex-direction: column;
           will-change: transform, box-shadow;
           transform-style: preserve-3d;
           perspective: 1000px;
           transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+          border: 1px solid rgba(228, 79, 10, 0.1);
         }
 
         @media (min-width: 768px) {
           .slide-content {
-            border-radius: 16px;
+            border-radius: 20px;
           }
         }
 
         .slide-content:hover {
-          transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-6px) scale(1.05);
-          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15), 0 20px 60px rgba(0, 0, 0, 0.2), 0 40px 100px rgba(0, 0, 0, 0.3);
+          transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-8px) scale(1.08);
+          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15), 0 20px 60px rgba(0, 0, 0, 0.3), 0 40px 120px rgba(0, 0, 0, 0.4), 0 0 60px rgba(228, 79, 10, 0.4);
           z-index: 20;
+          border-color: rgba(228, 79, 10, 0.5);
         }
 
         @media (min-width: 768px) {
           .slide-content:hover {
-            transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-8px) scale(1.05);
+            transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-10px) scale(1.08);
           }
         }
 
@@ -396,33 +398,33 @@ const ProgramsCarousel3D = () => {
         }
 
         .slide-content-inner {
-          padding: 12px;
+          padding: 10px;
           flex: 1;
           display: flex;
           flex-direction: column;
           justify-content: flex-end;
           position: relative;
           z-index: 5;
-          background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.5), transparent);
+          background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.7), rgba(0,0,0,0.2), transparent);
         }
 
         @media (min-width: 768px) {
           .slide-content-inner {
-            padding: 24px;
+            padding: 16px;
           }
         }
 
         .slide-category-top {
           position: absolute;
-          top: 12px;
-          right: 12px;
+          top: 6px;
+          right: 6px;
           z-index: 6;
         }
 
         @media (min-width: 768px) {
           .slide-category-top {
-            top: 24px;
-            right: 24px;
+            top: 10px;
+            right: 10px;
           }
         }
 
@@ -445,31 +447,40 @@ const ProgramsCarousel3D = () => {
         }
 
         .slide-title {
-          font-size: 14px;
-          font-weight: 600;
+          font-size: 12px;
+          font-weight: 700;
           color: #fff;
-          margin: 0 0 6px 0;
-          line-height: 1.3;
+          margin: 0 0 3px 0;
+          line-height: 1.2;
+          text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
         }
 
         @media (min-width: 768px) {
           .slide-title {
-            font-size: 20px;
-            margin: 0 0 12px 0;
+            font-size: 16px;
+            margin: 0 0 8px 0;
+            font-weight: 700;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+            line-height: 1.3;
           }
         }
 
         .slide-stats {
-          font-size: 11px;
-          color: #fff;
+          font-size: 10px;
+          color: #e0e0e0;
           display: flex;
           align-items: center;
-          gap: 4px;
+          gap: 3px;
+          font-weight: 500;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
         }
 
         @media (min-width: 768px) {
           .slide-stats {
-            font-size: 14px;
+            font-size: 12px;
+            gap: 5px;
+          }
+        }
             gap: 8px;
           }
 
