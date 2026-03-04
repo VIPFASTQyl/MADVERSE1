@@ -129,6 +129,30 @@ const Navigation = () => {
               {t('contact')}
             </Link>
 
+            {/* Language Switcher */}
+            <div className="flex items-center gap-2 ml-4">
+              <button
+                onClick={() => setLanguage('al')}
+                className={`px-3 py-1 text-sm transition-all border border-white rounded ${
+                  language === 'al'
+                    ? 'bg-white text-black font-semibold'
+                    : 'text-white hover:bg-white/10'
+                }`}
+              >
+                ALB
+              </button>
+              <button
+                onClick={() => setLanguage('en')}
+                className={`px-3 py-1 text-sm transition-all border border-white rounded ${
+                  language === 'en'
+                    ? 'bg-white text-black font-semibold'
+                    : 'text-white hover:bg-white/10'
+                }`}
+              >
+                ENG
+              </button>
+            </div>
+
             {/* Auth Buttons */}
             <div className="flex items-center gap-4 ml-4">
               {isSignedIn ? (
