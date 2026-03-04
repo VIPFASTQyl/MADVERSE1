@@ -13,8 +13,10 @@ const partners = [
 ];
 
 const TrustMarquee = () => {
+  const duplicatedPartners = [...partners, ...partners, ...partners];
+  
   return (
-    <section className="py-12 border-y border-border/50 overflow-hidden">
+    <section className="py-16 border-y border-border/50 overflow-hidden">
       {/* Marquee Container */}
       <div className="relative">
         {/* Gradient Fade Left */}
@@ -22,16 +24,24 @@ const TrustMarquee = () => {
         {/* Gradient Fade Right */}
         <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent z-10" />
 
-        <div className="flex marquee pause-animation">
-          {[...partners, ...partners].map((partner, i) => (
+        <motion.div 
+          className="flex gap-12"
+          animate={{ x: [-1000, 0] }}
+          transition={{
+            duration: 60,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        >
+          {duplicatedPartners.map((partner, i) => (
             <div
               key={i}
-              className="flex-shrink-0 mx-8 w-24 h-10 bg-muted/50 rounded-lg flex items-center justify-center overflow-hidden"
+              className="flex-shrink-0 w-48 h-24 bg-muted/50 rounded-lg flex items-center justify-center overflow-hidden hover:bg-muted/80 transition-colors"
             >
-              <img src={partner} alt={`Partner ${i + 1}`} className="w-full h-full object-contain" />
+              <img src={partner} alt={`Partner ${i + 1}`} className="w-full h-full object-contain p-2" />
             </div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
