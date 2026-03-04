@@ -32,7 +32,7 @@ const Login = () => {
             appearance={{
               elements: {
                 rootBox: "w-full box-border",
-                card: "bg-black border-2 border-white rounded-lg shadow-2xl p-8 w-full box-border",
+                card: "bg-black border-2 border-white rounded-lg shadow-2xl p-8 w-full box-border pt-[130px]",
                 headerTitle: "text-white text-2xl font-bold",
                 headerSubtitle: "text-slate-400 text-sm",
                 socialButtonsBlockButton: "bg-transparent hover:bg-white/5 text-white border border-white/30 hover:border-white transition-all",
