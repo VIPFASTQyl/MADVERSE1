@@ -70,13 +70,13 @@ const About = () => {
           
           return {
             key: memberKey,
-            name: nameItem?.content || "",
+            name: nameItem?.content || (memberKey === "klest" ? "Klest" : memberKey === "guri" ? "Guri" : "Erion"),
             title: titleItem?.content || "",
             bio: bioItem?.content || "",
             image: memberKey === "klest" 
               ? "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80"
               : memberKey === "guri"
-              ? "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80"
+              ? "/assets/guri-card.svg"
               : "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80",
           };
         });

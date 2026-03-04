@@ -27,7 +27,7 @@ const ComplexProfileCard = ({
 }: ComplexProfileCardProps) => {
   const isMobile = useIsMobile();
 
-  // Mobile version - only show name
+  // Image-only version (for team showcase)
   if (isMobile) {
     return (
       <motion.div
