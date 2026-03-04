@@ -1,0 +1,18 @@
+{
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "devCommand": "npm run dev",
+  "env": {
+    "VITE_API_URL": "@vite_api_url"
+  },
+  "routes": [
+    {
+      "src": "/api/.*",
+      "status": 404
+    },
+    {
+      "src": "/.*",
+      "dest": "/index.html"
+    }
+  ]
+}
