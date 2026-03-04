@@ -135,7 +135,6 @@ const Youth = () => {
           displayItemNumbering={false}
           logoUrl="/MADVESERlong.png"
           closeOnClickAway={true}
-          showLanguageSwitcher={true}
         />
       )}
 

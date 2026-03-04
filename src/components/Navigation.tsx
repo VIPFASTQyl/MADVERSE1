@@ -335,6 +335,39 @@ const Navigation = () => {
                   </div>
                 )}
               </div>
+
+              {/* Language Switcher Mobile */}
+              <div className="pt-4 border-t border-transparent space-y-2">
+                <h3 className="text-sm font-medium text-white">{t('language')}</h3>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => {
+                      setLanguage('en');
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className={`flex-1 py-2 px-3 rounded text-sm transition-colors ${
+                      language === 'en'
+                        ? 'bg-yellow-400 text-black font-semibold'
+                        : 'border border-white text-white hover:bg-white/10'
+                    }`}
+                  >
+                    ENG
+                  </button>
+                  <button
+                    onClick={() => {
+                      setLanguage('al');
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className={`flex-1 py-2 px-3 rounded text-sm transition-colors ${
+                      language === 'al'
+                        ? 'bg-yellow-400 text-black font-semibold'
+                        : 'border border-white text-white hover:bg-white/10'
+                    }`}
+                  >
+                    ALB
+                  </button>
+                </div>
+              </div>
             </div>
           </motion.div>
         )}

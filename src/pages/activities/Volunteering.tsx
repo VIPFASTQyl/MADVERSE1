@@ -67,7 +67,6 @@ const Volunteering = () => {
           displayItemNumbering={false}
           logoUrl="/MADVESERlong.png"
           closeOnClickAway={true}
-          showLanguageSwitcher={true}
         />
       )}
       <div className="fixed inset-0 top-0 z-0 h-screen w-full pointer-events-none">

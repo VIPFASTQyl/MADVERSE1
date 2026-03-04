@@ -469,38 +469,6 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                 </ul>
               </div>
             )}
-
-            {showLanguageSwitcher && (
-              <div className="sm-language mt-auto pt-8 flex flex-col gap-3 border-t border-gray-200" aria-label="Language switcher">
-                <h3 className="sm-language-title m-0 text-base font-medium [color:var(--sm-accent,#ff0000)]">Language</h3>
-                <ul className="sm-language-list list-none m-0 p-0 flex flex-row items-center gap-4 flex-wrap" role="list">
-                  <li key="lang-en" className="sm-language-item">
-                    <button
-                      onClick={() => {
-                        setLanguage('en');
-                        closeMenu();
-                      }}
-                      className="sm-language-link text-[1.2rem] font-medium no-underline relative inline-block py-[2px] transition-[color,opacity] duration-300 ease-linear cursor-pointer border-0 bg-transparent"
-                      style={{ color: language === 'en' ? 'var(--sm-accent, #ff0000)' : '#111' }}
-                    >
-                      ENG
-                    </button>
-                  </li>
-                  <li key="lang-al" className="sm-language-item">
-                    <button
-                      onClick={() => {
-                        setLanguage('al');
-                        closeMenu();
-                      }}
-                      className="sm-language-link text-[1.2rem] font-medium no-underline relative inline-block py-[2px] transition-[color,opacity] duration-300 ease-linear cursor-pointer border-0 bg-transparent"
-                      style={{ color: language === 'al' ? 'var(--sm-accent, #ff0000)' : '#111' }}
-                    >
-                      ALB
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            )}
           </div>
         </aside>
       </div>
