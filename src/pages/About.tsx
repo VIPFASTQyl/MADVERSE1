@@ -157,39 +157,6 @@ const About = () => {
         </div>
       </section>
 
-      {/* Team Members Section */}
-      {teamMembers.length > 0 && (
-        <section className="py-24 lg:py-32 bg-black/30">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="mb-12"
-            >
-              <h2 className="text-4xl lg:text-5xl font-bold mb-8 text-left text-white">
-                {language === "en" ? "Our Team" : "Ekipa Jonë"}
-              </h2>
-              <div className="w-24 h-1 bg-red-500"></div>
-            </motion.div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {teamMembers.map((member, index) => (
-                <ComplexProfileCard
-                  key={member.key}
-                  image={member.image}
-                  name={member.name}
-                  position={member.title}
-                  description={member.bio}
-                  index={index}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
       {/* Programs Section */}
       <ProgramsCarousel3D />
 
