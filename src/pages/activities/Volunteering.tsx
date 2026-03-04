@@ -42,24 +42,6 @@ const Volunteering = () => {
       imageAlt: "Community volunteering",
       reversed: false,
     },
-    {
-      title: "Building Stronger Communities",
-      description:
-        "When people volunteer, they strengthen the social fabric of communities. Our programs connect volunteers with causes they care about, creating networks of support and driving sustainable change. Volunteering builds connections, fosters empathy, and reminds us of our shared humanity.",
-      image:
-        "https://images.unsplash.com/photo-1559027615-cd2628902d4a?w=800&h=600&fit=crop",
-      imageAlt: "Community building and support",
-      reversed: true,
-    },
-    {
-      title: "Growing While Giving",
-      description:
-        "Volunteering is a two-way street. While you're helping others, you're also developing new skills, expanding your network, and growing personally. Our programs are designed to provide meaningful experiences that enrich both volunteers and the communities they serve.",
-      image:
-        "https://images.unsplash.com/photo-1559027615-cd2628902d4a?w=800&h=600&fit=crop",
-      imageAlt: "Personal growth through volunteering",
-      reversed: false,
-    },
   ];
 
   return (

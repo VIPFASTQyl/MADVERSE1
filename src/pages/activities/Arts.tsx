@@ -51,15 +51,6 @@ const Arts = () => {
       imageAlt: "Cultural arts and traditions",
       reversed: true,
     },
-    {
-      title: "Community Through Art",
-      description:
-        "Art brings communities together. Our collaborative projects foster connection, understanding, and collective growth. From community murals to public performances, we believe in art's transformative power to build stronger, more connected communities.",
-      image:
-        "https://images.unsplash.com/photo-1578926078328-123f5474f1d3?w=800&h=600&fit=crop",
-      imageAlt: "Community art projects",
-      reversed: false,
-    },
   ];
 
   return (

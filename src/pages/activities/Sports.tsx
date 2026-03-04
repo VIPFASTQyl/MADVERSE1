@@ -51,15 +51,6 @@ const Sports = () => {
       imageAlt: "Team sports and collaboration",
       reversed: true,
     },
-    {
-      title: "Excellence & Personal Growth",
-      description:
-        "We believe every athlete has untapped potential. Our coaching and training programs are designed to unlock that potential and push boundaries. From grassroots development to elite training, we support athletes at every stage of their journey toward excellence.",
-      image:
-        "https://images.unsplash.com/photo-1517836357463-d25ddfcbf042?w=800&h=600&fit=crop",
-      imageAlt: "Athletic excellence and training",
-      reversed: false,
-    },
   ];
 
   return (

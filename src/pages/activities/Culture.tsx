@@ -42,24 +42,6 @@ const Culture = () => {
       imageAlt: "Cultural heritage and traditions",
       reversed: false,
     },
-    {
-      title: "Cross-Cultural Understanding",
-      description:
-        "In our diverse world, understanding different cultures is essential. We create platforms for people to learn from one another, celebrate differences, and build bridges across communities. Through cultural exchange programs and collaborative initiatives, we foster respect, empathy, and global citizenship.",
-      image:
-        "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=800&h=600&fit=crop",
-      imageAlt: "Cross-cultural collaboration",
-      reversed: true,
-    },
-    {
-      title: "Living Culture & Innovation",
-      description:
-        "Cultures evolve and adapt. We celebrate cultural continuity while embracing innovation and contemporary expressions. Our programs support cultural practitioners, artists, and community members who keep traditions alive while creating new forms of cultural expression.",
-      image:
-        "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=800&h=600&fit=crop",
-      imageAlt: "Cultural innovation",
-      reversed: false,
-    },
   ];
 
   return (
