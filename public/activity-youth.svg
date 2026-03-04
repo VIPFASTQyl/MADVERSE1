@@ -1,0 +1,13 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="youthGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FCF5AF;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#F0A533;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E44F0A;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#youthGradient)"/>
+  <text x="400" y="250" font-family="Arial, sans-serif" font-size="64" font-weight="bold" fill="#ffffff" text-anchor="middle">Youth</text>
+  <text x="400" y="330" font-family="Arial, sans-serif" font-size="28" fill="#ffffff" text-anchor="middle">Development Programs</text>
+  <text x="400" y="380" font-family="Arial, sans-serif" font-size="20" fill="rgba(255,255,255,0.8)" text-anchor="middle">MADVERSE</text>
+</svg>

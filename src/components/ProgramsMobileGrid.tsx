@@ -70,7 +70,7 @@ export default function ProgramsMobileGrid({ items = [], onItemClick }: Programs
                   {item.icon ? (
                     <div className="w-full h-full flex items-center justify-center">{item.icon}</div>
                   ) : (
-                    <img src={(item as any).image || '/Hero.svg'} alt={item.title} className="w-full h-full object-cover" />
+                    <img src={(item as any).image || '/activity-youth.svg'} alt={item.title} className="w-full h-full object-cover" />
                   )}
                 </div>
                 <div className="flex items-center justify-between">
