@@ -68,7 +68,9 @@ const ComplexProfileCard = ({
           <img
             src={image}
             alt={name}
-            className="w-full h-64 object-cover"
+            className="w-full h-96 object-cover object-center"
+            loading="eager"
+            decoding="sync"
           />
         </div>
 
