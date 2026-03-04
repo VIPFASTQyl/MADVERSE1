@@ -38,7 +38,7 @@ const Exhibition = () => {
       description:
         "Our exhibitions are platforms for artists, creators, and innovators to showcase their work. From emerging talents to established masters, we provide spaces that celebrate excellence, inspire audiences, and spark meaningful conversations about art, culture, and society.",
       image:
-        "https://images.unsplash.com/photo-1578926078328-123f5474f1d3?w=800&h=600&fit=crop",
+        "/Exhibition.jpg",
       imageAlt: "Art exhibition display",
       reversed: false,
     },
