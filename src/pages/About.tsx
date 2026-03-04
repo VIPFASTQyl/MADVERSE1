@@ -65,19 +65,16 @@ const About = () => {
           const nameItem = teamContent.find((item) => item.key === `team_${memberKey}_name`);
           const titleItem = teamContent.find((item) => item.key === `team_${memberKey}_title`);
           const bioItem = teamContent.find((item) => item.key === `team_${memberKey}_bio`);
+          const imageItem = teamContent.find((item) => item.key === `team_${memberKey}_image`);
           
-          console.log(`Team member ${memberKey}:`, { nameItem, titleItem, bioItem });
+          console.log(`Team member ${memberKey}:`, { nameItem, titleItem, bioItem, imageItem });
           
           return {
             key: memberKey,
             name: nameItem?.content || (memberKey === "klest" ? "Klest" : memberKey === "guri" ? "Guri" : "Erion"),
             title: titleItem?.content || "",
             bio: bioItem?.content || "",
-            image: memberKey === "klest" 
-              ? "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80"
-              : memberKey === "guri"
-              ? "/assets/guri-card.svg"
-              : "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80",
+            image: imageItem?.content || `/team-${memberKey}.png`,
           };
         });
         
