@@ -1,31 +1,16 @@
 import { motion } from "framer-motion";
-import { useLanguage } from "@/contexts/LanguageContext";
 
 const partners = [
   "/partner1.svg",
   "/partner2.svg",
-  "/partner3.svg",
-  "/partner4.svg",
-  "/partner5.svg",
-  "/partner6.svg",
-  "/partner7.svg",
-  "/partner8.svg",
   "/Partneri1.png"
 ];
 
 const TrustMarquee = () => {
-  const { language } = useLanguage();
   const duplicatedPartners = [...partners, ...partners, ...partners];
   
   return (
     <section className="py-16 border-y border-border/50 overflow-hidden">
-      {/* Title */}
-      <div className="text-center mb-12">
-        <h2 className="text-4xl lg:text-5xl font-bold text-white">
-          {language === "en" ? "Sponsors" : "Sponsorët"}
-        </h2>
-      </div>
-
       {/* Marquee Container */}
       <div className="relative flex justify-center">
         {/* Gradient Fade Left */}
@@ -45,9 +30,9 @@ const TrustMarquee = () => {
           {duplicatedPartners.map((partner, i) => (
             <div
               key={i}
-              className="flex-shrink-0 w-48 h-24 bg-muted/50 rounded-lg flex items-center justify-center overflow-hidden hover:bg-muted/80 transition-colors"
+              className="flex-shrink-0 w-48 h-24 flex items-center justify-center overflow-hidden"
             >
-              <img src={partner} alt={`Partner ${i + 1}`} className="w-full h-full object-contain p-2" />
+              <img src={partner} alt={`Partner ${i + 1}`} className="w-full h-full object-contain" />
             </div>
           ))}
         </motion.div>
