@@ -50,7 +50,7 @@ const Index = () => {
     { 
       text: 'Culture', 
       link: '/activity/culture', 
-      image: '/project-3.jpg'
+      image: '/Culture.jpg'
     },
     { 
       text: 'Volunteering', 

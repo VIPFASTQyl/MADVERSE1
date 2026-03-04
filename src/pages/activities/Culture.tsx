@@ -38,7 +38,7 @@ const Culture = () => {
       description:
         "Culture is the foundation of identity and community. Our cultural programs celebrate traditions, languages, and customs that define who we are. Through exhibitions, performances, and educational events, we work to preserve cultural heritage for future generations while maintaining its relevance today.",
       image:
-        "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=800&h=600&fit=crop",
+        "/Culture.jpg",
       imageAlt: "Cultural heritage and traditions",
       reversed: false,
     },
