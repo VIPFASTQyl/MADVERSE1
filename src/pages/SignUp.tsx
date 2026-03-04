@@ -26,9 +26,7 @@ const SignUp = () => {
         }}
       />
       
-      <Navigation />
-      
-      <div className="flex-1 flex items-center justify-center w-screen px-4 md:px-8 lg:px-16 pt-16 pb-12 overflow-y-auto overflow-x-visible relative z-20">
+      <div className="flex-1 flex items-center justify-center w-screen px-4 md:px-8 lg:px-16 pt-[50px] pb-[50px] overflow-y-auto overflow-x-visible relative z-20">
         <div className="w-full max-w-md">
           <ClerkSignUp 
             appearance={{
