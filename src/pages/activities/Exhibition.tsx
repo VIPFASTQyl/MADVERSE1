@@ -47,9 +47,9 @@ const Exhibition = () => {
       description:
         "Exhibitions create powerful connections between creators and the community. Through interactive displays, guided tours, and artist talks, we foster dialogue and understanding. Our goal is to make art accessible, thought-provoking, and transformative for everyone who experiences it.",
       image:
-        "https://images.unsplash.com/photo-1578926078328-123f5474f1d3?w=800&h=600&fit=crop",
+        "/Exhibition2nd.jpg",
       imageAlt: "Exhibition visitors and interaction",
-      reversed: true,
+      reversed: false,
     },
   ];
 
