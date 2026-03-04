@@ -3,7 +3,8 @@ import { supabase } from './supabaseClient';
 export interface TeamMember {
   id: string;
   name: string;
-  role: string;
+  role?: string;
+  description: string;
   title?: string;
   bio?: string;
   image_url?: string;
@@ -17,7 +18,7 @@ export const getTeamMembersByLanguage = async (language: string = 'en'): Promise
   try {
     const { data, error } = await supabase
       .from('team_members')
-      .select('id, name, role, title, bio, image_url, language')
+      .select('id, name, role, description, title, bio, image_url, language')
       .eq('language', language)
       .order('name', { ascending: true });
 
@@ -40,7 +41,7 @@ export const getAllTeamMembers = async (): Promise<TeamMember[]> => {
   try {
     const { data, error } = await supabase
       .from('team_members')
-      .select('id, name, role, title, bio, image_url, language')
+      .select('id, name, role, description, title, bio, image_url, language')
       .order('language', { ascending: true })
       .order('name', { ascending: true });
 
@@ -63,7 +64,7 @@ export const getTeamMemberByName = async (name: string, language: string = 'en')
   try {
     const { data, error } = await supabase
       .from('team_members')
-      .select('id, name, role, title, bio, image_url, language')
+      .select('id, name, role, description, title, bio, image_url, language')
       .eq('name', name)
       .eq('language', language)
       .single();

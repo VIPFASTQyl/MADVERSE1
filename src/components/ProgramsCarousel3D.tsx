@@ -8,7 +8,7 @@ interface Program {
   title: string;
   category: string;
   image: string;
-  role: string;
+  description: string;
 }
 
 // Demo programs shown immediately
@@ -18,21 +18,21 @@ const getDemoPrograms = (language: string): Program[] => [
     title: language === "en" ? "Klest" : "Klest",
     category: language === "en" ? "Team" : "Ekipa",
     image: "/team-klest.png",
-    role: language === "en" ? "Founder" : "Themelues",
+    description: language === "en" ? "Executive Director" : "Drejtori Ekzekutiv",
   },
   {
     id: "demo-2",
     title: language === "en" ? "Guri" : "Guri",
     category: language === "en" ? "Team" : "Ekipa",
     image: "/team-guri.png",
-    role: language === "en" ? "Co-Founder" : "Bashkë-Themelues",
+    description: language === "en" ? "Head of Finance" : "Drejtori i Financës",
   },
   {
     id: "demo-3",
     title: language === "en" ? "Erion" : "Erion",
     category: language === "en" ? "Team" : "Ekipa",
     image: "/team-erion.png",
-    role: language === "en" ? "Manager" : "Menaxher",
+    description: language === "en" ? "Researcher / Marketing" : "Kërkues / Marketing",
   },
 ];
 
@@ -61,7 +61,7 @@ const ProgramsCarousel3D = () => {
           title: activity.title,
           category: activity.category,
           image: activity.image_url || "/activity-" + (activity.category?.toLowerCase() || "youth") + ".svg",
-          role: activity.role || activity.category || "Member",
+          description: activity.description || activity.category || "Member",
         }));
         setPrograms(mappedPrograms);
       }
@@ -513,7 +513,7 @@ const ProgramsCarousel3D = () => {
                     <div className="slide-content-inner">
                       <h3 className="slide-title">{program.title}</h3>
                       <div className="slide-stats">
-                        <p className="slide-role">{program.role}</p>
+                        <p className="slide-role">{program.description}</p>
                       </div>
                     </div>
                   </div>
