@@ -43,6 +43,6 @@ VALUES
   (gen_random_uuid(), 'team_erion_image', 'Erion - Fotografia', '/team-erion.png', 'team', 'al', NOW(), NOW());
 
 -- Step 4: Verify the data was inserted correctly
-SELECT key, content, language FROM web_content1 
+SELECT id, key, title, content, section, language, created_at FROM web_content1 
 WHERE key LIKE 'team_%' 
 ORDER BY language, key;
