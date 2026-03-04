@@ -18,6 +18,10 @@ CREATE TABLE IF NOT EXISTS team_members (
   UNIQUE(name, language)
 );
 
+-- Step 1b: Add description column if it doesn't exist
+ALTER TABLE team_members 
+ADD COLUMN IF NOT EXISTS description TEXT NOT NULL DEFAULT 'Team Member';
+
 -- Step 2: Enable RLS on team_members
 ALTER TABLE team_members ENABLE ROW LEVEL SECURITY;
 
