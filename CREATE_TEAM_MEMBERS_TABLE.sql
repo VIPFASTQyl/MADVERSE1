@@ -21,7 +21,10 @@ CREATE TABLE IF NOT EXISTS team_members (
 -- Step 2: Enable RLS on team_members
 ALTER TABLE team_members ENABLE ROW LEVEL SECURITY;
 
--- Step 3: Allow public select on team_members
+-- Step 3: Drop existing policy if it exists
+DROP POLICY IF EXISTS "Allow public select on team_members" ON team_members;
+
+-- Step 3b: Create public select policy
 CREATE POLICY "Allow public select on team_members"
 ON team_members
 FOR SELECT
