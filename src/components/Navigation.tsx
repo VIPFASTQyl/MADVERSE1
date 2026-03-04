@@ -176,7 +176,6 @@ const Navigation = () => {
                 />
               </div>
             )}
-          </div>
 
           {/* Mobile Menu Button */}
           <button
