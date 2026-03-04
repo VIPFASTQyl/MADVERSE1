@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -7,6 +7,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const ActivitiesDropdown = () => {
   const [open, setOpen] = useState(false);
   const { t } = useLanguage();
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const activities = [
     { label: t('youth'), href: '/activity/youth' },
@@ -17,8 +18,24 @@ const ActivitiesDropdown = () => {
     { label: t('volunteering'), href: '/activity/volunteering' },
   ];
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+
+    if (open) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }
+  }, [open]);
+
   return (
-    <motion.div animate={open ? "open" : "closed"} className="relative">
+    <motion.div ref={dropdownRef} animate={open ? "open" : "closed"} className="relative">
       <button
         onClick={() => setOpen((pv) => !pv)}
         className="px-4 py-2 text-sm text-white hover:text-white transition-colors flex items-center gap-1"
