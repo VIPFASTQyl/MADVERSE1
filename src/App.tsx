@@ -94,9 +94,9 @@ const App = () => {
                     <Route path="/" element={<Index />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/contact" element={<Contact />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/signup" element={<Register />} />
-                    <Route path="/login" element={
+                    <Route path="/register/*" element={<Register />} />
+                    <Route path="/signup/*" element={<Register />} />
+                    <Route path="/login/*" element={
                       <div className="min-h-screen bg-background flex items-center justify-center">
                         <div className="text-center space-y-4 p-8">
                           <h1 className="text-2xl font-bold">Authentication Disabled</h1>
@@ -137,9 +137,10 @@ const App = () => {
                   <Route path="/" element={<Index />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/contact" element={<Contact />} />
-                  <Route path="/register" element={<Register />} />
-                  <Route path="/signup" element={<Register />} />
-                  <Route path="/login" element={<Login />} />
+                  {/* Clerk authentication routes - allow splat for multi-factor auth flows */}
+                  <Route path="/register/*" element={<Register />} />
+                  <Route path="/signup/*" element={<Register />} />
+                  <Route path="/login/*" element={<Login />} />
                   <Route path="/verify" element={<Verify />} />
                   <Route path="/verification-pending" element={<VerificationPending />} />
                   <Route
