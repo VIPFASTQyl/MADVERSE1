@@ -8,7 +8,8 @@ const partners = [
   "/partner5.svg",
   "/partner6.svg",
   "/partner7.svg",
-  "/partner8.svg"
+  "/partner8.svg",
+  "/Partneri1.png"
 ];
 
 const TrustMarquee = () => {
