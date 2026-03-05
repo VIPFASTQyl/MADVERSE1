@@ -4,10 +4,13 @@ import { SignIn } from "@clerk/clerk-react";
 import { useAuth } from "@clerk/clerk-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { motion } from "framer-motion";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Login = () => {
   const navigate = useNavigate();
   const { isSignedIn } = useAuth();
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (isSignedIn) {
@@ -27,52 +30,62 @@ const Login = () => {
       
       <Navigation />
       
-      <div className="flex-1 flex items-center justify-center w-full px-4 py-12 relative z-20">
-        <div className="w-full max-w-sm">
+      <div className="flex-1 flex items-center justify-center w-full px-4 py-12 relative z-20 pt-32 md:pt-40">
+        <div className="w-full max-w-md">
+          {/* Header Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <span className="text-primary text-sm font-medium tracking-widest uppercase mb-4 block">
+              Log into MADVERSE
+            </span>
+            <h1 className="text-6xl md:text-7xl font-bold mb-12 leading-tight text-white">
+              LOG IN
+            </h1>
+          </motion.div>
+
+          {/* Clerk SignIn Component */}
           <SignIn 
             appearance={{
               elements: {
                 rootBox: "w-full flex justify-center",
-                card: "bg-white rounded-xl shadow-2xl w-full overflow-hidden",
+                card: "w-full bg-transparent border-0 shadow-none",
+                header: "hidden",
                 headerTitle: "hidden",
                 headerSubtitle: "hidden",
-                header: "relative pt-16 pb-0 px-8",
                 
-                // Avatar styling
-                headerAvatarImage: "h-16 w-16 border-4 border-black",
-                headerAvatarImageUrl: "h-16 w-16",
+                // Social button (Google)
+                socialButtonsBlockButton: "bg-white hover:bg-gray-100 text-black border-0 transition-all rounded-lg h-12 font-semibold w-full mb-6",
+                socialButtonsBlockButtonText: "text-black font-semibold",
+                socialButtonsIconButton: "hidden",
+                
+                // Divider
+                dividerLine: "bg-gray-700",
+                dividerText: "text-gray-400 text-sm font-medium",
+                dividerContainer: "my-6",
                 
                 // Form styling
-                socialButtonsBlockButton: "bg-white hover:bg-gray-50 text-black border border-gray-300 hover:border-gray-400 transition-all rounded-lg mb-3 h-12 font-medium",
-                socialButtonsBlockButtonText: "text-black font-medium",
-                socialButtonsIconButton: "border-gray-300 hover:border-gray-400 rounded-lg",
-                dividerLine: "bg-gray-200",
-                dividerText: "text-gray-500 text-xs font-medium",
+                formButtonPrimary: "bg-white hover:bg-gray-100 text-black font-semibold transition-all border-0 w-full h-12 rounded-lg",
+                formButtonPrimaryText: "text-black font-semibold",
                 
-                formButtonPrimary: "bg-black hover:bg-gray-900 text-white font-semibold transition-all border-0 w-full h-12 rounded-lg mt-6 mb-4",
-                formButtonPrimaryText: "text-white font-semibold",
+                // Email input
+                formFieldLabel: "text-white text-sm font-semibold mb-2 block",
+                formFieldInput: "bg-transparent border-b-2 border-gray-600 text-white placeholder:text-gray-500 focus:border-white focus:ring-0 transition-colors rounded-0 h-12 px-0 mb-8",
                 
-                footerActionLink: "text-black hover:text-gray-700 font-medium",
-                footerActionText: "text-gray-600 text-sm",
-                footer: "text-center pt-2 pb-6",
+                // Footer
+                footer: "hidden",
+                footerActionLink: "hidden",
+                footerActionText: "hidden",
                 
-                formFieldLabel: "text-black text-sm font-semibold mb-2",
-                formFieldInput: "bg-gray-50 border-2 border-gray-200 text-black placeholder:text-gray-400 focus:border-black focus:ring-0 transition-colors rounded-lg h-12 px-4 mb-4",
-                formFieldInputShowPasswordButton: "text-gray-500 hover:text-black transition-colors",
-                
-                identityPreviewText: "text-black font-medium",
-                identityPreviewEditButton: "text-black hover:text-gray-700 font-medium",
-                
-                // Main container padding
-                cardBox: "px-8 py-6",
-                
-                // Remove default styling
+                // Remove defaults
                 main: "px-0",
+                cardBox: "px-0",
               },
               variables: {
-                colorPrimary: "#000",
-                colorInputBackground: "#f3f4f6",
-                colorInputBorder: "#e5e7eb",
+                colorPrimary: "#fff",
               }
             }}
             routing="path"
@@ -81,6 +94,21 @@ const Login = () => {
             fallbackRedirectUrl="/"
             forceRedirectUrl="/"
           />
+
+          {/* Sign Up Link */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="text-center mt-12"
+          >
+            <p className="text-gray-400 text-sm">
+              Don't have an account?{" "}
+              <a href="/signup" className="text-white hover:text-gray-200 font-semibold transition-colors">
+                Sign up
+              </a>
+            </p>
+          </motion.div>
         </div>
       </div>
       
