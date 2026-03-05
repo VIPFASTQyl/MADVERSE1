@@ -29,10 +29,10 @@ const getDemoPrograms = (language: string): Program[] => [
   },
   {
     id: "demo-3",
-    title: language === "en" ? "Erion" : "Erion",
+    title: language === "en" ? "Erijon" : "Erijon",
     category: language === "en" ? "Team" : "Ekipa",
-    image: "/team-erion.png",
-    description: language === "en" ? "Researcher / Marketing" : "Kërkues / Marketing",
+    image: "/team-gashi.jpg",
+    description: language === "en" ? "Head of Research & Innovation" : "Përfaqësues i Kërkimit & Inovacionit",
   },
 ];
 
