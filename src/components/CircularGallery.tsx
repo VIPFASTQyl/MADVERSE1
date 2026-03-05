@@ -520,10 +520,10 @@ class App {
     // Default gallery items focused on activity categories
     const defaultItems = [
       { image: '/project-2.jpg', text: 'Arts' },
-      { image: '/project-3.jpg', text: 'Culture' },
-      { image: '/project-1.jpg', text: 'Sports' },
-      { image: '/project-2.jpg', text: 'Exhibition' },
-      { image: '/project-3.jpg', text: 'Volunteering' },
+      { image: '/kulture.jpg', text: 'Culture' },
+      { image: '/basketball.jpg', text: 'Sports' },
+      { image: '/exhibition.jpg', text: 'Exhibition' },
+      { image: '', text: 'Volunteering' },
       { image: '/project-1.jpg', text: 'Youth' }
     ];
     const galleryItems = items && items.length ? items : defaultItems;
