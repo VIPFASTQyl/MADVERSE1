@@ -71,7 +71,7 @@ const SignUp = () => {
                 
                 // Email/input fields
                 formFieldLabel: "text-white text-sm font-semibold mb-2 block",
-                formFieldInput: "bg-transparent border-b-2 border-gray-600 text-white placeholder:text-gray-500 focus:border-white focus:ring-0 transition-colors rounded-0 h-12 px-0 mb-8",
+                formFieldInput: "bg-transparent border border-gray-400 text-white placeholder:text-gray-500 focus:border-white focus:ring-0 transition-colors rounded-md h-12 px-4 mb-8",
                 
                 // Footer
                 footer: "hidden",
