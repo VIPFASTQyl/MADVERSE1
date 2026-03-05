@@ -86,11 +86,20 @@ const Exhibition = () => {
       {/* Hero Section */}
       <PageTitleAnimation title="Exhibition" />
 
+      {/* Full Size Image */}
+      <div className="relative z-10 w-full h-screen flex items-center justify-center">
+        <img
+          src="/hover.png"
+          alt="Exhibition"
+          className="w-full h-full object-contain"
+        />
+      </div>
+
       {/* Coming Soon Section */}
       <div className="relative z-10 w-full min-h-screen flex items-center justify-center px-4 py-20">
         <div className="text-center">
           <h1 className="text-6xl md:text-8xl font-bold text-white mb-8">
-            Coming Soon
+            Coming Soon<span className="animate-bounce inline-block ml-2">.</span><span className="animate-bounce inline-block ml-1" style={{ animationDelay: '0.2s' }}>.</span><span className="animate-bounce inline-block ml-1" style={{ animationDelay: '0.4s' }}>.</span>
           </h1>
         </div>
       </div>
