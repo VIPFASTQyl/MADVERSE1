@@ -6,7 +6,6 @@ import PageTitleAnimation from "@/components/PageTitleAnimation";
 import AnimatedBackground from "@/components/AnimatedBackground";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState } from "react";
-import { AlternatingContent } from "@/components/AlternatingContent";
 
 const navItems = [
   { label: 'Home', href: '/' },
@@ -31,18 +30,6 @@ const menuItems = [
 const Volunteering = () => {
   const isMobile = useIsMobile();
   const [liquidEtherFailed, setLiquidEtherFailed] = useState(false);
-
-  const volunteeringSections = [
-    {
-      title: "Making a Difference Together",
-      description:
-        "Volunteering is about giving back and making a tangible impact in your community. Our volunteer programs provide meaningful opportunities to contribute your time, skills, and passion. Whether you're interested in education, sustainability, arts, or social causes, there's a place for you to make a difference.",
-      image:
-        "https://images.unsplash.com/photo-1559027615-cd2628902d4a?w=800&h=600&fit=crop",
-      imageAlt: "Community volunteering",
-      reversed: false,
-    },
-  ];
 
   return (
     <>
@@ -99,18 +86,13 @@ const Volunteering = () => {
       {/* Hero Section */}
       <PageTitleAnimation title="Volunteering" />
 
-      {/* Full Size Image */}
-      <div className="relative z-10 w-full h-screen flex items-center justify-center">
-        <img
-          src="/hover.png"
-          alt="Volunteering"
-          className="w-full h-full object-contain"
-        />
-      </div>
-
-      {/* Alternating Content Sections */}
-      <div className="relative z-5 bg-black/40">
-        <AlternatingContent sections={volunteeringSections} />
+      {/* Coming Soon Section */}
+      <div className="relative z-10 w-full min-h-screen flex items-center justify-center px-4 py-20">
+        <div className="text-center">
+          <h1 className="text-6xl md:text-8xl font-bold text-white mb-8">
+            Coming Soon
+          </h1>
+        </div>
       </div>
 
       {/* Footer */}

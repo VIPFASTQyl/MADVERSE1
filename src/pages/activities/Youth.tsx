@@ -4,9 +4,7 @@ import StaggeredMenu from "@/components/StaggeredMenu";
 import Footer from "@/components/Footer";
 import PageTitleAnimation from "@/components/PageTitleAnimation";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useState, useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useState } from "react";
 
 const navItems = [
   { label: 'Home', href: '/' },
@@ -28,89 +26,9 @@ const menuItems = [
   { label: 'Volunteering', ariaLabel: 'Volunteering', link: '/activity/volunteering' }
 ];
 
-const ScrollSection = ({
-  title,
-  description,
-  imageUrl,
-  index,
-}: {
-  title: string;
-  description: string;
-  imageUrl: string;
-  index: number;
-}) => {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-
-  const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
-  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.8]);
-
-  return (
-    <motion.div
-      ref={ref}
-      className="min-h-screen flex items-center justify-center px-4 py-20"
-      style={{ opacity }}
-    >
-      <div className="max-w-5xl w-full">
-        <div
-          className={`flex flex-col ${
-            index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-          } gap-8 items-center`}
-        >
-          {/* Image */}
-          <motion.div
-            className="flex-1 overflow-hidden rounded-lg"
-            style={{ y, scale }}
-          >
-            <img
-              src={imageUrl}
-              alt={title}
-              className="w-full h-80 object-cover rounded-lg shadow-lg"
-            />
-          </motion.div>
-
-          {/* Text Content */}
-          <motion.div
-            className="flex-1"
-            initial={{ opacity: 0, x: index % 2 === 0 ? 50 : -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: false }}
-          >
-            <h2 className="text-4xl font-bold text-white mb-4">{title}</h2>
-            <p className="text-lg text-gray-200 leading-relaxed">
-              {description}
-            </p>
-          </motion.div>
-        </div>
-      </div>
-    </motion.div>
-  );
-};
-
 const Youth = () => {
   const isMobile = useIsMobile();
   const [liquidEtherFailed, setLiquidEtherFailed] = useState(false);
-  const { t } = useLanguage();
-
-  const sections = [
-    {
-      title: t("leadershipDevelopment"),
-      description: t("leadershipDesc"),
-      imageUrl:
-        "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop",
-    },
-    {
-      title: t("creativeExpression"),
-      description: t("creativeExpressionDesc"),
-      imageUrl:
-        "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=600&fit=crop",
-    },
-  ];
 
   return (
     <>
@@ -168,30 +86,14 @@ const Youth = () => {
       {/* Hero Section */}
       <PageTitleAnimation title="Youth" />
 
-      {/* Full Size Image */}
-      <div className="relative z-10 w-full h-screen flex items-center justify-center">
-        <img
-          src="/hover.png"
-          alt="Youth"
-          className="w-full h-full object-contain"
-        />
+      {/* Coming Soon Section */}
+      <div className="relative z-10 w-full min-h-screen flex items-center justify-center px-4 py-20">
+        <div className="text-center">
+          <h1 className="text-6xl md:text-8xl font-bold text-white mb-8">
+            Coming Soon
+          </h1>
+        </div>
       </div>
-
-      {/* Scroll Sections */}
-      <div className="relative z-5 bg-black/40">
-        {sections.map((section, index) => (
-          <ScrollSection
-            key={index}
-            title={section.title}
-            description={section.description}
-            imageUrl={section.imageUrl}
-            index={index}
-          />
-        ))}
-      </div>
-
-      {/* Bottom Spacing */}
-      <div className="relative z-5 h-20 bg-black/80" />
 
       {/* Footer */}
       <div className="relative z-5 bg-black">

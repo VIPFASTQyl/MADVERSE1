@@ -6,7 +6,6 @@ import PageTitleAnimation from "@/components/PageTitleAnimation";
 import AnimatedBackground from "@/components/AnimatedBackground";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState } from "react";
-import { AlternatingContent } from "@/components/AlternatingContent";
 
 const navItems = [
   { label: 'Home', href: '/' },
@@ -31,27 +30,6 @@ const menuItems = [
 const Arts = () => {
   const isMobile = useIsMobile();
   const [liquidEtherFailed, setLiquidEtherFailed] = useState(false);
-
-  const artsSections = [
-    {
-      title: "Unleashing Creativity",
-      description:
-        "Arts open doors to boundless creativity and self-expression. Our programs showcase diverse artistic disciplines including visual arts, performing arts, music, and digital media. We provide a platform for artists to share their passion and inspire others through their unique perspectives.",
-      image:
-        "https://images.unsplash.com/photo-1578926078328-123f5474f1d3?w=800&h=600&fit=crop",
-      imageAlt: "Artistic expression and creativity",
-      reversed: false,
-    },
-    {
-      title: "Cultural Heritage & Innovation",
-      description:
-        "We celebrate the intersection of tradition and innovation. Through exhibitions, workshops, and collaborative projects, we preserve cultural heritage while embracing contemporary artistic movements. Our programs honor diverse cultural expressions and create spaces for cross-cultural dialogue.",
-      image:
-        "https://images.unsplash.com/photo-1578926078328-123f5474f1d3?w=800&h=600&fit=crop",
-      imageAlt: "Cultural arts and traditions",
-      reversed: true,
-    },
-  ];
 
   return (
     <>
@@ -108,18 +86,13 @@ const Arts = () => {
       {/* Hero Section */}
       <PageTitleAnimation title="Arts" />
 
-      {/* Full Size Image */}
-      <div className="relative z-10 w-full h-screen flex items-center justify-center">
-        <img
-          src="/hover.png"
-          alt="Arts"
-          className="w-full h-full object-contain"
-        />
-      </div>
-
-      {/* Alternating Content Sections */}
-      <div className="relative z-5 bg-black/40">
-        <AlternatingContent sections={artsSections} />
+      {/* Coming Soon Section */}
+      <div className="relative z-10 w-full min-h-screen flex items-center justify-center px-4 py-20">
+        <div className="text-center">
+          <h1 className="text-6xl md:text-8xl font-bold text-white mb-8">
+            Coming Soon
+          </h1>
+        </div>
       </div>
 
       {/* Footer */}

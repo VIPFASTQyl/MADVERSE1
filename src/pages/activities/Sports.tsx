@@ -6,7 +6,6 @@ import PageTitleAnimation from "@/components/PageTitleAnimation";
 import AnimatedBackground from "@/components/AnimatedBackground";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState } from "react";
-import { AlternatingContent } from "@/components/AlternatingContent";
 
 const navItems = [
   { label: 'Home', href: '/' },
@@ -31,27 +30,6 @@ const menuItems = [
 const Sports = () => {
   const isMobile = useIsMobile();
   const [liquidEtherFailed, setLiquidEtherFailed] = useState(false);
-
-  const sportsSections = [
-    {
-      title: "Building Strength & Character",
-      description:
-        "Sports is more than competition—it's about building character, resilience, and teamwork. Our sports programs foster physical fitness, mental toughness, and leadership skills. Whether beginners or seasoned athletes, we provide opportunities to grow, challenge yourself, and achieve greatness.",
-      image:
-        "https://images.unsplash.com/photo-1517836357463-d25ddfcbf042?w=800&h=600&fit=crop",
-      imageAlt: "Sports and athletic training",
-      reversed: false,
-    },
-    {
-      title: "Teamwork & Community Spirit",
-      description:
-        "The heart of sports lies in teamwork and camaraderie. Our programs emphasize collaboration, mutual support, and community building. By bringing people together through sports, we create lasting friendships, build stronger communities, and celebrate shared victories.",
-      image:
-        "https://images.unsplash.com/photo-1517836357463-d25ddfcbf042?w=800&h=600&fit=crop",
-      imageAlt: "Team sports and collaboration",
-      reversed: true,
-    },
-  ];
 
   return (
     <>
@@ -108,18 +86,13 @@ const Sports = () => {
       {/* Hero Section */}
       <PageTitleAnimation title="Sports" />
 
-      {/* Full Size Image */}
-      <div className="relative z-10 w-full h-screen flex items-center justify-center">
-        <img
-          src="/hover.png"
-          alt="Sports"
-          className="w-full h-full object-contain"
-        />
-      </div>
-
-      {/* Alternating Content Sections */}
-      <div className="relative z-5 bg-black/40">
-        <AlternatingContent sections={sportsSections} />
+      {/* Coming Soon Section */}
+      <div className="relative z-10 w-full min-h-screen flex items-center justify-center px-4 py-20">
+        <div className="text-center">
+          <h1 className="text-6xl md:text-8xl font-bold text-white mb-8">
+            Coming Soon
+          </h1>
+        </div>
       </div>
 
       {/* Footer */}

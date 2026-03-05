@@ -6,7 +6,6 @@ import PageTitleAnimation from "@/components/PageTitleAnimation";
 import AnimatedBackground from "@/components/AnimatedBackground";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState } from "react";
-import { AlternatingContent } from "@/components/AlternatingContent";
 
 const navItems = [
   { label: 'Home', href: '/' },
@@ -31,18 +30,6 @@ const menuItems = [
 const Culture = () => {
   const isMobile = useIsMobile();
   const [liquidEtherFailed, setLiquidEtherFailed] = useState(false);
-
-  const cultureSections = [
-    {
-      title: "Preserving Our Heritage",
-      description:
-        "Culture is the foundation of identity and community. Our cultural programs celebrate traditions, languages, and customs that define who we are. Through exhibitions, performances, and educational events, we work to preserve cultural heritage for future generations while maintaining its relevance today.",
-      image:
-        "/Kulture.jpg",
-      imageAlt: "Cultural heritage and traditions",
-      reversed: false,
-    },
-  ];
 
   return (
     <>
@@ -99,18 +86,13 @@ const Culture = () => {
       {/* Hero Section */}
       <PageTitleAnimation title="Culture" />
 
-      {/* Full Size Image */}
-      <div className="relative z-10 w-full h-screen flex items-center justify-center">
-        <img
-          src="/hover.png"
-          alt="Culture"
-          className="w-full h-full object-contain"
-        />
-      </div>
-
-      {/* Alternating Content Sections */}
-      <div className="relative z-5 bg-black/40">
-        <AlternatingContent sections={cultureSections} />
+      {/* Coming Soon Section */}
+      <div className="relative z-10 w-full min-h-screen flex items-center justify-center px-4 py-20">
+        <div className="text-center">
+          <h1 className="text-6xl md:text-8xl font-bold text-white mb-8">
+            Coming Soon
+          </h1>
+        </div>
       </div>
 
       {/* Footer */}

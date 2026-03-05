@@ -6,7 +6,6 @@ import PageTitleAnimation from "@/components/PageTitleAnimation";
 import AnimatedBackground from "@/components/AnimatedBackground";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState } from "react";
-import { AlternatingContent } from "@/components/AlternatingContent";
 
 const navItems = [
   { label: 'Home', href: '/' },
@@ -31,27 +30,6 @@ const menuItems = [
 const Exhibition = () => {
   const isMobile = useIsMobile();
   const [liquidEtherFailed, setLiquidEtherFailed] = useState(false);
-
-  const exhibitionSections = [
-    {
-      title: "Showcasing Incredible Talent",
-      description:
-        "Our exhibitions are platforms for artists, creators, and innovators to showcase their work. From emerging talents to established masters, we provide spaces that celebrate excellence, inspire audiences, and spark meaningful conversations about art, culture, and society.",
-      image:
-        "/Exhibition.jpg",
-      imageAlt: "Art exhibition display",
-      reversed: false,
-    },
-    {
-      title: "Connecting Artists & Audiences",
-      description:
-        "Exhibitions create powerful connections between creators and the community. Through interactive displays, guided tours, and artist talks, we foster dialogue and understanding. Our goal is to make art accessible, thought-provoking, and transformative for everyone who experiences it.",
-      image:
-        "/Exhibition2nd.jpg",
-      imageAlt: "Exhibition visitors and interaction",
-      reversed: false,
-    },
-  ];
 
   return (
     <>
@@ -108,18 +86,13 @@ const Exhibition = () => {
       {/* Hero Section */}
       <PageTitleAnimation title="Exhibition" />
 
-      {/* Full Size Image */}
-      <div className="relative z-10 w-full h-screen flex items-center justify-center">
-        <img
-          src="/hover.png"
-          alt="Exhibition"
-          className="w-full h-full object-contain"
-        />
-      </div>
-
-      {/* Alternating Content Sections */}
-      <div className="relative z-5 bg-black/40">
-        <AlternatingContent sections={exhibitionSections} />
+      {/* Coming Soon Section */}
+      <div className="relative z-10 w-full min-h-screen flex items-center justify-center px-4 py-20">
+        <div className="text-center">
+          <h1 className="text-6xl md:text-8xl font-bold text-white mb-8">
+            Coming Soon
+          </h1>
+        </div>
       </div>
 
       {/* Footer */}
