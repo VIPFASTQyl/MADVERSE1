@@ -12,10 +12,10 @@ const ShowcaseGrid = () => {
   const items = [
     { titleKey: "youthPrograms", categoryKey: "youth", image: "/project-1.jpg", link: "/activity/youth" },
     { titleKey: "artWorkshops", categoryKey: "arts", image: "/project-2.jpg", link: "/activity/arts" },
-    { titleKey: "culturalEvents", categoryKey: "culture", image: "/project-3.jpg", link: "/activity/culture" },
+    { titleKey: "culturalEvents", categoryKey: "culture", image: "/kulture.jpg", link: "/activity/culture" },
     { titleKey: "sportsActivities", categoryKey: "sports", image: "/basketball.jpg", link: "/activity/sports" },
-    { titleKey: "exhibitions", categoryKey: "exhibition", image: "/project-2.jpg", link: "/activity/exhibition" },
-    { titleKey: "volunteering", categoryKey: "volunteering", image: "/project-3.jpg", link: "/activity/volunteering" },
+    { titleKey: "exhibitions", categoryKey: "exhibition", image: "/exhibition.jpg", link: "/activity/exhibition" },
+    { titleKey: "volunteering", categoryKey: "volunteering", image: "", link: "/activity/volunteering" },
   ];
 
   if (isMobile) {
