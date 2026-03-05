@@ -161,8 +161,10 @@ const Navigation = () => {
                   appearance={{
                     elements: {
                       avatarBox: "h-8 w-8",
-                      userButtonPopoverCard: "bg-background border-border",
-                      userButtonPopoverActionButton: "text-foreground hover:bg-secondary",
+                      userButtonPopoverCard: "bg-white border border-gray-200 shadow-lg",
+                      userButtonPopoverActionButton: "text-black hover:bg-gray-100",
+                      userButtonPopoverActionButtonText: "text-black",
+                      userButtonPopoverDivider: "bg-gray-200",
                     }
                   }}
                 />
@@ -185,7 +187,8 @@ const Navigation = () => {
             </div>
           </div>
 
-          {/* Mobile User Icon */}
+          {/* Mobile User Icon and Menu Button */}
+          <div className="md:hidden flex items-center gap-2">
             {isSignedIn && (
               <div className="p-2">
                 <UserButton 
@@ -193,8 +196,10 @@ const Navigation = () => {
                   appearance={{
                     elements: {
                       avatarBox: "h-6 w-6",
-                      userButtonPopoverCard: "bg-background border-border",
-                      userButtonPopoverActionButton: "text-foreground hover:bg-secondary",
+                      userButtonPopoverCard: "bg-white border border-gray-200 shadow-lg",
+                      userButtonPopoverActionButton: "text-black hover:bg-gray-100",
+                      userButtonPopoverActionButtonText: "text-black",
+                      userButtonPopoverDivider: "bg-gray-200",
                     }
                   }}
                 />
