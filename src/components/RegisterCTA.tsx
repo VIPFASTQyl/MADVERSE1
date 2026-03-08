@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
-import { getTotalRegisteredMembers, debugCheckRegistrations } from "@/lib/activityService";
 import { trackActiveSession, getActiveSessionsCount, cleanupOldSessions } from "@/lib/sessionService";
 import { supabase } from "@/lib/supabaseClient";
 
@@ -11,12 +10,10 @@ const RegisterCTA = () => {
   const navigate = useNavigate();
   const { language } = useLanguage();
   const [totalParticipants, setTotalParticipants] = useState(0);
-  const [totalMembers, setTotalMembers] = useState(0);
 
   useEffect(() => {
     // Expose cleanup function to browser console for debugging
     (window as any).debugCleanupSessions = cleanupOldSessions;
-    (window as any).debugCheckRegistrations = debugCheckRegistrations;
     let isActive = true;
 
     const fetchStats = async () => {
@@ -29,10 +26,6 @@ const RegisterCTA = () => {
         // Get active sessions (users online in last 5 minutes)
         const activeSessions = await getActiveSessionsCount();
         if (isActive) setTotalParticipants(activeSessions);
-
-        // Get total registered members
-        const members = await getTotalRegisteredMembers();
-        if (isActive) setTotalMembers(members);
       } catch (error) {
         console.error("Error fetching stats:", error);
       }
@@ -64,32 +57,11 @@ const RegisterCTA = () => {
       )
       .subscribe();
 
-    // Set up real-time subscription to activity_registrations table for instant updates
-    const registrationsSubscription = supabase
-      .channel("registrations_" + Date.now())
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "activity_registrations",
-        },
-        () => {
-          if (isActive) {
-            getTotalRegisteredMembers().then(count => {
-              if (isActive) setTotalMembers(count);
-            });
-          }
-        }
-      )
-      .subscribe();
-
     // Cleanup
     return () => {
       isActive = false;
       clearInterval(sessionInterval);
       sessionsSubscription.unsubscribe();
-      registrationsSubscription.unsubscribe();
     };
   }, []);
 
@@ -173,26 +145,20 @@ const RegisterCTA = () => {
               </button>
             </motion.div>
 
-            {/* Stats */}
+            {/* Active Members Stat - Centered */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.5 }}
-              className="grid grid-cols-2 gap-8 mt-16 pt-8 border-t border-border/30"
+              className="mt-16 pt-8 border-t border-border/30 flex flex-col items-center justify-center"
             >
-              <div>
-                <div className="text-3xl font-bold text-primary mb-2">
+              <div className="text-center">
+                <div className="text-5xl md:text-6xl font-bold text-primary mb-3">
                   {totalParticipants > 0 ? totalParticipants.toLocaleString() : "0"}
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  {language === "en" ? "Active Members" : "Anëtarë Aktivë"}
-                </p>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-primary mb-2">{totalMembers}</div>
-                <p className="text-sm text-muted-foreground">
-                  {language === "en" ? "Total Registered Members" : "Anëtarë të Regjistruar Totale"}
+                <p className="text-base md:text-lg text-muted-foreground">
+                  {language === "en" ? "Active Members Using MADVERSE" : "Anëtarë Aktivë Duke Përdorur MADVERSE"}
                 </p>
               </div>
             </motion.div>
