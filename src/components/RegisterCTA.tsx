@@ -31,7 +31,14 @@ const RegisterCTA = () => {
       }
     };
 
+    // Fetch stats immediately
     fetchStats();
+
+    // Refresh stats every 10 seconds to keep numbers updated
+    const interval = setInterval(fetchStats, 10000);
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(interval);
   }, []);
 
   return (

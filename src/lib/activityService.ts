@@ -433,13 +433,13 @@ export const getTotalRegisteredMembers = async (): Promise<number> => {
   try {
     const { data, error } = await supabase
       .from("activity_registrations")
-      .select("registration_id");
+      .select("user_id");
 
     if (error) throw error;
     
-    // Count distinct registrations (each registration = one user)
-    const distinctRegistrations = new Set(data.map((row: any) => row.registration_id)).size;
-    return distinctRegistrations;
+    // Count distinct users (each user can register for multiple activities, count only once)
+    const distinctUsers = new Set(data.map((row: any) => row.user_id)).size;
+    return distinctUsers;
   } catch (error) {
     console.error("Error getting total registered members:", error);
     return 0;
