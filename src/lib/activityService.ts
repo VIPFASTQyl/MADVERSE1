@@ -431,25 +431,20 @@ export const getActivityCountByCategory = async (
 
 export const getTotalRegisteredMembers = async (): Promise<number> => {
   try {
-    const { data, error } = await supabase
+    // Get count of all rows in activity_registrations
+    // Each registration = one new member/account registered
+    const { count, error } = await supabase
       .from("activity_registrations")
-      .select("registration_id");
+      .select("id", { count: 'exact' });
 
     if (error) {
       console.error("Error fetching registrations:", error);
-      throw error;
+      return 0;
     }
-    
-    // Count distinct registrations (each registration_id = one unique person who registered)
-    const distinctMembers = new Set<number>();
-    
-    (data || []).forEach((row: any) => {
-      if (row.registration_id) {
-        distinctMembers.add(row.registration_id);
-      }
-    });
-    
-    return distinctMembers.size;
+
+    const total = count || 0;
+    console.log(`👥 Total registered members: ${total}`);
+    return total;
   } catch (error) {
     console.error("Error getting total registered members:", error);
     return 0;

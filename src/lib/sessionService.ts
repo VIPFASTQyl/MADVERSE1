@@ -1,11 +1,12 @@
 import { supabase } from './supabaseClient';
 
-// Generate a unique session ID for this browser
+// Generate a unique session ID for this browser/tab
 const getSessionId = (): string => {
-  let sessionId = localStorage.getItem('madverse_session_id');
+  let sessionId = sessionStorage.getItem('madverse_session_id');
   if (!sessionId) {
-    sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    localStorage.setItem('madverse_session_id', sessionId);
+    // Use a shorter timestamp + random string for faster comparison
+    sessionId = `${Math.random().toString(36).substr(2, 9)}`;
+    sessionStorage.setItem('madverse_session_id', sessionId);
   }
   return sessionId;
 };
@@ -27,7 +28,9 @@ export const trackActiveSession = async (): Promise<void> => {
         onConflict: 'session_id'
       });
 
-    if (error) throw error;
+    if (error) {
+      console.error('Error tracking session:', error);
+    }
   } catch (error) {
     console.error('Error tracking session:', error);
   }
@@ -36,16 +39,22 @@ export const trackActiveSession = async (): Promise<void> => {
 // Get count of active sessions (users online in last 5 minutes)
 export const getActiveSessionsCount = async (): Promise<number> => {
   try {
+    // Count sessions with last_seen in the last 5 minutes
     const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
 
     const { data, error } = await supabase
       .from('active_sessions')
-      .select('session_id')
+      .select('session_id', { count: 'exact' })
       .gte('last_seen', fiveMinutesAgo);
 
-    if (error) throw error;
+    if (error) {
+      console.error('Error getting active sessions:', error);
+      return 0;
+    }
 
-    return (data || []).length;
+    const count = (data || []).length;
+    console.log(`📊 Active sessions: ${count}`);
+    return count;
   } catch (error) {
     console.error('Error getting active sessions:', error);
     return 0;

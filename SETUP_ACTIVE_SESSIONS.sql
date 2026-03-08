@@ -8,6 +8,24 @@ CREATE TABLE IF NOT EXISTS active_sessions (
 -- Create index for querying by last_seen
 CREATE INDEX IF NOT EXISTS idx_active_sessions_last_seen ON active_sessions(last_seen DESC);
 
+-- Enable Row Level Security
+ALTER TABLE active_sessions ENABLE ROW LEVEL SECURITY;
+
+-- Allow anyone to insert/update their own session
+CREATE POLICY "Allow insert and update active_sessions" ON active_sessions
+FOR INSERT OR UPDATE
+WITH CHECK (true);
+
+-- Allow anyone to read active_sessions (for getting count)
+CREATE POLICY "Allow read active_sessions" ON active_sessions
+FOR SELECT
+USING (true);
+
+-- Allow anyone to delete (for cleanup)
+CREATE POLICY "Allow delete active_sessions" ON active_sessions
+FOR DELETE
+USING (true);
+
 -- Optional: Create a function to clean up old sessions (older than 1 hour)
 -- Run this periodically with a cron job or trigger
 CREATE OR REPLACE FUNCTION cleanup_old_sessions()
