@@ -4,6 +4,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { getAllActivities, getTotalRegisteredMembers } from "@/lib/activityService";
+import { supabase } from "@/lib/supabaseClient";
 
 const RegisterCTA = () => {
   const navigate = useNavigate();
@@ -29,11 +30,32 @@ const RegisterCTA = () => {
     // Fetch stats immediately
     fetchStats();
 
-    // Refresh stats every 3 seconds to keep numbers updated in real-time
-    const interval = setInterval(fetchStats, 3000);
+    // Set up real-time subscription to activity_registrations table
+    const subscription = supabase
+      .channel("activity_registrations_channel")
+      .on(
+        "postgres_changes",
+        {
+          event: "*", // Listen to INSERT, UPDATE, DELETE
+          schema: "public",
+          table: "activity_registrations",
+        },
+        (payload: any) => {
+          // When a change happens, refresh stats immediately
+          console.log("🔔 Registration change detected, updating stats...");
+          fetchStats();
+        }
+      )
+      .subscribe();
 
-    // Cleanup interval on component unmount
-    return () => clearInterval(interval);
+    // Also set up a fallback interval refresh every 5 seconds (in case subscription misses something)
+    const interval = setInterval(fetchStats, 5000);
+
+    // Cleanup
+    return () => {
+      subscription.unsubscribe();
+      clearInterval(interval);
+    };
   }, []);
 
   return (
