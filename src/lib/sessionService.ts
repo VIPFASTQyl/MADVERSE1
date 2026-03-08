@@ -12,6 +12,27 @@ const getSessionId = (): string => {
   return sessionId;
 };
 
+// Remove session immediately when user leaves
+export const removeSession = async (): Promise<void> => {
+  try {
+    const sessionId = getSessionId();
+    console.log(`❌ Removing session: ${sessionId}`);
+    
+    const { error } = await supabase
+      .from('active_sessions')
+      .delete()
+      .eq('session_id', sessionId);
+
+    if (error) {
+      console.error('Error removing session:', error);
+    } else {
+      console.log(`✅ Session removed: ${sessionId}`);
+    }
+  } catch (error) {
+    console.error('Error removing session:', error);
+  }
+};
+
 // Track user session (call this when user is browsing)
 export const trackActiveSession = async (): Promise<void> => {
   try {
@@ -37,16 +58,13 @@ export const trackActiveSession = async (): Promise<void> => {
   }
 };
 
-// Get count of active sessions (users online in last 5 minutes)
+// Get count of active sessions (users online - each tab counted separately)
 export const getActiveSessionsCount = async (): Promise<number> => {
   try {
-    // Count sessions with last_seen in the last 5 minutes
-    const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
-
+    // Count ALL sessions - each tab is a separate user
     const { data, error } = await supabase
       .from('active_sessions')
-      .select('session_id', { count: 'exact' })
-      .gte('last_seen', fiveMinutesAgo);
+      .select('session_id', { count: 'exact' });
 
     if (error) {
       console.error('Error getting active sessions:', error);
@@ -54,7 +72,7 @@ export const getActiveSessionsCount = async (): Promise<number> => {
     }
 
     const count = (data || []).length;
-    console.log(`📊 Active sessions (last 5 min): ${count}, Your Session ID: ${getSessionId()}`);
+    console.log(`📊 Active tabs/users: ${count}, Your Session ID: ${getSessionId()}`);
     
     // Log all active sessions for debugging
     if (data && data.length > 0) {
@@ -66,6 +84,31 @@ export const getActiveSessionsCount = async (): Promise<number> => {
     console.error('Error getting active sessions:', error);
     return 0;
   }
+};
+
+// Setup page leave tracking
+export const setupPageLeaveTracking = (): void => {
+  // Remove session when page is about to unload (user closes tab/navigates away)
+  window.addEventListener('beforeunload', () => {
+    removeSession();
+  });
+
+  // Also clean up when component unmounts
+  window.addEventListener('unload', () => {
+    removeSession();
+  });
+
+  // Clean up if page loses visibility (tab goes to background)
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      console.log('⏸️ Tab went to background');
+      // Don't remove yet - they might come back
+    } else {
+      console.log('▶️ Tab is active again');
+      // Refresh session when tab becomes active
+      trackActiveSession();
+    }
+  });
 };
 
 // Cleanup old sessions (older than 1 minute) - for testing/debugging

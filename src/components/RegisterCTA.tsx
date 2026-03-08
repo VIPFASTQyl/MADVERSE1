@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
-import { trackActiveSession, getActiveSessionsCount, cleanupOldSessions } from "@/lib/sessionService";
+import { trackActiveSession, getActiveSessionsCount, cleanupOldSessions, setupPageLeaveTracking } from "@/lib/sessionService";
 import { supabase } from "@/lib/supabaseClient";
 
 const RegisterCTA = () => {
@@ -14,6 +14,10 @@ const RegisterCTA = () => {
   useEffect(() => {
     // Expose cleanup function to browser console for debugging
     (window as any).debugCleanupSessions = cleanupOldSessions;
+    
+    // Setup page leave tracking - removes session immediately when user leaves
+    setupPageLeaveTracking();
+    
     let isActive = true;
 
     const fetchStats = async () => {
@@ -23,7 +27,7 @@ const RegisterCTA = () => {
         // Track that this user is currently online
         await trackActiveSession();
 
-        // Get active sessions (users online in last 5 minutes)
+        // Get active sessions (each tab is counted as 1 user)
         const activeSessions = await getActiveSessionsCount();
         if (isActive) setTotalParticipants(activeSessions);
       } catch (error) {
