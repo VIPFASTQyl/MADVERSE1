@@ -79,6 +79,10 @@ const SignUp = () => {
                 formFieldPasswordInput: "relative",
                 formFieldPasswordInputContainer: "relative",
                 
+                // Password show button - no border, white icon
+                formFieldInputShowPasswordButton: "border-0 bg-transparent p-0 absolute right-3 top-1/2 transform -translate-y-1/2 text-white hover:text-white focus:outline-none",
+                formFieldInputShowPasswordIcon: "text-white fill-white",
+                
                 // Messages and errors styling
                 formFieldErrorMessage: "text-gray-400 text-xs mt-2 font-normal",
                 formMessage: "text-gray-400 text-xs mt-2 font-normal",
