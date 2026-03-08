@@ -1,0 +1,129 @@
+/* Auth Pages Styling - SignUp & Login */
+
+/* Password toggle button - position inside input */
+.cl-passwordInput__showPassword {
+  position: absolute !important;
+  right: 12px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  cursor: pointer !important;
+  color: #999 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.cl-passwordInput__showPassword:hover {
+  color: #fff !important;
+}
+
+/* Password input wrapper - position relative */
+.cl-formField__passwordInput {
+  position: relative !important;
+}
+
+/* Make password input have padding for eye icon */
+.cl-passwordInput__input,
+input[type="password"],
+input[type="text"] {
+  padding-right: 40px !important;
+}
+
+/* Form field input focus state - white border */
+.cl-formFieldInput__input:focus,
+input:focus {
+  border-color: #fff !important;
+  box-shadow: 0 0 0 1px #fff !important;
+}
+
+/* Remove form field input container margin */
+.cl-formField__formFieldInputContainer {
+  position: relative !important;
+}
+
+/* Password validation messages - gray/white color instead of red */
+.cl-formMessage,
+.cl-formFieldErrorMessage {
+  color: #999 !important;
+  font-size: 0.875rem !important;
+  margin-top: 6px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+
+/* Password requirement text */
+.cl-formFieldErrorMessage svg,
+.cl-formMessage svg {
+  display: none !important;
+}
+
+/* Make all form field inputs have consistent styling */
+.cl-formFieldInput__input,
+[class*="formFieldInput"] {
+  background-color: transparent !important;
+  border: 1px solid #666 !important;
+  color: #fff !important;
+  border-radius: 0.375rem !important;
+  height: 48px !important;
+  padding: 0 16px !important;
+  font-size: 1rem !important;
+  transition: all 0.2s ease !important;
+}
+
+.cl-formFieldInput__input::placeholder,
+[class*="formFieldInput"]::placeholder {
+  color: #999 !important;
+}
+
+/* Focus state - white border */
+.cl-formFieldInput__input:focus,
+[class*="formFieldInput"]:focus {
+  border-color: #fff !important;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1) !important;
+  outline: none !important;
+}
+
+/* Form element wrapper */
+.cl-formField {
+  margin-bottom: 32px !important;
+}
+
+/* Remove default form field label styling that might conflict */
+.cl-formFieldLabel {
+  color: #fff !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  margin-bottom: 8px !important;
+  display: block !important;
+}
+
+/* Ensure password strength indicator is light colored */
+.cl-passwordStrengthIndicator {
+  margin-top: 8px !important;
+}
+
+.cl-passwordStrengthIndicator__inner {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.cl-passwordStrengthIndicator__meter {
+  background-color: #999 !important;
+}
+
+/* Ensure message text is visible */
+.cl-formMessage__message {
+  color: #ccc !important;
+  font-size: 0.875rem !important;
+  margin-top: 6px !important;
+}
+
+/* Style the eye icon svg */
+.cl-passwordInput__showPassword svg {
+  width: 20px !important;
+  height: 20px !important;
+  color: inherit !important;
+}

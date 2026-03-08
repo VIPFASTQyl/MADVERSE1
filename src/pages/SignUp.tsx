@@ -5,6 +5,7 @@ import { useAuth } from "@clerk/clerk-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
+import "@/styles/auth.css";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -69,9 +70,18 @@ const SignUp = () => {
                 formButtonPrimary: "bg-white hover:bg-gray-100 text-black font-semibold transition-all border-0 w-full h-12 rounded-lg",
                 formButtonPrimaryText: "text-black font-semibold",
                 
-                // Email/input fields
+                // Form field wrapping
+                formField: "mb-8",
                 formFieldLabel: "text-white text-sm font-semibold mb-2 block",
-                formFieldInput: "bg-transparent border border-gray-400 text-white placeholder:text-gray-500 focus:border-white focus:ring-0 transition-colors rounded-md h-12 px-4 mb-8",
+                formFieldInput: "bg-transparent border border-gray-500 text-white placeholder:text-gray-500 focus:border-white focus:ring-0 focus:ring-white transition-all rounded-md h-12 px-4",
+                
+                // Password input wrapper
+                formFieldPasswordInput: "relative",
+                formFieldPasswordInputContainer: "relative",
+                
+                // Messages and errors styling
+                formFieldErrorMessage: "text-gray-400 text-xs mt-2 font-normal",
+                formMessage: "text-gray-400 text-xs mt-2 font-normal",
                 
                 // Footer
                 footer: "hidden",
