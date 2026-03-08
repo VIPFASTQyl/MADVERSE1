@@ -6,7 +6,6 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
-import "@/styles/auth.css";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -72,22 +71,9 @@ const Login = () => {
                 formButtonPrimary: "bg-white hover:bg-gray-100 text-black font-semibold transition-all border-0 w-full h-12 rounded-lg",
                 formButtonPrimaryText: "text-black font-semibold",
                 
-                // Form field wrapping
-                formField: "mb-8",
+                // Email input
                 formFieldLabel: "text-white text-sm font-semibold mb-2 block",
-                formFieldInput: "bg-transparent border border-gray-500 text-white placeholder:text-gray-500 focus:border-white focus:ring-0 focus:ring-white transition-all rounded-md h-12 px-4",
-                
-                // Password input wrapper
-                formFieldPasswordInput: "relative",
-                formFieldPasswordInputContainer: "relative",
-                
-                // Password show button - no border, white icon
-                formFieldInputShowPasswordButton: "border-0 bg-transparent p-0 absolute right-3 top-1/2 transform -translate-y-1/2 text-white hover:text-white focus:outline-none",
-                formFieldInputShowPasswordIcon: "text-white fill-white",
-                
-                // Messages and errors styling
-                formFieldErrorMessage: "text-gray-400 text-xs mt-2 font-normal",
-                formMessage: "text-gray-400 text-xs mt-2 font-normal",
+                formFieldInput: "bg-transparent border border-gray-400 text-white placeholder:text-gray-500 focus:border-white focus:ring-0 transition-colors rounded-md h-12 px-4 mb-8",
                 
                 // Footer
                 footer: "hidden",
