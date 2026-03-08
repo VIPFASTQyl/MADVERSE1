@@ -3,9 +3,6 @@
   "installCommand": "npm install",
   "devCommand": "npm run dev",
   "outputDirectory": "dist",
-  "env": {
-    "VITE_API_URL": "@vite_api_url"
-  },
   "routes": [
     {
       "src": "/api/.*",
