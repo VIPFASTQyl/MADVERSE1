@@ -433,7 +433,7 @@ export const getTotalRegisteredMembers = async (): Promise<number> => {
   try {
     const { data, error } = await supabase
       .from("activity_registrations")
-      .select("user_id, registration_id");
+      .select("registration_id");
 
     if (error) {
       console.error("❌ Error fetching registrations:", error);
@@ -442,19 +442,13 @@ export const getTotalRegisteredMembers = async (): Promise<number> => {
     
     console.log("📊 Raw registration records fetched:", data);
     
-    // Count distinct members from both authentication systems:
-    // 1. registration_id (for non-auth users via registration form)
-    // 2. user_id (for Clerk authenticated users)
-    const distinctMembers = new Set<string>();
+    // Count distinct registrations (each registration_id = one unique person who registered)
+    const distinctMembers = new Set<number>();
     
     (data || []).forEach((row: any) => {
-      // Use registration_id if available (primary tracking), fallback to user_id
       if (row.registration_id) {
         console.log("✅ Found registration_id:", row.registration_id);
-        distinctMembers.add(`reg-${row.registration_id}`);
-      } else if (row.user_id) {
-        console.log("✅ Found user_id:", row.user_id);
-        distinctMembers.add(`user-${row.user_id}`);
+        distinctMembers.add(row.registration_id);
       }
     });
     
