@@ -433,24 +433,32 @@ export const getTotalRegisteredMembers = async (): Promise<number> => {
   try {
     // Get count of all rows in activity_registrations
     // Each registration = one new member/account registered
+    console.log("📊 Attempting to fetch from activity_registrations table...");
+    
     const { count, data, error } = await supabase
       .from("activity_registrations")
       .select("*", { count: 'exact' });
 
     if (error) {
-      console.error("❌ Error fetching registrations:", error);
+      console.error("❌ Error fetching from activity_registrations:", error);
       console.error("Error details:", { message: error.message, code: error.code, details: error.details });
+      
+      // If table doesn't exist (404), return 0
+      if (error.code === '404' || error.message?.includes('Not Found')) {
+        console.warn("⚠️ activity_registrations table not found. Run COMPLETE_REGISTRATIONS_SETUP.sql in Supabase SQL Editor");
+      }
       return 0;
     }
 
     const total = count || 0;
-    console.log(`👥 Total registered members: ${total}`);
+    console.log(`✅ Total registered members: ${total}`);
     if (data && data.length > 0) {
       console.log(`Sample registration:`, data[0]);
+      console.log(`Columns:`, Object.keys(data[0]));
     }
     return total;
   } catch (error) {
-    console.error("❌ Error getting total registered members:", error);
+    console.error("❌ Exception in getTotalRegisteredMembers:", error);
     return 0;
   }
 };
@@ -465,18 +473,29 @@ export const debugCheckRegistrations = async (): Promise<void> => {
       .select("*", { count: 'exact' });
 
     if (error) {
-      console.error("❌ Query error:", error);
+      console.error("❌ Query error:", error.message);
+      console.error("Error code:", error.code);
+      console.error("Error details:", error.details);
+      
+      if (error.code === '404' || error.message?.includes('Not Found')) {
+        console.error("🚨 TABLE DOES NOT EXIST!");
+        console.error("📋 Run this SQL in Supabase SQL Editor:");
+        console.error("   1. Go to https://app.supabase.com");
+        console.error("   2. Select your project");
+        console.error("   3. Go to SQL Editor");
+        console.error("   4. Copy and run the contents of COMPLETE_REGISTRATIONS_SETUP.sql");
+      }
       return;
     }
 
     console.log(`✅ Query successful!`);
     console.log(`📊 Total rows: ${count}`);
-    console.log(`📋 Data:`, data);
+    console.log(`📋 First 5 records:`, data?.slice(0, 5));
     
     if (data && data.length > 0) {
       console.log(`🔗 Column names:`, Object.keys(data[0]));
     }
   } catch (error) {
-    console.error("❌ Error:", error);
+    console.error("❌ Exception:", error);
   }
 };
