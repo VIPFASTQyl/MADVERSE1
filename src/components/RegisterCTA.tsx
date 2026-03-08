@@ -180,7 +180,7 @@ const RegisterCTA = () => {
               <div>
                 <div className="text-3xl font-bold text-primary mb-2">{totalMembers}</div>
                 <p className="text-sm text-muted-foreground">
-                  {language === "en" ? "Total Members" : "Anëtarë Totalë"}
+                  {language === "en" ? "Total Registered Members" : "Anëtarë të Regjistruar Totale"}
                 </p>
               </div>
             </motion.div>
