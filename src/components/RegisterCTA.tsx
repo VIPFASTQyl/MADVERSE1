@@ -15,16 +15,19 @@ const RegisterCTA = () => {
     const fetchStats = async () => {
       try {
         const activities = await getAllActivities();
+        console.log("📊 [RegisterCTA] Activities fetched:", activities);
         
         // Calculate total participants
         const total = activities.reduce(
           (sum, activity) => sum + (activity.current_participants || 0),
           0
         );
+        console.log("📊 [RegisterCTA] Total participants calculated:", total);
         setTotalParticipants(total);
 
         // Get total registered members
         const members = await getTotalRegisteredMembers();
+        console.log("📊 [RegisterCTA] Total members count:", members);
         setTotalMembers(members);
       } catch (error) {
         console.error("Error fetching stats:", error);
