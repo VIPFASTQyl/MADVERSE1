@@ -4,7 +4,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { getTotalRegisteredMembers } from "@/lib/activityService";
-import { trackActiveSession, getActiveSessionsCount } from "@/lib/sessionService";
+import { trackActiveSession, getActiveSessionsCount, cleanupOldSessions } from "@/lib/sessionService";
 import { supabase } from "@/lib/supabaseClient";
 
 const RegisterCTA = () => {
@@ -14,6 +14,8 @@ const RegisterCTA = () => {
   const [totalMembers, setTotalMembers] = useState(0);
 
   useEffect(() => {
+    // Expose cleanup function to browser console for debugging
+    (window as any).debugCleanupSessions = cleanupOldSessions;
     let isActive = true;
 
     const fetchStats = async () => {

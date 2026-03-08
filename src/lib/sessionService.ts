@@ -7,6 +7,7 @@ const getSessionId = (): string => {
     // Use a shorter timestamp + random string for faster comparison
     sessionId = `${Math.random().toString(36).substr(2, 9)}`;
     sessionStorage.setItem('madverse_session_id', sessionId);
+    console.log(`🆔 New session created: ${sessionId}`);
   }
   return sessionId;
 };
@@ -53,10 +54,33 @@ export const getActiveSessionsCount = async (): Promise<number> => {
     }
 
     const count = (data || []).length;
-    console.log(`📊 Active sessions: ${count}`);
+    console.log(`📊 Active sessions (last 5 min): ${count}, Your Session ID: ${getSessionId()}`);
+    
+    // Log all active sessions for debugging
+    if (data && data.length > 0) {
+      console.log('Active session IDs:', data.map((d: any) => d.session_id));
+    }
+    
     return count;
   } catch (error) {
     console.error('Error getting active sessions:', error);
     return 0;
+  }
+};
+
+// Cleanup old sessions (older than 1 minute) - for testing/debugging
+export const cleanupOldSessions = async (): Promise<void> => {
+  try {
+    const oneMinuteAgo = new Date(Date.now() - 60 * 1000).toISOString();
+    
+    const { count, error } = await supabase
+      .from('active_sessions')
+      .delete()
+      .lt('last_seen', oneMinuteAgo);
+
+    if (error) throw error;
+    console.log(`🧹 Cleaned up ${count} old sessions`);
+  } catch (error) {
+    console.error('Error cleaning up sessions:', error);
   }
 };
