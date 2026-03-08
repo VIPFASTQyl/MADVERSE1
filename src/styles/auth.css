@@ -10,14 +10,18 @@
   border: none !important;
   background: transparent !important;
   cursor: pointer !important;
-  color: #999 !important;
+  color: #ffffff !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
 }
 
 .cl-passwordInput__showPassword:hover {
-  color: #fff !important;
+  color: #ffffff !important;
+}
+
+.cl-passwordInput__showPassword svg {
+  color: #ffffff !important;
 }
 
 /* Password input wrapper - position relative */
@@ -25,18 +29,48 @@
   position: relative !important;
 }
 
-/* Make password input have padding for eye icon */
+/* Make password input have padding for eye icon - SINGLE BORDER ONLY */
 .cl-passwordInput__input,
-input[type="password"],
-input[type="text"] {
+input[type="password"] {
   padding-right: 40px !important;
+  border: 1px solid #666 !important;
+  background-color: transparent !important;
+  border-radius: 0.375rem !important;
+  height: 48px !important;
+  padding: 0 16px !important;
+  padding-right: 40px !important;
+  font-size: 1rem !important;
+  color: #fff !important;
+  transition: all 0.2s ease !important;
+}
+
+.cl-passwordInput__input::placeholder,
+input[type="password"]::placeholder {
+  color: #999 !important;
+}
+
+/* Focus state - white border only */
+.cl-passwordInput__input:focus,
+input[type="password"]:focus {
+  border: 1px solid #fff !important;
+  border-color: #fff !important;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1) !important;
+  outline: none !important;
+}
+
+/* Remove any double borders or extra styling */
+.cl-passwordInput__input:focus-visible {
+  border: 1px solid #fff !important;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1) !important;
+  outline: none !important;
 }
 
 /* Form field input focus state - white border */
 .cl-formFieldInput__input:focus,
-input:focus {
+input[type="text"]:focus,
+input[type="email"]:focus {
   border-color: #fff !important;
-  box-shadow: 0 0 0 1px #fff !important;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1) !important;
 }
 
 /* Remove form field input container margin */
@@ -61,7 +95,7 @@ input:focus {
   display: none !important;
 }
 
-/* Make all form field inputs have consistent styling */
+/* Make all form field inputs have consistent styling - SINGLE BORDER */
 .cl-formFieldInput__input,
 [class*="formFieldInput"] {
   background-color: transparent !important;
@@ -72,6 +106,7 @@ input:focus {
   padding: 0 16px !important;
   font-size: 1rem !important;
   transition: all 0.2s ease !important;
+  box-shadow: none !important;
 }
 
 .cl-formFieldInput__input::placeholder,
@@ -79,10 +114,17 @@ input:focus {
   color: #999 !important;
 }
 
-/* Focus state - white border */
+/* Focus state - white border only */
 .cl-formFieldInput__input:focus,
 [class*="formFieldInput"]:focus {
-  border-color: #fff !important;
+  border: 1px solid #fff !important;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1) !important;
+  outline: none !important;
+}
+
+.cl-formFieldInput__input:focus-visible,
+[class*="formFieldInput"]:focus-visible {
+  border: 1px solid #fff !important;
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1) !important;
   outline: none !important;
 }
@@ -121,9 +163,18 @@ input:focus {
   margin-top: 6px !important;
 }
 
-/* Style the eye icon svg */
-.cl-passwordInput__showPassword svg {
-  width: 20px !important;
-  height: 20px !important;
-  color: inherit !important;
+/* Remove Clerk default ring and shadow styles */
+.cl-formFieldInput__input:active,
+input:active {
+  box-shadow: none !important;
 }
+
+/* Ensure no double borders from Clerk internals */
+input {
+  border-width: 1px !important;
+}
+
+input:focus {
+  border-width: 1px !important;
+}
+
