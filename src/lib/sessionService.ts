@@ -18,16 +18,18 @@ export const removeSession = async (): Promise<void> => {
     const sessionId = getSessionId();
     console.log(`❌ Removing session: ${sessionId}`);
     
-    const { error } = await supabase
+    // Use async deletion - don't wait for it to finish
+    // This is non-blocking and works even during page unload
+    supabase
       .from('active_sessions')
       .delete()
-      .eq('session_id', sessionId);
-
-    if (error) {
-      console.error('Error removing session:', error);
-    } else {
-      console.log(`✅ Session removed: ${sessionId}`);
-    }
+      .eq('session_id', sessionId)
+      .then(() => {
+        console.log(`✅ Session removed: ${sessionId}`);
+      })
+      .catch((err) => {
+        console.error('Error removing session:', err);
+      });
   } catch (error) {
     console.error('Error removing session:', error);
   }
@@ -61,6 +63,9 @@ export const trackActiveSession = async (): Promise<void> => {
 // Get count of active sessions (users online - each tab counted separately)
 export const getActiveSessionsCount = async (): Promise<number> => {
   try {
+    // First, cleanup sessions older than 30 seconds (stale sessions)
+    await cleanupStaleSessionsFromDB();
+    
     // Count ALL sessions - each tab is a separate user
     const { data, error } = await supabase
       .from('active_sessions')
@@ -83,6 +88,29 @@ export const getActiveSessionsCount = async (): Promise<number> => {
   } catch (error) {
     console.error('Error getting active sessions:', error);
     return 0;
+  }
+};
+
+// Cleanup stale sessions from database (sessions not updated in 40 seconds)
+const cleanupStaleSessionsFromDB = async (): Promise<void> => {
+  try {
+    const forttySecondsAgo = new Date(Date.now() - 40 * 1000).toISOString();
+    
+    const { count, error } = await supabase
+      .from('active_sessions')
+      .delete()
+      .lt('last_seen', forttySecondsAgo);
+
+    if (error) {
+      console.error('Error cleaning stale sessions:', error);
+      return;
+    }
+
+    if (count && count > 0) {
+      console.log(`🧹 Cleaned up ${count} stale sessions (older than 40s)`);
+    }
+  } catch (error) {
+    console.error('Error in cleanupStaleSessionsFromDB:', error);
   }
 };
 

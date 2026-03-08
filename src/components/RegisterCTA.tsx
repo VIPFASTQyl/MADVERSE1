@@ -38,8 +38,8 @@ const RegisterCTA = () => {
     // Fetch stats immediately on mount
     fetchStats();
 
-    // Poll every 5 seconds for faster updates
-    const sessionInterval = setInterval(fetchStats, 5000);
+    // Poll every 3 seconds for VERY fast updates
+    const sessionInterval = setInterval(fetchStats, 3000);
 
     // Set up real-time subscription to active_sessions table for instant updates
     const sessionsSubscription = supabase
