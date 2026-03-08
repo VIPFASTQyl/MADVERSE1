@@ -436,23 +436,19 @@ export const getTotalRegisteredMembers = async (): Promise<number> => {
       .select("registration_id");
 
     if (error) {
-      console.error("❌ Error fetching registrations:", error);
+      console.error("Error fetching registrations:", error);
       throw error;
     }
-    
-    console.log("📊 Raw registration records fetched:", data);
     
     // Count distinct registrations (each registration_id = one unique person who registered)
     const distinctMembers = new Set<number>();
     
     (data || []).forEach((row: any) => {
       if (row.registration_id) {
-        console.log("✅ Found registration_id:", row.registration_id);
         distinctMembers.add(row.registration_id);
       }
     });
     
-    console.log("📊 Total distinct members found:", distinctMembers.size);
     return distinctMembers.size;
   } catch (error) {
     console.error("Error getting total registered members:", error);
