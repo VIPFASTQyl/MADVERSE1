@@ -145,7 +145,7 @@ const RegisterCTA = () => {
               </button>
             </motion.div>
 
-            {/* Active Members Stat - Centered */}
+            {/* Active Users Stat - Centered */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -158,7 +158,7 @@ const RegisterCTA = () => {
                   {totalParticipants > 0 ? totalParticipants.toLocaleString() : "0"}
                 </div>
                 <p className="text-base md:text-lg text-muted-foreground">
-                  {language === "en" ? "Active Members Using MADVERSE" : "Anëtarë Aktivë Duke Përdorur MADVERSE"}
+                  {language === "en" ? "Active Users" : "Përdorues Aktivë"}
                 </p>
               </div>
             </motion.div>
