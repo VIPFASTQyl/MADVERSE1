@@ -433,20 +433,50 @@ export const getTotalRegisteredMembers = async (): Promise<number> => {
   try {
     // Get count of all rows in activity_registrations
     // Each registration = one new member/account registered
-    const { count, error } = await supabase
+    const { count, data, error } = await supabase
       .from("activity_registrations")
-      .select("id", { count: 'exact' });
+      .select("*", { count: 'exact' });
 
     if (error) {
-      console.error("Error fetching registrations:", error);
+      console.error("❌ Error fetching registrations:", error);
+      console.error("Error details:", { message: error.message, code: error.code, details: error.details });
       return 0;
     }
 
     const total = count || 0;
     console.log(`👥 Total registered members: ${total}`);
+    if (data && data.length > 0) {
+      console.log(`Sample registration:`, data[0]);
+    }
     return total;
   } catch (error) {
-    console.error("Error getting total registered members:", error);
+    console.error("❌ Error getting total registered members:", error);
     return 0;
+  }
+};
+
+// Debug function to check registrations table directly
+export const debugCheckRegistrations = async (): Promise<void> => {
+  try {
+    console.log("🔍 Checking activity_registrations table...");
+    
+    const { data, count, error } = await supabase
+      .from("activity_registrations")
+      .select("*", { count: 'exact' });
+
+    if (error) {
+      console.error("❌ Query error:", error);
+      return;
+    }
+
+    console.log(`✅ Query successful!`);
+    console.log(`📊 Total rows: ${count}`);
+    console.log(`📋 Data:`, data);
+    
+    if (data && data.length > 0) {
+      console.log(`🔗 Column names:`, Object.keys(data[0]));
+    }
+  } catch (error) {
+    console.error("❌ Error:", error);
   }
 };

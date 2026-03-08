@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
-import { getTotalRegisteredMembers } from "@/lib/activityService";
+import { getTotalRegisteredMembers, debugCheckRegistrations } from "@/lib/activityService";
 import { trackActiveSession, getActiveSessionsCount, cleanupOldSessions } from "@/lib/sessionService";
 import { supabase } from "@/lib/supabaseClient";
 
@@ -16,6 +16,7 @@ const RegisterCTA = () => {
   useEffect(() => {
     // Expose cleanup function to browser console for debugging
     (window as any).debugCleanupSessions = cleanupOldSessions;
+    (window as any).debugCheckRegistrations = debugCheckRegistrations;
     let isActive = true;
 
     const fetchStats = async () => {
