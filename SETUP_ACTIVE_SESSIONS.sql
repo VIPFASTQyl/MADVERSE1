@@ -11,9 +11,15 @@ CREATE INDEX IF NOT EXISTS idx_active_sessions_last_seen ON active_sessions(last
 -- Enable Row Level Security
 ALTER TABLE active_sessions ENABLE ROW LEVEL SECURITY;
 
--- Allow anyone to insert/update their own session
-CREATE POLICY "Allow insert and update active_sessions" ON active_sessions
-FOR INSERT OR UPDATE
+-- Allow anyone to insert their session
+CREATE POLICY "Allow insert active_sessions" ON active_sessions
+FOR INSERT
+WITH CHECK (true);
+
+-- Allow anyone to update their session
+CREATE POLICY "Allow update active_sessions" ON active_sessions
+FOR UPDATE
+USING (true)
 WITH CHECK (true);
 
 -- Allow anyone to read active_sessions (for getting count)

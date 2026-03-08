@@ -26,9 +26,15 @@ For real-time updates to work correctly, you **must** apply RLS policies to the 
    -- Enable Row Level Security on active_sessions table
    ALTER TABLE active_sessions ENABLE ROW LEVEL SECURITY;
 
-   -- Allow anyone to insert/update their own session
-   CREATE POLICY "Allow insert and update active_sessions" ON active_sessions
-   FOR INSERT OR UPDATE
+   -- Allow anyone to insert their session
+   CREATE POLICY "Allow insert active_sessions" ON active_sessions
+   FOR INSERT
+   WITH CHECK (true);
+
+   -- Allow anyone to update their session
+   CREATE POLICY "Allow update active_sessions" ON active_sessions
+   FOR UPDATE
+   USING (true)
    WITH CHECK (true);
 
    -- Allow anyone to read active_sessions
