@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
-import { getAllActivities, getTotalRegisteredMembers } from "@/lib/activityService";
+import { getTotalRegisteredMembers } from "@/lib/activityService";
+import { trackActiveSession, getActiveSessionsCount } from "@/lib/sessionService";
 import { supabase } from "@/lib/supabaseClient";
 
 const RegisterCTA = () => {
@@ -15,13 +16,16 @@ const RegisterCTA = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
+        // Track that this user is currently online
+        await trackActiveSession();
+
+        // Get active sessions (users online in last 5 minutes)
+        const activeSessions = await getActiveSessionsCount();
+        setTotalParticipants(activeSessions);
+
         // Get total registered members
         const members = await getTotalRegisteredMembers();
         setTotalMembers(members);
-
-        // For "Active Members", use the same as total members (registered users are active)
-        // Both counters now show the number of registered members
-        setTotalParticipants(members);
       } catch (error) {
         console.error("Error fetching stats:", error);
       }
@@ -30,31 +34,50 @@ const RegisterCTA = () => {
     // Fetch stats immediately
     fetchStats();
 
-    // Set up real-time subscription to activity_registrations table
-    const subscription = supabase
-      .channel("activity_registrations_channel")
+    // Track activity every 30 seconds to keep session alive
+    const sessionInterval = setInterval(fetchStats, 30000);
+
+    // Set up real-time subscription to active_sessions table
+    const sessionsSubscription = supabase
+      .channel("active_sessions_channel")
       .on(
         "postgres_changes",
         {
-          event: "*", // Listen to INSERT, UPDATE, DELETE
+          event: "*",
           schema: "public",
-          table: "activity_registrations",
+          table: "active_sessions",
         },
         (payload: any) => {
-          // When a change happens, refresh stats immediately
-          console.log("🔔 Registration change detected, updating stats...");
-          fetchStats();
+          console.log("🔔 Session change detected, updating active members...");
+          // Refresh active sessions count immediately
+          getActiveSessionsCount().then(setTotalParticipants);
         }
       )
       .subscribe();
 
-    // Also set up a fallback interval refresh every 5 seconds (in case subscription misses something)
-    const interval = setInterval(fetchStats, 5000);
+    // Set up real-time subscription to activity_registrations table
+    const registrationsSubscription = supabase
+      .channel("activity_registrations_channel")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "activity_registrations",
+        },
+        (payload: any) => {
+          console.log("🔔 Registration change detected, updating total members...");
+          // Refresh total members count immediately
+          getTotalRegisteredMembers().then(setTotalMembers);
+        }
+      )
+      .subscribe();
 
     // Cleanup
     return () => {
-      subscription.unsubscribe();
-      clearInterval(interval);
+      clearInterval(sessionInterval);
+      sessionsSubscription.unsubscribe();
+      registrationsSubscription.unsubscribe();
     };
   }, []);
 
