@@ -63,7 +63,7 @@ export const trackActiveSession = async (): Promise<void> => {
 // Get count of active sessions (users online - each tab counted separately)
 export const getActiveSessionsCount = async (): Promise<number> => {
   try {
-    // First, cleanup sessions older than 30 seconds (stale sessions)
+    // First, cleanup sessions older than 10 seconds (stale sessions)
     await cleanupStaleSessionsFromDB();
     
     // Count ALL sessions - each tab is a separate user
@@ -82,6 +82,8 @@ export const getActiveSessionsCount = async (): Promise<number> => {
     // Log all active sessions for debugging
     if (data && data.length > 0) {
       console.log('Active session IDs:', data.map((d: any) => d.session_id));
+    } else {
+      console.log('✅ No active sessions in database');
     }
     
     return count;
@@ -91,15 +93,15 @@ export const getActiveSessionsCount = async (): Promise<number> => {
   }
 };
 
-// Cleanup stale sessions from database (sessions not updated in 40 seconds)
+// Cleanup stale sessions from database (sessions not updated in 10 seconds)
 const cleanupStaleSessionsFromDB = async (): Promise<void> => {
   try {
-    const forttySecondsAgo = new Date(Date.now() - 40 * 1000).toISOString();
+    const tenSecondsAgo = new Date(Date.now() - 10 * 1000).toISOString();
     
     const { count, error } = await supabase
       .from('active_sessions')
       .delete()
-      .lt('last_seen', forttySecondsAgo);
+      .lt('last_seen', tenSecondsAgo);
 
     if (error) {
       console.error('Error cleaning stale sessions:', error);
@@ -107,7 +109,7 @@ const cleanupStaleSessionsFromDB = async (): Promise<void> => {
     }
 
     if (count && count > 0) {
-      console.log(`🧹 Cleaned up ${count} stale sessions (older than 40s)`);
+      console.log(`🧹 Cleaned up ${count} stale sessions (older than 10s)`);
     }
   } catch (error) {
     console.error('Error in cleanupStaleSessionsFromDB:', error);
@@ -130,13 +132,16 @@ export const setupPageLeaveTracking = (): void => {
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
       console.log('⏸️ Tab went to background');
-      // Don't remove yet - they might come back
     } else {
       console.log('▶️ Tab is active again');
-      // Refresh session when tab becomes active
       trackActiveSession();
     }
   });
+
+  // Run aggressive cleanup every 5 seconds (background task)
+  setInterval(() => {
+    cleanupStaleSessionsFromDB();
+  }, 5000);
 };
 
 // Cleanup old sessions (older than 1 minute) - for testing/debugging

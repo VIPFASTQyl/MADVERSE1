@@ -35,11 +35,14 @@ const RegisterCTA = () => {
       }
     };
 
+    // Clean up any stale sessions immediately on mount
+    cleanupOldSessions();
+
     // Fetch stats immediately on mount
     fetchStats();
 
-    // Poll every 3 seconds for VERY fast updates
-    const sessionInterval = setInterval(fetchStats, 3000);
+    // Poll every 2 seconds for updates (keeps session fresh + cleanup runs)
+    const sessionInterval = setInterval(fetchStats, 2000);
 
     // Set up real-time subscription to active_sessions table for instant updates
     const sessionsSubscription = supabase
