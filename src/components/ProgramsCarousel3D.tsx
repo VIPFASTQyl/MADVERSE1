@@ -15,21 +15,14 @@ interface Program {
 const getDemoPrograms = (language: string): Program[] => [
   {
     id: "demo-1",
-    title: language === "en" ? "Klest" : "Klest",
+    title: language === "en" ? "Klest Drançolli" : "Klest Drançolli",
     category: language === "en" ? "Team" : "Ekipa",
     image: "/team-klest.png",
     description: language === "en" ? "Executive Director" : "Drejtori Ekzekutiv",
   },
   {
-    id: "demo-2",
-    title: language === "en" ? "Guri" : "Guri",
-    category: language === "en" ? "Team" : "Ekipa",
-    image: "/team-guri.png",
-    description: language === "en" ? "Head of Finance" : "Drejtori i Financës",
-  },
-  {
     id: "demo-3",
-    title: language === "en" ? "Erijon" : "Erijon",
+    title: language === "en" ? "Erijon Gashi" : "Erijon Gashi",
     category: language === "en" ? "Team" : "Ekipa",
     image: "/team-gashi.jpg",
     description: language === "en" ? "Head of Research & Innovation" : "Përfaqësues i Kërkimit & Inovacionit",
@@ -460,7 +453,7 @@ const ProgramsCarousel3D = () => {
         <div className="slick-slider">
           <div className="slick-list" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
             <div className="slick-track">
-              {programs.slice(0, 3).map((program, index) => (
+              {programs.slice(0, 2).map((program, index) => (
                 <div
                   key={program.id}
                   className={`slick-slide ${index === currentSlide ? "active" : ""}`}
