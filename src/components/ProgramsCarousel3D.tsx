@@ -45,31 +45,11 @@ const ProgramsCarousel3D = () => {
   const [tiltState, setTiltState] = useState<{ [key: string]: { x: number; y: number } }>({});
   const touchStartX = useRef<number | null>(null);
 
+  // Update language on demo programs when language changes
   useEffect(() => {
-    loadPrograms();
+    setPrograms(getDemoPrograms(language));
+    setCurrentSlide(0); // Reset to first slide when language changes
   }, [language]);
-
-  const loadPrograms = async () => {
-    try {
-      console.log("🎠 Loading real programs for language:", language);
-      const activities = await getActivitiesByLanguage(language);
-      
-      if (activities && activities.length > 0) {
-        console.log("🎠 Real programs loaded:", activities);
-        const mappedPrograms: Program[] = activities.map((activity: any) => ({
-          id: activity.id,
-          title: activity.title,
-          category: activity.category,
-          image: activity.image_url || "/activity-" + (activity.category?.toLowerCase() || "youth") + ".svg",
-          description: activity.description || activity.category || "Member",
-        }));
-        setPrograms(mappedPrograms);
-      }
-    } catch (error) {
-      console.error("Error loading real programs:", error);
-      // Keep showing demo programs if error
-    }
-  };
 
   const goToPrevious = () => {
     setCurrentSlide((prev) => (prev === 0 ? programs.length - 1 : prev - 1));
