@@ -1,12 +1,3 @@
-/* Auth Pages - Make password show icon white */
+/* Auth Pages - Styling */
 
-.cl-passwordInput__showPassword svg {
-  color: #ffffff !important;
-  fill: #ffffff !important;
-}
-
-.cl-formFieldInputShowPasswordIcon {
-  color: #ffffff !important;
-  fill: #ffffff !important;
-}
 
