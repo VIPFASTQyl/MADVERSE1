@@ -7,8 +7,8 @@ const partners = [
 ];
 
 const TrustMarquee = () => {
-  // Duplicate partners for seamless infinite loop
-  const duplicatedPartners = [...partners, ...partners];
+  // Triple duplicate for smooth infinite loop without interruptions
+  const duplicatedPartners = [...partners, ...partners, ...partners];
   
   return (
     <section className="py-16 border-y border-border/50 overflow-hidden">
@@ -21,9 +21,9 @@ const TrustMarquee = () => {
 
         <motion.div 
           className="flex gap-[65px] whitespace-nowrap"
-          animate={{ x: -1460 }}
+          animate={{ x: -2190 }}
           transition={{
-            duration: 30,
+            duration: 45,
             repeat: Infinity,
             ease: "linear",
             repeatType: "loop"
