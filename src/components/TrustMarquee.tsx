@@ -7,6 +7,9 @@ const partners = [
 ];
 
 const TrustMarquee = () => {
+  // 9 copies of partners for extended carousel
+  const extendedPartners = [...partners, ...partners, ...partners];
+  
   return (
     <section className="py-16 border-y border-border/50 overflow-hidden">
       {/* Marquee Container */}
@@ -18,21 +21,21 @@ const TrustMarquee = () => {
 
         <motion.div 
           className="flex gap-[65px] whitespace-nowrap"
-          animate={{ x: -706 }}
+          animate={{ x: -2248 }}
           transition={{
-            duration: 20,
+            duration: 60,
             repeat: Infinity,
             ease: "linear",
             repeatType: "loop"
           }}
           initial={{ x: 0 }}
         >
-          {partners.map((partner, i) => (
+          {extendedPartners.map((partner, i) => (
             <div
               key={`partner-${i}`}
               className="flex-shrink-0 w-48 h-24 flex items-center justify-center overflow-hidden"
             >
-              <img src={partner} alt={`Partner ${i + 1}`} className="w-full h-full object-contain" />
+              <img src={partner} alt={`Partner ${(i % partners.length) + 1}`} className="w-full h-full object-contain" />
             </div>
           ))}
         </motion.div>
