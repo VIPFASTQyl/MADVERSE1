@@ -26,7 +26,8 @@ const TrustMarquee = () => {
             duration: 30,
             repeat: Infinity,
             ease: "linear",
-            repeatType: "loop"
+            repeatType: "loop",
+            repeatDelay: 30
           }}
           initial={{ x: 0 }}
         >
