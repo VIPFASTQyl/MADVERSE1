@@ -3,6 +3,9 @@
   "installCommand": "npm install",
   "devCommand": "npm run dev",
   "outputDirectory": "dist",
+  "env": {
+    "VERCEL_FORCE_NO_BUILD_CACHE": "1"
+  },
   "routes": [
     {
       "src": "/api/.*",
