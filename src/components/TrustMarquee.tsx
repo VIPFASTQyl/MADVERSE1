@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 
 const partners = [
   "/partner1.png",
@@ -9,6 +10,21 @@ const partners = [
 const TrustMarquee = () => {
   // Only duplicate once for seamless loop (2x total)
   const duplicatedPartners = [...partners, ...partners];
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Mobile: shorter animation distance so partners are always visible
+  // Desktop: longer animation distance
+  const animateX = isMobile ? [-250, -500] : [-600, -1200];
+  const duration = isMobile ? 20 : 40;
   
   return (
     <section className="py-16 border-y border-border/50 overflow-hidden">
@@ -21,9 +37,9 @@ const TrustMarquee = () => {
 
         <motion.div 
           className="flex gap-[65px] whitespace-nowrap"
-          animate={{ x: [-600, -1200] }}
+          animate={{ x: animateX }}
           transition={{
-            duration: 40,
+            duration: duration,
             repeat: Infinity,
             ease: "linear",
             repeatType: "loop"
