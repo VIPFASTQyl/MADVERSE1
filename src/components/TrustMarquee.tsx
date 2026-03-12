@@ -23,7 +23,7 @@ const TrustMarquee = () => {
           className="flex gap-[65px] whitespace-nowrap"
           animate={{ x: -2248 }}
           transition={{
-            duration: 45,
+            duration: 30,
             repeat: Infinity,
             ease: "linear",
             repeatType: "loop"
