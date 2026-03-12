@@ -22,9 +22,9 @@ const TrustMarquee = () => {
   }, []);
 
   // Mobile: shorter animation distance so partners are always visible
-  // Desktop: longer animation distance
-  const animateX = isMobile ? [-250, -500] : [-600, -1200];
-  const duration = isMobile ? 20 : 40;
+  // Desktop: also shorter for quick rotation and visibility
+  const animateX = isMobile ? [-250, -500] : [-400, -800];
+  const duration = isMobile ? 20 : 25;
   
   return (
     <section className="py-16 border-y border-border/50 overflow-hidden">
