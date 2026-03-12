@@ -7,7 +7,8 @@ const partners = [
 ];
 
 const TrustMarquee = () => {
-  const duplicatedPartners = [...partners, ...partners, ...partners];
+  // Only duplicate once for seamless loop (2x total)
+  const duplicatedPartners = [...partners, ...partners];
   
   return (
     <section className="py-16 border-y border-border/50 overflow-hidden">
@@ -19,20 +20,21 @@ const TrustMarquee = () => {
         <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent z-10" />
 
         <motion.div 
-          className="flex gap-12 justify-center"
-          animate={{ x: [-1000, 0] }}
+          className="flex gap-12 whitespace-nowrap"
+          animate={{ x: [-600, -1200] }}
           transition={{
-            duration: 60,
+            duration: 40,
             repeat: Infinity,
-            ease: "linear"
+            ease: "linear",
+            repeatType: "loop"
           }}
         >
           {duplicatedPartners.map((partner, i) => (
             <div
-              key={i}
+              key={`partner-${i}`}
               className="flex-shrink-0 w-48 h-24 flex items-center justify-center overflow-hidden"
             >
-              <img src={partner} alt={`Partner ${i + 1}`} className="w-full h-full object-contain" />
+              <img src={partner} alt={`Partner ${(i % partners.length) + 1}`} className="w-full h-full object-contain" />
             </div>
           ))}
         </motion.div>
