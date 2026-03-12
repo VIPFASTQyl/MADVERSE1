@@ -20,7 +20,7 @@ const TrustMarquee = () => {
         <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent z-10" />
 
         <motion.div 
-          className="flex gap-12 whitespace-nowrap"
+          className="flex gap-[65px] whitespace-nowrap"
           animate={{ x: [-600, -1200] }}
           transition={{
             duration: 40,
