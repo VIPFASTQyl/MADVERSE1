@@ -1,12 +1,38 @@
+import React from 'react';
 import LogoLoop from './LogoLoop';
+import type { LogoItem } from './LogoLoop';
 
-const partners = [
+const partners: LogoItem[] = [
   { src: "/partner1.png", alt: "Partner 1" },
   { src: "/partner2.png", alt: "Partner 2" },
   { src: "/partner3.png", alt: "Partner 3" }
 ];
 
 const TrustMarquee = () => {
+  // Custom render to make partner1 smaller
+  const renderPartner = (item: LogoItem, key: React.Key) => {
+    const isPartner1 = 'src' in item && item.src === "/partner1.png";
+    
+    return (
+      <li
+        key={key}
+        className={`flex-none text-[length:var(--logoloop-logoHeight)] leading-[1] mr-[var(--logoloop-gap)] overflow-visible group/item ${
+          isPartner1 ? 'scale-75' : ''
+        }`}
+        role="listitem"
+      >
+        <img
+          className="h-[var(--logoloop-logoHeight)] w-auto block object-contain [-webkit-user-drag:none] pointer-events-none [image-rendering:-webkit-optimize-contrast] motion-reduce:transition-none transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover/item:scale-120"
+          src={'src' in item ? item.src : ''}
+          alt={'alt' in item ? item.alt : ''}
+          loading="lazy"
+          decoding="async"
+          draggable={false}
+        />
+      </li>
+    );
+  };
+
   return (
     <section className="py-16 border-y border-border/50 overflow-hidden">
       <LogoLoop
@@ -18,6 +44,8 @@ const TrustMarquee = () => {
         pauseOnHover={false}
         fadeOut={true}
         fadeOutColor="#000000"
+        scaleOnHover={true}
+        renderItem={renderPartner}
         ariaLabel="Partner companies"
         className="w-full"
       />
