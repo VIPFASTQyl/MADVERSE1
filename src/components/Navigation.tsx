@@ -5,19 +5,35 @@ import { Button } from "./ui/button";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useAuth } from "../contexts/AuthContext";
-import { UserButton, useAuth as useClerkAuth } from "@clerk/clerk-react";
+import { UserButton } from "@clerk/clerk-react";
 import ActivitiesDropdown from "./ActivitiesDropdown";
 
 const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileActivitiesOpen, setIsMobileActivitiesOpen] = useState(false);
   const [isLogoHovered, setIsLogoHovered] = useState(false);
+  const [isSignedIn, setIsSignedIn] = useState(false);
   const navRef = useRef<HTMLElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
   const { t, setLanguage, language } = useLanguage();
   const { session, isAdmin } = useAuth();
-  const { isSignedIn } = useClerkAuth();
+
+  // Try to get Clerk auth status safely
+  useEffect(() => {
+    try {
+      // Dynamic import to avoid breaking if ClerkProvider isn't available
+      import("@clerk/clerk-react").then(({ useAuth: useClerkAuth }) => {
+        // We can't use hooks in useEffect, so we'll check localStorage or session instead
+        const clerkSession = window?.Clerk?.session;
+        setIsSignedIn(!!clerkSession);
+      }).catch(() => {
+        setIsSignedIn(false);
+      });
+    } catch {
+      setIsSignedIn(false);
+    }
+  }, []);
 
   // Scroll-based navbar animation
   const { scrollY } = useScroll();
