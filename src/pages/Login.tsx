@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { SignIn } from "@clerk/clerk-react";
-import { useAuth } from "@clerk/clerk-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
@@ -10,14 +9,7 @@ import "@/styles/auth.css";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { isSignedIn } = useAuth();
   const { t } = useLanguage();
-
-  useEffect(() => {
-    if (isSignedIn) {
-      navigate("/");
-    }
-  }, [isSignedIn, navigate]);
 
   return (
     <div className="min-h-screen bg-black flex flex-col relative overflow-visible">
