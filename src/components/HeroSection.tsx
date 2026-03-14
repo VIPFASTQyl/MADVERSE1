@@ -66,8 +66,8 @@ const HeroSection = ({ title, subtitle }: HeroSectionProps) => {
             <div 
               className={`meta-animation ${!is3D ? 'mobile-toggled' : ''}`}
               onClick={() => setIs3D(!is3D)}
-              style={{ cursor: isMobile ? 'pointer' : 'auto' }}
-              title={isMobile ? `Click to toggle ${is3D ? '2D' : '3D'} mode` : ""}
+              style={{ cursor: 'pointer' }}
+              title={`Click to toggle ${is3D ? '2D' : '3D'} mode`}
             >
               MADVERSE
             </div>

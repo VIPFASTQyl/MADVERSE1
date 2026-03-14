@@ -14,22 +14,17 @@ const TrustMarquee = () => {
     const isPartner1 = 'src' in item && item.src === "/partner1.png";
     
     return (
-      <li
+      <img
         key={key}
-        className={`flex-none text-[length:var(--logoloop-logoHeight)] leading-[1] mr-[var(--logoloop-gap)] overflow-visible group/item ${
+        className={`h-[var(--logoloop-logoHeight)] w-auto block object-contain [-webkit-user-drag:none] pointer-events-none [image-rendering:-webkit-optimize-contrast] motion-reduce:transition-none transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover/item:scale-120 ${
           isPartner1 ? 'scale-75' : ''
         }`}
-        role="listitem"
-      >
-        <img
-          className="h-[var(--logoloop-logoHeight)] w-auto block object-contain [-webkit-user-drag:none] pointer-events-none [image-rendering:-webkit-optimize-contrast] motion-reduce:transition-none transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover/item:scale-120"
-          src={'src' in item ? item.src : ''}
-          alt={'alt' in item ? item.alt : ''}
-          loading="lazy"
-          decoding="async"
-          draggable={false}
-        />
-      </li>
+        src={'src' in item ? item.src : ''}
+        alt={'alt' in item ? item.alt : ''}
+        loading="lazy"
+        decoding="async"
+        draggable={false}
+      />
     );
   };
 

@@ -74,7 +74,7 @@ const Login = () => {
                 
                 // Email input
                 formFieldLabel: "text-white text-sm font-semibold mb-2 block",
-                formFieldInput: "bg-transparent border border-gray-400 text-white placeholder:text-gray-500 focus:border-gray-300 focus:ring-0 transition-colors rounded-md h-12 px-4 mb-8",
+                formFieldInput: "bg-transparent border border-gray-400 border-t-white text-white placeholder:text-gray-500 focus:border-gray-300 focus:border-t-white focus:ring-0 transition-colors rounded-md h-12 px-4 mb-8",
                 formFieldInputShowPasswordButton: "hidden",
                 formFieldInputGroup: "relative flex items-center w-full",
                 
