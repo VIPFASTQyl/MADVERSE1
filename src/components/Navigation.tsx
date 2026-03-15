@@ -184,7 +184,7 @@ const Navigation = () => {
                     }
                   }}
                 />
-              ) : (
+              ) : (location.pathname !== "/login" && location.pathname !== "/signup") && (
                 <>
                   <Link
                     to="/login"
@@ -362,7 +362,7 @@ const Navigation = () => {
                       }}
                     />
                   </div>
-                ) : (
+                ) : (location.pathname !== "/login" && location.pathname !== "/signup") && (
                   <div className="space-y-2">
                     <Link
                       to="/login"
