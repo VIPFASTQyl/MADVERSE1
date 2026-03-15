@@ -30,12 +30,12 @@ const Index = () => {
     { 
       text: 'Youth', 
       link: '/activity/youth', 
-      image: '/project-1.jpg'
+      image: '/youth-section.jpg'
     },
     { 
       text: 'Arts', 
       link: '/activity/arts', 
-      image: '/project-2.jpg'
+      image: '/arts-section.jpg'
     },
     { 
       text: 'Sports', 
@@ -50,7 +50,7 @@ const Index = () => {
     { 
       text: 'Culture', 
       link: '/activity/culture', 
-      image: '/Kulture.jpg'
+      image: '/culture-section.jpg'
     },
     { 
       text: 'Volunteering', 
