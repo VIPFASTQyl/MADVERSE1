@@ -38,7 +38,7 @@ const Footer = () => {
           
           <div className="flex items-center gap-4">
             {[
-              { name: "Instagram", url: "https://www.instagram.com/madverse_org/" },
+              { name: "Instagram", url: "https://www.instagram.com/__madverse__/" },
               { name: "YouTube", url: "https://www.youtube.com/channel/UCbowHpyDkY6y6lmtkBgjK7w" },
               { name: "Facebook", url: "https://www.facebook.com/profile.php?id=61586336113573" }
             ].map((social) => (
