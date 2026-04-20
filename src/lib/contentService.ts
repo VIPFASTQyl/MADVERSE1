@@ -236,6 +236,22 @@ export const initializeDefaultContent = async () => {
         section: "about",
         language: "al",
       },
+      {
+        id: "about-essence-en",
+        key: "about_essence",
+        title: "MADVERSE Essence",
+        content: "MADVERSE is not a place, it is the people.",
+        section: "about",
+        language: "en",
+      },
+      {
+        id: "about-essence-al",
+        key: "about_essence",
+        title: "MADVERSE Essence",
+        content: "MADVERSE nuk është një vend, është njerëzit.",
+        section: "about",
+        language: "al",
+      },
 
       // ===== TEAM MEMBERS =====
       // English

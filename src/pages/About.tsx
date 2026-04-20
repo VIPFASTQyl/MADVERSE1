@@ -22,6 +22,7 @@ const About = () => {
   const [aboutContent, setAboutContent] = useState<any>({
     whatTitle: "",
     whatDesc: "",
+    essenceDesc: "",
     ideaTitle: "",
     ideaDesc: "",
     goalsTitle: "",
@@ -38,17 +39,19 @@ const About = () => {
         // Fetch about sections from database
         const whatTitle = content.find((item) => item.key === "about_whatismadverse_title");
         const whatDesc = content.find((item) => item.key === "about_whatismadverse_desc");
+        const essenceDesc = content.find((item) => item.key === "about_essence");
         const ideaTitle = content.find((item) => item.key === "about_idea_title");
         const ideaDesc = content.find((item) => item.key === "about_idea_desc");
         const goalsTitle = content.find((item) => item.key === "about_goals_title");
         const goalsDesc = content.find((item) => item.key === "about_goals_desc");
         
-        console.log("About sections found:", { whatTitle, whatDesc, ideaTitle, ideaDesc, goalsTitle, goalsDesc });
+        console.log("About sections found:", { whatTitle, whatDesc, essenceDesc, ideaTitle, ideaDesc, goalsTitle, goalsDesc });
         
         // Set content from database
         setAboutContent({
           whatTitle: whatTitle?.content || "",
           whatDesc: whatDesc?.content || "",
+          essenceDesc: essenceDesc?.content || "",
           ideaTitle: ideaTitle?.content || "",
           ideaDesc: ideaDesc?.content || "",
           goalsTitle: goalsTitle?.content || "",
@@ -111,6 +114,23 @@ const About = () => {
               {aboutContent.whatDesc}
             </p>
             <div className="w-full h-px bg-white mb-16"></div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* MADVERSE Essence Section */}
+      <section className="py-24 lg:py-32 bg-gradient-to-r from-purple-900/20 to-orange-900/20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="max-w-3xl text-center mx-auto"
+          >
+            <p className="text-3xl lg:text-4xl font-bold text-white leading-relaxed italic">
+              {aboutContent.essenceDesc}
+            </p>
           </motion.div>
         </div>
       </section>

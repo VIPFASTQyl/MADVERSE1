@@ -30,6 +30,7 @@ serve(async (req) => {
     const adminEmailHTML = `
     <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif; max-width: 600px; margin: 0 auto;">
       <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; text-align: center; border-radius: 8px 8px 0 0;">
+        <img src="https://madverse.com/logo.png" alt="Madverse" style="height: 50px; margin-bottom: 15px; display: block; margin-left: auto; margin-right: auto;">
         <h1 style="color: white; margin: 0; font-size: 28px;">New Contact Message</h1>
       </div>
       
@@ -68,6 +69,7 @@ serve(async (req) => {
     const userEmailHTML = `
     <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif; max-width: 600px; margin: 0 auto;">
       <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; text-align: center; border-radius: 8px 8px 0 0;">
+        <img src="https://madverse.com/logo.png" alt="Madverse" style="height: 50px; margin-bottom: 15px; display: block; margin-left: auto; margin-right: auto;">
         <h1 style="color: white; margin: 0; font-size: 28px;">Message Received</h1>
       </div>
       
