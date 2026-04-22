@@ -126,7 +126,7 @@ const About = () => {
       </section>
 
       {/* MADVERSE Essence Section */}
-      <section className="py-24 lg:py-32 bg-black">
+      <section className="py-24 lg:py-32 bg-transparent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
