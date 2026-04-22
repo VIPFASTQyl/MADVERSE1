@@ -4,6 +4,7 @@ import StaggeredMenu from "@/components/StaggeredMenu";
 import Footer from "@/components/Footer";
 import PageTitleAnimation from "@/components/PageTitleAnimation";
 import AnimatedBackground from "@/components/AnimatedBackground";
+import SEO from "@/components/SEO";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState } from "react";
 
@@ -33,6 +34,12 @@ const Sports = () => {
 
   return (
     <>
+      <SEO
+        title="Sports Programs | MADVERSE Peja"
+        description="Join MADVERSE's sports programs designed to promote healthy living and athletic development in Peja, Kosovo."
+        canonical="https://www.madverse-ks.page/activity/sports"
+        ogImage="https://www.madverse-ks.page/og-sports.png"
+      />
       {/* Desktop Navigation */}
       {!isMobile && (
         <PillNav 

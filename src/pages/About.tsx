@@ -2,6 +2,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import TrustMarquee from "@/components/TrustMarquee";
 import LiquidEther from "@/components/LiquidEther";
+import SEO from "@/components/SEO";
 import { motion } from "framer-motion";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useIsMobile } from "../hooks/use-mobile";
@@ -67,6 +68,12 @@ const About = () => {
 
   return (
     <div className="min-h-screen relative">
+      <SEO
+        title="About MADVERSE | Our Mission & Vision"
+        description="Learn about MADVERSE's mission to empower youth through art, culture, sports, and community programs in Peja, Kosovo."
+        canonical="https://www.madverse-ks.page/about"
+        ogImage="https://www.madverse-ks.page/og-about.png"
+      />
       <Navigation />
       <div className="fixed inset-0 top-0 z-0 h-screen w-full pointer-events-none">
         {liquidEtherFailed ? (

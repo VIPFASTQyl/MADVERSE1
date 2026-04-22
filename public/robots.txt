@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /profile
+Disallow: /signup
+Disallow: /login
+Disallow: /verify
+Disallow: /verification-pending
+
+# Sitemaps
+Sitemap: https://www.madverse-ks.page/sitemap.xml

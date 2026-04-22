@@ -4,6 +4,7 @@ import StaggeredMenu from "@/components/StaggeredMenu";
 import Footer from "@/components/Footer";
 import PageTitleAnimation from "@/components/PageTitleAnimation";
 import AnimatedBackground from "@/components/AnimatedBackground";
+import SEO from "@/components/SEO";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState } from "react";
 
@@ -33,6 +34,12 @@ const Culture = () => {
 
   return (
     <>
+      <SEO
+        title="Culture Programs | MADVERSE Peja"
+        description="Explore MADVERSE's cultural preservation and promotion initiatives celebrating Kosovo's rich heritage in Peja."
+        canonical="https://www.madverse-ks.page/activity/culture"
+        ogImage="https://www.madverse-ks.page/og-culture.png"
+      />
       {/* Desktop Navigation */}
       {!isMobile && (
         <PillNav 

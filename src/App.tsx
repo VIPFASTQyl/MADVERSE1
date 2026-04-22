@@ -10,6 +10,7 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 import ScrollToTop from "./components/ScrollToTop";
 import { lazy, Suspense } from "react";
 import BackToTop from "@/components/BackToTop";
+import { HelmetProvider } from "react-helmet-async";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -81,10 +82,56 @@ const App = () => {
   if (!hasClerkKey) {
     console.warn('⚠️ Clerk key not found - running in fallback mode');
     return (
-      <QueryClientProvider client={queryClient}>
-        <LanguageProvider>
-          <AuthProvider>
-            <TooltipProvider>
+      <HelmetProvider>
+        <QueryClientProvider client={queryClient}>
+          <LanguageProvider>
+            <AuthProvider>
+              <TooltipProvider>
+                <Toaster />
+                <Sonner />
+                <BrowserRouter future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
+                  <ScrollToTop />
+                  <Suspense fallback={<LoadingFallback />}>
+                    <Routes>
+                      <Route path="/" element={<Index />} />
+                      <Route path="/about" element={<About />} />
+                      <Route path="/contact" element={<Contact />} />
+                      <Route path="/register/*" element={<Register />} />
+                      <Route path="/signup/*" element={<Register />} />
+                      <Route path="/login/*" element={
+                        <div className="min-h-screen bg-background flex items-center justify-center">
+                          <div className="text-center space-y-4 p-8">
+                            <h1 className="text-2xl font-bold">Authentication Disabled</h1>
+                            <p className="text-muted-foreground">Please configure Clerk keys to enable login</p>
+                          </div>
+                        </div>
+                      } />
+                      <Route path="/activity/youth" element={<Youth />} />
+                      <Route path="/activity/arts" element={<Arts />} />
+                      <Route path="/activity/culture" element={<Culture />} />
+                      <Route path="/activity/sports" element={<Sports />} />
+                      <Route path="/activity/exhibition" element={<Exhibition />} />
+                      <Route path="/activity/volunteering" element={<Volunteering />} />
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
+                  </Suspense>
+                  <BackToTop />
+                </BrowserRouter>
+              </TooltipProvider>
+            </AuthProvider>
+          </LanguageProvider>
+        </QueryClientProvider>
+      </HelmetProvider>
+    );
+  }
+
+  return (
+    <HelmetProvider>
+      <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+        <QueryClientProvider client={queryClient}>
+          <LanguageProvider>
+            <AuthProvider>
+              <TooltipProvider>
               <Toaster />
               <Sonner />
               <BrowserRouter future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
@@ -94,22 +141,24 @@ const App = () => {
                     <Route path="/" element={<Index />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/contact" element={<Contact />} />
+                    {/* Clerk authentication routes - allow splat for multi-factor auth flows */}
                     <Route path="/register/*" element={<Register />} />
                     <Route path="/signup/*" element={<Register />} />
-                    <Route path="/login/*" element={
-                      <div className="min-h-screen bg-background flex items-center justify-center">
-                        <div className="text-center space-y-4 p-8">
-                          <h1 className="text-2xl font-bold">Authentication Disabled</h1>
-                          <p className="text-muted-foreground">Please configure Clerk keys to enable login</p>
-                        </div>
-                      </div>
-                    } />
+                    <Route path="/login/*" element={<Login />} />
+                    <Route path="/verify" element={<Verify />} />
+                    <Route path="/verification-pending" element={<VerificationPending />} />
+                    <Route
+                      path="/profile"
+                      element={<Profile />}
+                    />
+                    {/* Simple activity detail pages (title + LiquidEther) */}
                     <Route path="/activity/youth" element={<Youth />} />
                     <Route path="/activity/arts" element={<Arts />} />
                     <Route path="/activity/culture" element={<Culture />} />
                     <Route path="/activity/sports" element={<Sports />} />
                     <Route path="/activity/exhibition" element={<Exhibition />} />
                     <Route path="/activity/volunteering" element={<Volunteering />} />
+                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </Suspense>
@@ -119,52 +168,8 @@ const App = () => {
           </AuthProvider>
         </LanguageProvider>
       </QueryClientProvider>
-    );
-  }
-
-  return (
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
-      <QueryClientProvider client={queryClient}>
-        <LanguageProvider>
-          <AuthProvider>
-            <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
-              <ScrollToTop />
-              <Suspense fallback={<LoadingFallback />}>
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/contact" element={<Contact />} />
-                  {/* Clerk authentication routes - allow splat for multi-factor auth flows */}
-                  <Route path="/register/*" element={<Register />} />
-                  <Route path="/signup/*" element={<Register />} />
-                  <Route path="/login/*" element={<Login />} />
-                  <Route path="/verify" element={<Verify />} />
-                  <Route path="/verification-pending" element={<VerificationPending />} />
-                  <Route
-                    path="/profile"
-                    element={<Profile />}
-                  />
-                  {/* Simple activity detail pages (title + LiquidEther) */}
-                  <Route path="/activity/youth" element={<Youth />} />
-                  <Route path="/activity/arts" element={<Arts />} />
-                  <Route path="/activity/culture" element={<Culture />} />
-                  <Route path="/activity/sports" element={<Sports />} />
-                  <Route path="/activity/exhibition" element={<Exhibition />} />
-                  <Route path="/activity/volunteering" element={<Volunteering />} />
-                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </Suspense>
-              <BackToTop />
-            </BrowserRouter>
-          </TooltipProvider>
-        </AuthProvider>
-      </LanguageProvider>
-    </QueryClientProvider>
-  </ClerkProvider>
+    </ClerkProvider>
+    </HelmetProvider>
   );
 };
 

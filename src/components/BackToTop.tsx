@@ -35,16 +35,16 @@ export default function BackToTop() {
     <AnimatePresence>
       {visible && (
         <motion.button
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
+
+
           exit={{ opacity: 0, y: 24 }}
           transition={{ duration: 0.25 }}
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           className="fixed bottom-6 right-6 z-50 flex items-center gap-2 text-white bg-transparent p-0"
           variants={containerVariants}
-          initial="rest"
+          initial={{ opacity: 0, y: 24 }}
           whileHover="hover"
-          animate="rest"
+          animate={{ opacity: 1, y: 0 }}
         >
           <motion.span
             variants={textVariants}
@@ -65,3 +65,4 @@ export default function BackToTop() {
     </AnimatePresence>
   );
 }
+

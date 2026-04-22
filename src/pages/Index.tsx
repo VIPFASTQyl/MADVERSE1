@@ -9,6 +9,8 @@ import TabsSection from "@/components/TabsSection";
 import CTASection from "@/components/CTASection";
 import RegisterCTA from "@/components/RegisterCTA";
 import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
+import { OrganizationSchema } from "@/components/OrganizationSchema";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useState, useEffect } from "react";
 import { getContentByLanguage } from "@/lib/contentService";
@@ -115,6 +117,13 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="MADVERSE | Urban Art & Community Programs in Peja, Kosovo"
+        description="Discover MADVERSE - a dynamic organization in Peja, Kosovo dedicated to youth empowerment, urban art, culture, sports, and community exhibitions."
+        canonical="https://www.madverse-ks.page/"
+        ogImage="https://www.madverse-ks.page/og-home.png"
+      />
+      <OrganizationSchema />
       <Navigation />
       <HeroSection title={heroTitle} subtitle={heroDesc} />
       <TrustMarquee />

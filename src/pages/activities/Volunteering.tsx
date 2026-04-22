@@ -4,6 +4,7 @@ import StaggeredMenu from "@/components/StaggeredMenu";
 import Footer from "@/components/Footer";
 import PageTitleAnimation from "@/components/PageTitleAnimation";
 import AnimatedBackground from "@/components/AnimatedBackground";
+import SEO from "@/components/SEO";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState } from "react";
 
@@ -33,6 +34,12 @@ const Volunteering = () => {
 
   return (
     <>
+      <SEO
+        title="Volunteering | MADVERSE Peja"
+        description="Make a difference with MADVERSE. Join our volunteer community supporting youth, arts, and cultural programs in Peja, Kosovo."
+        canonical="https://www.madverse-ks.page/activity/volunteering"
+        ogImage="https://www.madverse-ks.page/og-volunteering.png"
+      />
       {/* Desktop Navigation */}
       {!isMobile && (
         <PillNav 

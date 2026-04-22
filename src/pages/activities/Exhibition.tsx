@@ -4,6 +4,7 @@ import StaggeredMenu from "@/components/StaggeredMenu";
 import Footer from "@/components/Footer";
 import PageTitleAnimation from "@/components/PageTitleAnimation";
 import AnimatedBackground from "@/components/AnimatedBackground";
+import SEO from "@/components/SEO";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState } from "react";
 
@@ -33,6 +34,12 @@ const Exhibition = () => {
 
   return (
     <>
+      <SEO
+        title="Exhibitions | MADVERSE Peja"
+        description="Experience MADVERSE's exhibitions showcasing art, culture, and creative projects in Peja, Kosovo."
+        canonical="https://www.madverse-ks.page/activity/exhibition"
+        ogImage="https://www.madverse-ks.page/og-exhibition.png"
+      />
       {/* Desktop Navigation */}
       {!isMobile && (
         <PillNav 

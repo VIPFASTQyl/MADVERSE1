@@ -3,6 +3,7 @@ import PillNav from "@/components/PillNav";
 import StaggeredMenu from "@/components/StaggeredMenu";
 import Footer from "@/components/Footer";
 import PageTitleAnimation from "@/components/PageTitleAnimation";
+import SEO from "@/components/SEO";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState } from "react";
 
@@ -32,6 +33,12 @@ const Youth = () => {
 
   return (
     <>
+      <SEO
+        title="Youth Programs | MADVERSE Peja"
+        description="Explore MADVERSE's youth empowerment programs designed to inspire and develop the next generation in Peja, Kosovo."
+        canonical="https://www.madverse-ks.page/activity/youth"
+        ogImage="https://www.madverse-ks.page/og-youth.png"
+      />
       {/* Desktop Navigation */}
       {!isMobile && (
         <PillNav 

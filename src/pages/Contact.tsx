@@ -2,6 +2,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import LiquidEther from "@/components/LiquidEther";
 import ContactSection from "@/components/ContactSection";
+import SEO from "@/components/SEO";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState, useEffect } from "react";
 
@@ -17,6 +18,12 @@ const Contact = () => {
   }, []);
   return (
     <div className="min-h-screen bg-background relative">
+      <SEO
+        title="Contact MADVERSE | Get In Touch"
+        description="Contact MADVERSE in Peja, Kosovo. Reach out to us about programs, partnerships, or volunteering opportunities."
+        canonical="https://www.madverse-ks.page/contact"
+        ogImage="https://www.madverse-ks.page/og-contact.png"
+      />
       <Navigation />
       <div className="fixed inset-0 top-0 z-0 h-screen w-full pointer-events-none">
         {isMobile ? (

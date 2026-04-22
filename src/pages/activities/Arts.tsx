@@ -4,6 +4,7 @@ import StaggeredMenu from "@/components/StaggeredMenu";
 import Footer from "@/components/Footer";
 import PageTitleAnimation from "@/components/PageTitleAnimation";
 import AnimatedBackground from "@/components/AnimatedBackground";
+import SEO from "@/components/SEO";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState } from "react";
 
@@ -33,6 +34,12 @@ const Arts = () => {
 
   return (
     <>
+      <SEO
+        title="Arts Programs | MADVERSE Peja"
+        description="Discover MADVERSE's arts and street art programs promoting creative expression and urban culture in Peja, Kosovo."
+        canonical="https://www.madverse-ks.page/activity/arts"
+        ogImage="https://www.madverse-ks.page/og-arts.png"
+      />
       {/* Desktop Navigation */}
       {!isMobile && (
         <PillNav 
