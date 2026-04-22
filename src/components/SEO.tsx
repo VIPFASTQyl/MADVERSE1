@@ -23,17 +23,18 @@ export const SEO = ({
   canonical,
   ogImage = "https://www.madverse-ks.page/og-image.png",
   ogType = "website",
-  keywords = "MADVERSE, Peja, Kosovo, urban art, street art, youth programs, culture, sports, exhibitions",
-  author = "MADVERSE",
+  keywords = "madverse, Peja, Kosovo, urban art, street art, youth programs, culture, sports, exhibitions, Organzation, Spots, Arts, Culture, Volunteering",
+  author = "madverse",
   children,
 }: SEOProps) => {
-  const fullTitle = title.includes("MADVERSE")
+  const tabTitle = "madverse";
+  const fullTitle = title.includes("madverse")
     ? title
     : `${title} | MADVERSE`;
 
   return (
     <Helmet>
-      <title>{fullTitle}</title>
+      <title>{tabTitle}</title>
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
       <meta name="author" content={author} />

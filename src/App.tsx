@@ -80,7 +80,7 @@ const App = () => {
   const hasClerkKey = PUBLISHABLE_KEY && PUBLISHABLE_KEY.length > 10;
   
   if (!hasClerkKey) {
-    console.warn('⚠️ Clerk key not found - running in fallback mode');
+    console.warn('Clerk key not found  running in fallback mode');
     return (
       <HelmetProvider>
         <QueryClientProvider client={queryClient}>
