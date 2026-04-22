@@ -35,7 +35,7 @@ const Sports = () => {
   return (
     <>
       <SEO
-        title="Sports Programs | MADVERSE Peja"
+        title="Sports"
         description="Join MADVERSE's sports programs designed to promote healthy living and athletic development in Peja, Kosovo."
         canonical="https://www.madverse-ks.page/activity/sports"
         ogImage="https://www.madverse-ks.page/og-sports.png"

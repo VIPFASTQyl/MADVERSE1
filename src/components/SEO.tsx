@@ -27,14 +27,13 @@ export const SEO = ({
   author = "madverse",
   children,
 }: SEOProps) => {
-  const tabTitle = "madverse";
-  const fullTitle = title.includes("madverse")
+  const fullTitle = /madverse/i.test(title)
     ? title
     : `${title} | MADVERSE`;
 
   return (
     <Helmet>
-      <title>{tabTitle}</title>
+      <title>{fullTitle}</title>
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
       <meta name="author" content={author} />

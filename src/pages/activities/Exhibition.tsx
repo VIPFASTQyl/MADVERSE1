@@ -35,7 +35,7 @@ const Exhibition = () => {
   return (
     <>
       <SEO
-        title="Exhibitions | MADVERSE Peja"
+        title="Exhibition"
         description="Experience MADVERSE's exhibitions showcasing art, culture, and creative projects in Peja, Kosovo."
         canonical="https://www.madverse-ks.page/activity/exhibition"
         ogImage="https://www.madverse-ks.page/og-exhibition.png"

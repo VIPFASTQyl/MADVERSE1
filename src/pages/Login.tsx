@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { SignIn } from "@clerk/clerk-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 import "@/styles/auth.css";
@@ -13,6 +14,11 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-black flex flex-col relative overflow-visible">
+      <SEO
+        title="Log In"
+        description="Log in to your MADVERSE account to access your profile and participation tools."
+        canonical="https://www.madverse-ks.page/login"
+      />
       {/* Minimalist gradient background */}
       <div 
         className="absolute inset-0 z-0 pointer-events-none"

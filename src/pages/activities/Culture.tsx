@@ -35,7 +35,7 @@ const Culture = () => {
   return (
     <>
       <SEO
-        title="Culture Programs | MADVERSE Peja"
+        title="Culture"
         description="Explore MADVERSE's cultural preservation and promotion initiatives celebrating Kosovo's rich heritage in Peja."
         canonical="https://www.madverse-ks.page/activity/culture"
         ogImage="https://www.madverse-ks.page/og-culture.png"

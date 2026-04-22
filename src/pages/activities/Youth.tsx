@@ -34,7 +34,7 @@ const Youth = () => {
   return (
     <>
       <SEO
-        title="Youth Programs | MADVERSE Peja"
+        title="Youth"
         description="Explore MADVERSE's youth empowerment programs designed to inspire and develop the next generation in Peja, Kosovo."
         canonical="https://www.madverse-ks.page/activity/youth"
         ogImage="https://www.madverse-ks.page/og-youth.png"

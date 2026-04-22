@@ -69,7 +69,7 @@ const About = () => {
   return (
     <div className="min-h-screen relative">
       <SEO
-        title="About MADVERSE | Our Mission & Vision"
+        title="About"
         description="Learn about MADVERSE's mission to empower youth through art, culture, sports, and community programs in Peja, Kosovo."
         canonical="https://www.madverse-ks.page/about"
         ogImage="https://www.madverse-ks.page/og-about.png"

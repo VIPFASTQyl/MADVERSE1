@@ -19,7 +19,7 @@ const Contact = () => {
   return (
     <div className="min-h-screen bg-background relative">
       <SEO
-        title="Contact MADVERSE | Get In Touch"
+        title="Contact"
         description="Contact MADVERSE in Peja, Kosovo. Reach out to us about programs, partnerships, or volunteering opportunities."
         canonical="https://www.madverse-ks.page/contact"
         ogImage="https://www.madverse-ks.page/og-contact.png"

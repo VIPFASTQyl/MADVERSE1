@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { SignUp as ClerkSignUp } from "@clerk/clerk-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
 import { motion } from "framer-motion";
 import "@/styles/auth.css";
 
@@ -11,6 +12,11 @@ const SignUp = () => {
 
   return (
     <div className="min-h-screen bg-black flex flex-col relative overflow-visible">
+      <SEO
+        title="Sign Up"
+        description="Create your MADVERSE account to join our youth, arts, culture, sports, and volunteering programs in Peja, Kosovo."
+        canonical="https://www.madverse-ks.page/signup"
+      />
       {/* Minimalist gradient background */}
       <div 
         className="absolute inset-0 z-0 pointer-events-none"

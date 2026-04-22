@@ -1,6 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import SEO from "@/components/SEO";
 
 const NotFound = () => {
   const location = useLocation();
@@ -12,6 +13,11 @@ const NotFound = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted">
+      <SEO
+        title="Page Not Found"
+        description="The page you are looking for does not exist on MADVERSE."
+        canonical="https://www.madverse-ks.page/404"
+      />
       <div className="text-center">
         <h1 className="mb-4 text-4xl font-bold">{t('pageNotFoundCode')}</h1>
         <p className="mb-4 text-xl text-muted-foreground">{t('pageNotFoundMessage')}</p>

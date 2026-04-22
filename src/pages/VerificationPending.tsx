@@ -6,6 +6,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mail } from "lucide-react";
+import SEO from "@/components/SEO";
 
 const VerificationPending = () => {
   const navigate = useNavigate();
@@ -22,6 +23,11 @@ const VerificationPending = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <SEO
+        title="Verify Email"
+        description="Check your email and confirm your MADVERSE account to finish registration."
+        canonical="https://www.madverse-ks.page/verification-pending"
+      />
       <Navigation />
       <div className="flex-1 flex items-center justify-center px-6 pt-16">
         <div className="w-full max-w-md">

@@ -35,7 +35,7 @@ const Volunteering = () => {
   return (
     <>
       <SEO
-        title="Volunteering | MADVERSE Peja"
+        title="Volunteering"
         description="Make a difference with MADVERSE. Join our volunteer community supporting youth, arts, and cultural programs in Peja, Kosovo."
         canonical="https://www.madverse-ks.page/activity/volunteering"
         ogImage="https://www.madverse-ks.page/og-volunteering.png"

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/lib/supabaseClient";
+import SEO from "@/components/SEO";
 
 const Verify = () => {
   const navigate = useNavigate();
@@ -30,8 +31,13 @@ const Verify = () => {
     verifyEmail();
   }, [navigate]);
 
-  // Component renders nothing - just redirects silently
-  return null;
+  return (
+    <SEO
+      title="Verify Email"
+      description="Verify your MADVERSE email address to finish setting up your account."
+      canonical="https://www.madverse-ks.page/verify"
+    />
+  );
 };
 
 export default Verify;
