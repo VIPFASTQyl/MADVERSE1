@@ -119,7 +119,7 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <SEO
         title="MADVERSE"
-        description="Discover MADVERSE - a dynamic organization in Peja, Kosovo dedicated to youth empowerment, urban art, culture, sports, and community exhibitions."
+        description="MADVERSE is a youth led organization and creative platform based in Peja, Kosovo, dedicated to bridging the gap between urban culture, contemporary art, and community engagement."
         canonical="https://www.madverse-ks.page/"
         ogImage="https://www.madverse-ks.page/og-home.png"
       />
