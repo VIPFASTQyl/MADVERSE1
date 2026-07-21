@@ -39,11 +39,7 @@ const pageLinks = [
   { key: "volunteering", href: "/activity/volunteering" },
 ];
 
-const sidebarItems = [
-  "MADVERSE x Rugove",
-  "MADVERSE x Karta Rinore",
-  ...Array.from({ length: 8 }, () => "Coming soon..."),
-];
+const sidebarItems = ["MADVERSE x Rugove", "MADVERSE x Karta Rinore", "Coming Soon..."];
 
 const ActivityFeaturePage = ({
   activeHref,
@@ -67,7 +63,7 @@ const ActivityFeaturePage = ({
   }));
 
   const handleSidebarClick = (index: number) => {
-    const targetId = index < 2 ? `activity-feature-${index}` : "activity-coming-soon";
+    const targetId = index === 2 ? "activity-coming-soon" : `activity-feature-${index}`;
     document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
@@ -137,7 +133,6 @@ const ActivityFeaturePage = ({
           fontSize={0.82}
           smoothing={80}
           defaultActive={0}
-          isStatic
           onItemClick={handleSidebarClick}
         />
       </div>

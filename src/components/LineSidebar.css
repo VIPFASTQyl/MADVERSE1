@@ -55,11 +55,6 @@
   white-space: nowrap;
 }
 
-.line-sidebar--static .line-sidebar__label {
-  color: var(--text-color);
-  transform: none;
-}
-
 .line-sidebar__index {
   margin-right: 0.6rem;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -78,11 +73,6 @@
   transform-origin: left center;
 }
 
-.line-sidebar--static .line-sidebar__marker {
-  background-color: var(--marker-color);
-  transform: translateY(-50%);
-}
-
 .line-sidebar--markers .line-sidebar__item:not(:last-child)::after {
   content: "";
   position: absolute;
@@ -98,8 +88,4 @@
 .line-sidebar--scale-tick .line-sidebar__item:not(:last-child)::after {
   transform: translateY(-50%) scaleX(calc(0.7 + var(--effect, 0) * 0.6));
   transform-origin: left center;
-}
-
-.line-sidebar--static .line-sidebar__item:not(:last-child)::after {
-  transform: translateY(-50%);
 }

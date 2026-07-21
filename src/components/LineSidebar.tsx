@@ -21,7 +21,6 @@ interface LineSidebarProps {
   fontSize?: number;
   smoothing?: number;
   defaultActive?: number | null;
-  isStatic?: boolean;
   onItemClick?: (index: number, label: string) => void;
   className?: string;
 }
@@ -29,14 +28,7 @@ interface LineSidebarProps {
 const DEFAULT_ITEMS = [
   "MADVERSE x Rugove",
   "MADVERSE x Karta Rinore",
-  "Coming soon...",
-  "Coming soon...",
-  "Coming soon...",
-  "Coming soon...",
-  "Coming soon...",
-  "Coming soon...",
-  "Coming soon...",
-  "Coming soon...",
+  "Coming Soon...",
 ];
 
 const FALLOFF_CURVES: Record<Falloff, (progress: number) => number> = {
@@ -63,7 +55,6 @@ const LineSidebar = ({
   fontSize = 1.1,
   smoothing = 100,
   defaultActive = null,
-  isStatic = false,
   onItemClick,
   className = "",
 }: LineSidebarProps) => {
@@ -107,7 +98,6 @@ const LineSidebar = ({
   }, [runFrame]);
 
   const handlePointerMove = useCallback((event: PointerEvent<HTMLUListElement>) => {
-    if (isStatic) return;
     const list = listRef.current;
     if (!list) return;
     const rect = list.getBoundingClientRect();
@@ -122,13 +112,12 @@ const LineSidebar = ({
     });
 
     startLoop();
-  }, [falloff, isStatic, proximityRadius, startLoop]);
+  }, [falloff, proximityRadius, startLoop]);
 
   const handlePointerLeave = useCallback(() => {
-    if (isStatic) return;
     targetsRef.current = targetsRef.current.map(() => 0);
     startLoop();
-  }, [isStatic, startLoop]);
+  }, [startLoop]);
 
   const handleClick = useCallback((index: number, label: string) => {
     setActiveIndex(index);
@@ -159,7 +148,7 @@ const LineSidebar = ({
   return (
     <nav
       aria-label="Activity projects"
-      className={`line-sidebar${showMarker ? " line-sidebar--markers" : ""}${scaleTick ? " line-sidebar--scale-tick" : ""}${isStatic ? " line-sidebar--static" : ""}${className ? ` ${className}` : ""}`}
+      className={`line-sidebar${showMarker ? " line-sidebar--markers" : ""}${scaleTick ? " line-sidebar--scale-tick" : ""}${className ? ` ${className}` : ""}`}
       style={style}
     >
       <ul
