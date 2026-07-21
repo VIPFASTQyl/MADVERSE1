@@ -7,6 +7,7 @@ const Volunteering = () => (
     seoDescription="Make a difference with MADVERSE. Join our volunteer community supporting youth, arts, and cultural programs in Peja, Kosovo."
     canonical="https://www.madverse-ks.page/activity/volunteering"
     ogImage="https://www.madverse-ks.page/og-volunteering.png"
+    accentColor="#22C55E"
     sections={[
       {
         labelKey: "communityImpact",
@@ -24,18 +25,6 @@ const Volunteering = () => (
         titleKey: "socialCause",
         descriptionKey: "socialCauseDesc",
         image: "/volunteering-3.jpeg",
-      },
-      {
-        labelKey: "volunteeringTitle",
-        titleKey: "volunteerCreativity",
-        descriptionKey: "volunteerCreativityDesc",
-        image: "/volunteering-4.jpeg",
-      },
-      {
-        labelKey: "volunteeringTitle",
-        titleKey: "collectiveAchievement",
-        descriptionKey: "collectiveAchievementDesc",
-        image: "/volunteering-5.jpeg",
       },
       {
         labelKey: "volunteeringTitle",

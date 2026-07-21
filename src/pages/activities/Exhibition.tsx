@@ -7,6 +7,7 @@ const Exhibition = () => (
     seoDescription="Experience MADVERSE's exhibitions showcasing art, culture, and creative projects in Peja, Kosovo."
     canonical="https://www.madverse-ks.page/activity/exhibition"
     ogImage="https://www.madverse-ks.page/og-exhibition.png"
+    accentColor="#00CED1"
     sections={[
       {
         labelKey: "artExhibitions",
@@ -24,6 +25,18 @@ const Exhibition = () => (
         titleKey: "exhibitionVenues",
         descriptionKey: "exhibitionVenuesDesc",
         image: "/20260304_110123.jpg",
+      },
+      {
+        labelKey: "exhibitionTitle",
+        titleKey: "volunteerCreativity",
+        descriptionKey: "volunteerCreativityDesc",
+        image: "/volunteering-4.jpeg",
+      },
+      {
+        labelKey: "exhibitionTitle",
+        titleKey: "collectiveAchievement",
+        descriptionKey: "collectiveAchievementDesc",
+        image: "/volunteering-5.jpeg",
       },
     ]}
   />

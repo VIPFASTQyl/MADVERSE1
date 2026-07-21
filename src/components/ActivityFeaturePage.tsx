@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import Footer from "@/components/Footer";
 import LiquidEther from "@/components/LiquidEther";
+import LineSidebar from "@/components/LineSidebar";
 import PageTitleAnimation from "@/components/PageTitleAnimation";
 import PillNav from "@/components/PillNav";
 import SEO from "@/components/SEO";
@@ -24,6 +25,7 @@ interface ActivityFeaturePageProps {
   seoDescription: string;
   canonical: string;
   ogImage: string;
+  accentColor: string;
   sections: FeatureSection[];
 }
 
@@ -37,12 +39,15 @@ const pageLinks = [
   { key: "volunteering", href: "/activity/volunteering" },
 ];
 
+const sidebarItems = ["MADVERSE x Rugove", "MADVERSE x Karta Rinore", "Coming Soon..."];
+
 const ActivityFeaturePage = ({
   activeHref,
   titleKey,
   seoDescription,
   canonical,
   ogImage,
+  accentColor,
   sections,
 }: ActivityFeaturePageProps) => {
   const isMobile = useIsMobile();
@@ -56,6 +61,11 @@ const ActivityFeaturePage = ({
     ariaLabel: t(key),
     link: href,
   }));
+
+  const handleSidebarClick = (index: number) => {
+    const targetId = index === 2 ? "activity-coming-soon" : `activity-feature-${index}`;
+    document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
 
   return (
     <div className="min-h-screen bg-black text-white" lang={language === "al" ? "sq" : "en"}>
@@ -73,7 +83,7 @@ const ActivityFeaturePage = ({
           isFixed
           items={menuItems}
           position="right"
-          colors={["#FCF5AF", "#F0A533", "#E44F0A", "#BA011A"]}
+          colors={[accentColor, "#111111", "#000000", accentColor]}
           menuButtonColor="#fff"
           openMenuButtonColor="#fff"
           accentColor="#00CED1"
@@ -90,7 +100,7 @@ const ActivityFeaturePage = ({
           <div className="h-full w-full animate-pulse bg-gradient-to-br from-purple-900 via-black to-black" />
         ) : (
           <LiquidEther
-            colors={["#FCF5AF", "#F0A533", "#E44F0A", "#BA011A"]}
+            colors={[accentColor, accentColor, "#111111", "#000000"]}
             mouseForce={15}
             cursorSize={100}
             isViscous={false}
@@ -110,10 +120,28 @@ const ActivityFeaturePage = ({
         )}
       </div>
 
+      <div className="fixed left-5 top-1/2 z-30 hidden -translate-y-1/2 md:block lg:left-8">
+        <LineSidebar
+          items={sidebarItems}
+          accentColor={accentColor}
+          textColor="#bdbdbd"
+          markerColor="#555"
+          proximityRadius={160}
+          maxShift={36}
+          markerLength={58}
+          itemGap={26}
+          fontSize={0.82}
+          smoothing={80}
+          defaultActive={0}
+          onItemClick={handleSidebarClick}
+        />
+      </div>
+
       <main className="relative z-10 overflow-hidden">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 h-[34rem] bg-[radial-gradient(circle_at_50%_0%,rgba(240,165,51,0.12),transparent_62%)]"
+          className="pointer-events-none absolute inset-x-0 top-0 h-[34rem]"
+          style={{ background: `radial-gradient(circle at 50% 0%, ${accentColor}1f, transparent 62%)` }}
         />
 
         <PageTitleAnimation title={pageTitle} />
@@ -138,6 +166,7 @@ const ActivityFeaturePage = ({
             return (
               <motion.section
                 key={`${section.image}-${section.descriptionKey}`}
+                id={index < 2 ? `activity-feature-${index}` : undefined}
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
@@ -148,7 +177,7 @@ const ActivityFeaturePage = ({
               >
                 <div className={isReversed ? "md:order-2" : "md:order-1"}>
                   <p className="mb-5 text-xs font-bold uppercase tracking-[0.2em] text-[#F0A533] sm:text-sm">
-                    {t(section.labelKey)}
+                    <span style={{ color: accentColor }}>{t(section.labelKey)}</span>
                   </p>
                   <h2 className="max-w-2xl text-4xl font-bold leading-[0.96] tracking-[-0.045em] sm:text-5xl lg:text-6xl">
                     {sectionTitle}
@@ -186,7 +215,7 @@ const ActivityFeaturePage = ({
           })}
         </div>
 
-        <section className="flex min-h-screen w-full items-center justify-center px-4 py-20">
+        <section id="activity-coming-soon" className="flex min-h-screen w-full items-center justify-center px-4 py-20">
           <h2 className="text-center text-6xl font-bold text-white md:text-8xl">
             {t("comingSoon")}
             <span aria-hidden="true" className="ml-2 inline-block animate-bounce">.</span>

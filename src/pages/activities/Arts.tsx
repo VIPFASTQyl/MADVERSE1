@@ -7,6 +7,7 @@ const Arts = () => (
     seoDescription="Discover MADVERSE's arts and street art programs promoting creative expression and urban culture in Peja, Kosovo."
     canonical="https://www.madverse-ks.page/activity/arts"
     ogImage="https://www.madverse-ks.page/og-arts.png"
+    accentColor="#E40A0A"
     sections={[
       {
         labelKey: "unleashingCreativity",

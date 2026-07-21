@@ -7,6 +7,7 @@ const Culture = () => (
     seoDescription="Explore MADVERSE's cultural preservation and promotion initiatives celebrating Kosovo's rich heritage in Peja."
     canonical="https://www.madverse-ks.page/activity/culture"
     ogImage="https://www.madverse-ks.page/og-culture.png"
+    accentColor="#BA011A"
     sections={[
       {
         labelKey: "culturalHeritage",
