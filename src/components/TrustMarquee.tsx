@@ -5,7 +5,8 @@ import type { LogoItem } from './LogoLoop';
 const partners: LogoItem[] = [
   { src: "/partner1.png", alt: "Partner 1" },
   { src: "/partner2.png", alt: "Partner 2" },
-  { src: "/partner3.png", alt: "Partner 3" }
+  { src: "/partner3.png", alt: "Partner 3" },
+  { src: "/uje-rugove.svg", alt: "Ujë Rugove" }
 ];
 
 const TrustMarquee = () => {
