@@ -19,8 +19,13 @@ const Arts = () => (
         descriptionKey: "artisticCollaborationDesc",
         image: "/arts-2.jpeg",
       },
+      {
+        labelKey: "artsTitle",
+        titleKey: "communityThroughArt",
+        descriptionKey: "communityThroughArtDesc",
+        image: "/arts-3.jpeg",
+      },
     ]}
-    galleryImages={["/arts-3.jpeg"]}
   />
 );
 

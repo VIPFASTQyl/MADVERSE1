@@ -19,6 +19,18 @@ const Youth = () => (
         descriptionKey: "creativeExpressionDesc",
         image: "/project-1.jpg",
       },
+      {
+        labelKey: "youthTitle",
+        titleKey: "sportsWellness",
+        descriptionKey: "sportsWellnessDesc",
+        image: "/youth-mural-green.jpg",
+      },
+      {
+        labelKey: "youthTitle",
+        titleKey: "communityService",
+        descriptionKey: "communityServiceDesc",
+        image: "/youth-mural-painting.jpg",
+      },
     ]}
   />
 );

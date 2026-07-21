@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import Footer from "@/components/Footer";
 import LiquidEther from "@/components/LiquidEther";
+import PageTitleAnimation from "@/components/PageTitleAnimation";
 import PillNav from "@/components/PillNav";
 import SEO from "@/components/SEO";
 import StaggeredMenu from "@/components/StaggeredMenu";
@@ -23,8 +24,7 @@ interface ActivityFeaturePageProps {
   seoDescription: string;
   canonical: string;
   ogImage: string;
-  sections: [FeatureSection, FeatureSection];
-  galleryImages?: string[];
+  sections: FeatureSection[];
 }
 
 const pageLinks = [
@@ -44,7 +44,6 @@ const ActivityFeaturePage = ({
   canonical,
   ogImage,
   sections,
-  galleryImages = [],
 }: ActivityFeaturePageProps) => {
   const isMobile = useIsMobile();
   const { t, language } = useLanguage();
@@ -111,40 +110,49 @@ const ActivityFeaturePage = ({
         )}
       </div>
 
-      <main className="relative z-10 overflow-hidden pt-28 sm:pt-32 lg:pt-36">
+      <main className="relative z-10 overflow-hidden">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-x-0 top-0 h-[34rem] bg-[radial-gradient(circle_at_50%_0%,rgba(240,165,51,0.12),transparent_62%)]"
         />
 
+        <PageTitleAnimation title={pageTitle} />
+
+        <section
+          aria-label="MADVERSE"
+          className="relative flex min-h-screen w-full items-center justify-center px-5 py-24 sm:px-8 lg:px-12"
+        >
+          <img
+            src="/hover.png"
+            alt="MADVERSE"
+            className="h-auto w-full max-w-[105rem] object-contain"
+            decoding="async"
+          />
+        </section>
+
         <div className="relative mx-auto max-w-[96rem] px-5 sm:px-8 lg:px-12 xl:px-16">
           {sections.map((section, index) => {
-            const isReversed = index === 1;
+            const isReversed = index % 2 === 1;
             const sectionTitle = section.titleKey ? t(section.titleKey) : pageTitle;
-            const HeadingTag = index === 0 ? "h1" : "h2";
 
             return (
               <motion.section
-                key={section.descriptionKey}
+                key={`${section.image}-${section.descriptionKey}`}
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                 className={`grid min-h-[calc(100vh-7rem)] grid-cols-1 items-center gap-9 border-white/10 py-16 md:grid-cols-2 md:gap-12 lg:gap-20 lg:py-24 ${
-                  index === 1 ? "border-t" : ""
+                  index > 0 ? "border-t" : ""
                 }`}
               >
                 <div className={isReversed ? "md:order-2" : "md:order-1"}>
                   <p className="mb-5 text-xs font-bold uppercase tracking-[0.2em] text-[#F0A533] sm:text-sm">
                     {t(section.labelKey)}
                   </p>
-                  <HeadingTag
-                    className={`${
-                      index === 0 ? "text-5xl sm:text-6xl lg:text-7xl" : "text-4xl sm:text-5xl lg:text-6xl"
-                    } max-w-2xl font-bold leading-[0.96] tracking-[-0.045em]`}
-                  >
+                  <h2 className="max-w-2xl text-4xl font-bold leading-[0.96] tracking-[-0.045em] sm:text-5xl lg:text-6xl">
                     {sectionTitle}
-                  </HeadingTag>
+                  </h2>
                   <p className="mt-7 max-w-2xl whitespace-pre-line text-base leading-8 text-white/65 sm:text-lg lg:text-xl lg:leading-9">
                     {t(section.descriptionKey)}
                   </p>
@@ -176,46 +184,6 @@ const ActivityFeaturePage = ({
               </motion.section>
             );
           })}
-
-          {galleryImages.length > 0 && (
-            <motion.section
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="border-t border-white/10 py-16 lg:py-24"
-              aria-label={`${pageTitle} gallery`}
-            >
-              <div className={`grid grid-cols-1 gap-5 sm:grid-cols-2 ${galleryImages.length > 2 ? "lg:grid-cols-3" : ""}`}>
-                {galleryImages.map((image, index) => (
-                  <motion.figure
-                    key={image}
-                    initial={{ opacity: 0, scale: 0.97 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true, amount: 0.15 }}
-                    transition={{ duration: 0.55, delay: Math.min(index * 0.06, 0.24) }}
-                    className={`group relative overflow-hidden rounded-[1.4rem] border border-white/10 bg-white/5 ${
-                      galleryImages.length % 3 === 1 && index === 0 ? "lg:col-span-2" : ""
-                    }`}
-                  >
-                    <div className="aspect-[4/3] w-full">
-                      <img
-                        src={image}
-                        alt={`${pageTitle} ${index + 3}`}
-                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.025]"
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    </div>
-                    <div
-                      aria-hidden="true"
-                      className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-white/[0.04]"
-                    />
-                  </motion.figure>
-                ))}
-              </div>
-            </motion.section>
-          )}
         </div>
 
         <section className="flex min-h-screen w-full items-center justify-center px-4 py-20">

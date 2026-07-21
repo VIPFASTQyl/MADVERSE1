@@ -284,6 +284,14 @@ export const translations = {
     socialCauseDesc: "Work for social causes that matter. MADVERSE partners with various organizations to address social issues. Young groups work through volunteering to learn how to be agents of positive change.",
     youthEmpowerment: "Youth Empowerment",
     youthEmpowermentDesc: "Volunteering empowers young people to take control of their futures. Through volunteer work, youth develop new skills, gain confidence and see how their contribution can create real change. This is empowerment through action.",
+    volunteerCreativity: "Creativity in Action",
+    volunteerCreativityDesc: "Volunteers turn shared ideas into visible change. By creating together in public spaces, young people build practical skills, confidence and a stronger connection with their community.",
+    collectiveAchievement: "Collective Achievement",
+    collectiveAchievementDesc: "Every finished project reflects the time, care and teamwork of the people behind it. We celebrate each volunteer's contribution and the lasting result the group creates together.",
+    publicArtAction: "Public Art in Action",
+    publicArtActionDesc: "Public art projects bring volunteers, artists and neighbors together around a shared space. Every brushstroke becomes part of a larger story shaped by participation and local identity.",
+    volunteerLegacy: "A Lasting Volunteer Legacy",
+    volunteerLegacyDesc: "The strongest volunteer projects continue to inspire after the work is finished. Their legacy lives in renewed spaces, new friendships and young people who know they can improve their city together.",
 
     // Footer
     copyrightText: "© 2026 madverse. All rights reserved.",
@@ -576,6 +584,14 @@ export const translations = {
     socialCauseDesc: "Të punosh për qëllime shoqërore që kanë mënd. MADVERSE partnerohet me organizata të ndryshme për të adresuar çështjet shoqërore. Grupe rinia aktive përmes vullnetarizmit meson se si të jesh shitës i mirë ndryshimi.",
     youthEmpowerment: "Fuqizimi i Të Rinjve",
     youthEmpowermentDesc: "Vullnetarizmi i fuqizon të rinjtë t'i marrin fatet në duart e tyre. Përmes peshës vullnetare, të rinjtë zhvillojnë aftësi të reja, fitojnë vetëbesim dhe shohin se si kontributi i tyre mund të kthehet në ndryshim të vërtetë. Ky është fuqizim përmes veprimit.",
+    volunteerCreativity: "Kreativiteti në Veprim",
+    volunteerCreativityDesc: "Vullnetarët i kthejnë idetë e përbashkëta në ndryshim të dukshëm. Duke krijuar së bashku në hapësira publike, të rinjtë zhvillojnë aftësi praktike, vetëbesim dhe një lidhje më të fortë me komunitetin.",
+    collectiveAchievement: "Arritje e Përbashkët",
+    collectiveAchievementDesc: "Çdo projekt i përfunduar pasqyron kohën, kujdesin dhe punën ekipore të njerëzve që qëndrojnë pas tij. Ne vlerësojmë kontributin e secilit vullnetar dhe rezultatin e qëndrueshëm që grupi krijon së bashku.",
+    publicArtAction: "Arti Publik në Veprim",
+    publicArtActionDesc: "Projektet e artit publik bashkojnë vullnetarët, artistët dhe fqinjët rreth një hapësire të përbashkët. Çdo prekje e penelit bëhet pjesë e një historie më të madhe të formuar nga pjesëmarrja dhe identiteti lokal.",
+    volunteerLegacy: "Një Trashëgimi e Qëndrueshme Vullnetare",
+    volunteerLegacyDesc: "Projektet më të fuqishme vullnetare vazhdojnë të frymëzojnë edhe pasi puna përfundon. Trashëgimia e tyre jeton në hapësirat e ripërtërira, miqësitë e reja dhe të rinjtë që e dinë se mund ta përmirësojnë qytetin së bashku.",
   },
 };
 

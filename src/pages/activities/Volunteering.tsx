@@ -19,13 +19,36 @@ const Volunteering = () => (
         descriptionKey: "youthEmpowermentDesc",
         image: "/volunteering-2.jpeg",
       },
-    ]}
-    galleryImages={[
-      "/volunteering-3.jpeg",
-      "/volunteering-4.jpeg",
-      "/volunteering-5.jpeg",
-      "/volunteering-6.jpeg",
-      "/volunteering-7.jpeg",
+      {
+        labelKey: "volunteeringTitle",
+        titleKey: "socialCause",
+        descriptionKey: "socialCauseDesc",
+        image: "/volunteering-3.jpeg",
+      },
+      {
+        labelKey: "volunteeringTitle",
+        titleKey: "volunteerCreativity",
+        descriptionKey: "volunteerCreativityDesc",
+        image: "/volunteering-4.jpeg",
+      },
+      {
+        labelKey: "volunteeringTitle",
+        titleKey: "collectiveAchievement",
+        descriptionKey: "collectiveAchievementDesc",
+        image: "/volunteering-5.jpeg",
+      },
+      {
+        labelKey: "volunteeringTitle",
+        titleKey: "publicArtAction",
+        descriptionKey: "publicArtActionDesc",
+        image: "/volunteering-6.jpeg",
+      },
+      {
+        labelKey: "volunteeringTitle",
+        titleKey: "volunteerLegacy",
+        descriptionKey: "volunteerLegacyDesc",
+        image: "/volunteering-7.jpeg",
+      },
     ]}
   />
 );
