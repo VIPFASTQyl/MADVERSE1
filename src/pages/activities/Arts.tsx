@@ -11,15 +11,16 @@ const Arts = () => (
       {
         labelKey: "unleashingCreativity",
         descriptionKey: "unleashingCreativityDesc",
-        image: "/Arts.jpg",
+        image: "/arts-1.jpeg",
       },
       {
         labelKey: "artsTitle",
         titleKey: "artisticCollaboration",
         descriptionKey: "artisticCollaborationDesc",
-        image: "/project-2.jpg",
+        image: "/arts-2.jpeg",
       },
     ]}
+    galleryImages={["/arts-3.jpeg"]}
   />
 );
 

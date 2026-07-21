@@ -132,7 +132,7 @@ const Index = () => {
         badge={featuresBadge}
         title={featuresTitle}
         description={featuresDesc}
-        image="/Featured1st.JPG"
+        image="/homepage-culture-arts-youth.jpeg"
       />
 
       <FeatureSection

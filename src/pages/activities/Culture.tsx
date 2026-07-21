@@ -11,13 +11,13 @@ const Culture = () => (
       {
         labelKey: "culturalHeritage",
         descriptionKey: "culturalHeritageDesc",
-        image: "/Coulture.jpg",
+        image: "/culture-1.jpeg",
       },
       {
         labelKey: "cultureTitle",
         titleKey: "culturalExchange",
         descriptionKey: "culturalExchangeDesc",
-        image: "/kulture.jpg",
+        image: "/culture-2.jpeg",
       },
     ]}
   />

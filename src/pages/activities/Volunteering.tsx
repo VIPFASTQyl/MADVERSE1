@@ -11,14 +11,21 @@ const Volunteering = () => (
       {
         labelKey: "communityImpact",
         descriptionKey: "communityImpactDesc",
-        image: "/project-3.jpg",
+        image: "/volunteering-1.jpeg",
       },
       {
         labelKey: "volunteeringTitle",
         titleKey: "youthEmpowerment",
         descriptionKey: "youthEmpowermentDesc",
-        image: "/featured2nd.JPG",
+        image: "/volunteering-2.jpeg",
       },
+    ]}
+    galleryImages={[
+      "/volunteering-3.jpeg",
+      "/volunteering-4.jpeg",
+      "/volunteering-5.jpeg",
+      "/volunteering-6.jpeg",
+      "/volunteering-7.jpeg",
     ]}
   />
 );

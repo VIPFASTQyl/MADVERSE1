@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
+import { useState } from "react";
 import Footer from "@/components/Footer";
+import LiquidEther from "@/components/LiquidEther";
 import PillNav from "@/components/PillNav";
-import StaggeredMenu from "@/components/StaggeredMenu";
-import ActivityLanguageSwitcher from "@/components/ActivityLanguageSwitcher";
 import SEO from "@/components/SEO";
+import StaggeredMenu from "@/components/StaggeredMenu";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -23,6 +24,7 @@ interface ActivityFeaturePageProps {
   canonical: string;
   ogImage: string;
   sections: [FeatureSection, FeatureSection];
+  galleryImages?: string[];
 }
 
 const pageLinks = [
@@ -42,9 +44,11 @@ const ActivityFeaturePage = ({
   canonical,
   ogImage,
   sections,
+  galleryImages = [],
 }: ActivityFeaturePageProps) => {
   const isMobile = useIsMobile();
   const { t, language } = useLanguage();
+  const [liquidEtherFailed, setLiquidEtherFailed] = useState(false);
   const pageTitle = t(titleKey);
 
   const navItems = pageLinks.map(({ key, href }) => ({ label: t(key), href }));
@@ -64,10 +68,7 @@ const ActivityFeaturePage = ({
       />
 
       {!isMobile ? (
-        <>
-          <PillNav items={navItems} activeHref={activeHref} />
-          <ActivityLanguageSwitcher />
-        </>
+        <PillNav items={navItems} activeHref={activeHref} />
       ) : (
         <StaggeredMenu
           isFixed
@@ -83,7 +84,34 @@ const ActivityFeaturePage = ({
         />
       )}
 
-      <main className="relative overflow-hidden pt-28 sm:pt-32 lg:pt-36">
+      <div className="pointer-events-none fixed inset-0 z-0 h-screen w-full">
+        {isMobile ? (
+          <div className="h-full w-full bg-black" />
+        ) : liquidEtherFailed ? (
+          <div className="h-full w-full animate-pulse bg-gradient-to-br from-purple-900 via-black to-black" />
+        ) : (
+          <LiquidEther
+            colors={["#FCF5AF", "#F0A533", "#E44F0A", "#BA011A"]}
+            mouseForce={15}
+            cursorSize={100}
+            isViscous={false}
+            viscous={25}
+            iterationsViscous={16}
+            iterationsPoisson={16}
+            resolution={0.4}
+            isBounce={false}
+            autoDemo={false}
+            autoSpeed={0.4}
+            autoIntensity={1}
+            takeoverDuration={0.25}
+            autoResumeDelay={3000}
+            autoRampDuration={0.6}
+            onError={() => setLiquidEtherFailed(true)}
+          />
+        )}
+      </div>
+
+      <main className="relative z-10 overflow-hidden pt-28 sm:pt-32 lg:pt-36">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-x-0 top-0 h-[34rem] bg-[radial-gradient(circle_at_50%_0%,rgba(240,165,51,0.12),transparent_62%)]"
@@ -134,7 +162,7 @@ const ActivityFeaturePage = ({
                   <div className="aspect-[4/3] w-full sm:aspect-[16/11]">
                     <img
                       src={section.image}
-                      alt={`${sectionTitle} — ${t(section.labelKey)}`}
+                      alt={`${sectionTitle} - ${t(section.labelKey)}`}
                       className="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.025]"
                       loading={index === 0 ? "eager" : "lazy"}
                       decoding="async"
@@ -148,7 +176,56 @@ const ActivityFeaturePage = ({
               </motion.section>
             );
           })}
+
+          {galleryImages.length > 0 && (
+            <motion.section
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              className="border-t border-white/10 py-16 lg:py-24"
+              aria-label={`${pageTitle} gallery`}
+            >
+              <div className={`grid grid-cols-1 gap-5 sm:grid-cols-2 ${galleryImages.length > 2 ? "lg:grid-cols-3" : ""}`}>
+                {galleryImages.map((image, index) => (
+                  <motion.figure
+                    key={image}
+                    initial={{ opacity: 0, scale: 0.97 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true, amount: 0.15 }}
+                    transition={{ duration: 0.55, delay: Math.min(index * 0.06, 0.24) }}
+                    className={`group relative overflow-hidden rounded-[1.4rem] border border-white/10 bg-white/5 ${
+                      galleryImages.length % 3 === 1 && index === 0 ? "lg:col-span-2" : ""
+                    }`}
+                  >
+                    <div className="aspect-[4/3] w-full">
+                      <img
+                        src={image}
+                        alt={`${pageTitle} ${index + 3}`}
+                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.025]"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </div>
+                    <div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-white/[0.04]"
+                    />
+                  </motion.figure>
+                ))}
+              </div>
+            </motion.section>
+          )}
         </div>
+
+        <section className="flex min-h-screen w-full items-center justify-center px-4 py-20">
+          <h2 className="text-center text-6xl font-bold text-white md:text-8xl">
+            {t("comingSoon")}
+            <span aria-hidden="true" className="ml-2 inline-block animate-bounce">.</span>
+            <span aria-hidden="true" className="ml-1 inline-block animate-bounce" style={{ animationDelay: "0.2s" }}>.</span>
+            <span aria-hidden="true" className="ml-1 inline-block animate-bounce" style={{ animationDelay: "0.4s" }}>.</span>
+          </h2>
+        </section>
       </main>
 
       <div className="relative z-10 border-t border-white/10 bg-black">
