@@ -10,17 +10,6 @@ const Youth = () => (
     accentColor="#F0A533"
     sections={[
       {
-        labelKey: "leadershipDevelopment",
-        descriptionKey: "leadershipDesc",
-        image: "/Youth.jpg",
-      },
-      {
-        labelKey: "youthTitle",
-        titleKey: "creativeExpression",
-        descriptionKey: "creativeExpressionDesc",
-        image: "/project-1.jpg",
-      },
-      {
         labelKey: "youthTitle",
         titleKey: "sportsWellness",
         descriptionKey: "sportsWellnessDesc",

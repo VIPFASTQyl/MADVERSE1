@@ -39,7 +39,11 @@ const pageLinks = [
   { key: "volunteering", href: "/activity/volunteering" },
 ];
 
-const sidebarItems = ["MADVERSE x Rugove", "MADVERSE x Karta Rinore", "Coming Soon..."];
+const sidebarItems = [
+  "MADVERSE x Rugove",
+  "MADVERSE x Karta Rinore",
+  ...Array.from({ length: 8 }, () => "Coming Soon..."),
+];
 
 const ActivityFeaturePage = ({
   activeHref,
@@ -63,7 +67,7 @@ const ActivityFeaturePage = ({
   }));
 
   const handleSidebarClick = (index: number) => {
-    const targetId = index === 2 ? "activity-coming-soon" : `activity-feature-${index}`;
+    const targetId = index >= 2 ? "activity-coming-soon" : `activity-feature-${index}`;
     document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
@@ -88,7 +92,7 @@ const ActivityFeaturePage = ({
           openMenuButtonColor="#fff"
           accentColor="#00CED1"
           displayItemNumbering={false}
-          logoUrl="/mADVESERlong.png"
+          logoUrl="/hover.png"
           closeOnClickAway
         />
       )}

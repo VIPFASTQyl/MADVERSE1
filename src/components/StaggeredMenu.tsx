@@ -380,7 +380,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
           <div className="sm-logo flex items-center select-none pointer-events-auto" aria-label="Logo">
             <img
               src={logoUrl}
-              alt="Logo"
+              alt="MADVERSE"
               className="sm-logo-img block h-8 w-auto object-contain"
               draggable={false}
               width={110}
