@@ -120,7 +120,7 @@ const ActivityFeaturePage = ({
         )}
       </div>
 
-      <div className="fixed left-5 top-24 z-30 hidden md:block lg:left-8 lg:top-28">
+      <div className="absolute left-5 top-[calc(50vh+1.5rem)] z-30 hidden -translate-y-1/2 md:block lg:left-8">
         <LineSidebar
           items={sidebarItems}
           accentColor={accentColor}
