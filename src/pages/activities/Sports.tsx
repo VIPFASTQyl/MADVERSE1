@@ -8,25 +8,8 @@ const Sports = () => (
     canonical="https://www.madverse-ks.page/activity/sports"
     ogImage="https://www.madverse-ks.page/og-sports.png"
     accentColor="#0B4B8B"
-    sections={[
-      {
-        labelKey: "athleteExcellence",
-        descriptionKey: "athleteExcellenceDesc",
-        image: "/basketball.jpg",
-      },
-      {
-        labelKey: "sportsTitle",
-        titleKey: "fitnessWellness",
-        descriptionKey: "fitnessWellnessDesc",
-        image: "/featured1st.JPG",
-      },
-      {
-        labelKey: "sportsTitle",
-        titleKey: "teamworkSpirit",
-        descriptionKey: "teamworkSpiritDesc",
-        image: "/project-1.jpg",
-      },
-    ]}
+    showTitle={false}
+    sections={[]}
   />
 );
 
