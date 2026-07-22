@@ -8,7 +8,6 @@ const Sports = () => (
     canonical="https://www.madverse-ks.page/activity/sports"
     ogImage="https://www.madverse-ks.page/og-sports.png"
     accentColor="#0B4B8B"
-    showTitle={false}
     sections={[]}
   />
 );

@@ -20,7 +20,6 @@ interface LineSidebarProps {
   itemGap?: number;
   fontSize?: number;
   smoothing?: number;
-  interactionMode?: "proximity" | "click";
   defaultActive?: number | null;
   onItemClick?: (index: number, label: string) => void;
   className?: string;
@@ -55,7 +54,6 @@ const LineSidebar = ({
   itemGap = 20,
   fontSize = 1.1,
   smoothing = 100,
-  interactionMode = "proximity",
   defaultActive = null,
   onItemClick,
   className = "",
@@ -100,8 +98,6 @@ const LineSidebar = ({
   }, [runFrame]);
 
   const handlePointerMove = useCallback((event: PointerEvent<HTMLUListElement>) => {
-    if (interactionMode === "click") return;
-
     const list = listRef.current;
     if (!list) return;
     const rect = list.getBoundingClientRect();
@@ -116,14 +112,12 @@ const LineSidebar = ({
     });
 
     startLoop();
-  }, [falloff, interactionMode, proximityRadius, startLoop]);
+  }, [falloff, proximityRadius, startLoop]);
 
   const handlePointerLeave = useCallback(() => {
-    if (interactionMode === "click") return;
-
     targetsRef.current = targetsRef.current.map(() => 0);
     startLoop();
-  }, [interactionMode, startLoop]);
+  }, [startLoop]);
 
   const handleClick = useCallback((index: number, label: string) => {
     setActiveIndex(index);

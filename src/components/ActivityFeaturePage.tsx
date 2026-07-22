@@ -27,7 +27,6 @@ interface ActivityFeaturePageProps {
   ogImage: string;
   accentColor: string;
   sections: FeatureSection[];
-  showTitle?: boolean;
 }
 
 const pageLinks = [
@@ -50,7 +49,6 @@ const ActivityFeaturePage = ({
   ogImage,
   accentColor,
   sections,
-  showTitle = true,
 }: ActivityFeaturePageProps) => {
   const isMobile = useIsMobile();
   const { t, language } = useLanguage();
@@ -134,8 +132,7 @@ const ActivityFeaturePage = ({
           itemGap={26}
           fontSize={0.82}
           smoothing={80}
-          interactionMode="click"
-          defaultActive={null}
+          defaultActive={0}
           onItemClick={handleSidebarClick}
         />
       </div>
@@ -147,7 +144,7 @@ const ActivityFeaturePage = ({
           style={{ background: `radial-gradient(circle at 50% 0%, ${accentColor}1f, transparent 62%)` }}
         />
 
-        {showTitle && <PageTitleAnimation title={pageTitle} />}
+        <PageTitleAnimation title={pageTitle} />
 
         <section
           aria-label="MADVERSE"
