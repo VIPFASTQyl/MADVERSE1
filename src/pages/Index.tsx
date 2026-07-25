@@ -118,14 +118,21 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Home"
-        description="MADVERSE is a youth led organization and creative platform based in Peja, Kosovo, dedicated to bridging the gap between urban culture, contemporary art, and community engagement."
+        title="Madverse - Youth, Arts & Culture in Peja"
+        description="Madverse is a youth-led organization in Peja, Kosovo, creating programs and events across arts, culture, sports, and volunteering."
         canonical="https://www.madverse-ks.page/"
-        ogImage="https://www.madverse-ks.page/og-home.png"
+        ogImage="https://www.madverse-ks.page/logo.png"
       />
       <OrganizationSchema />
       <Navigation />
       <HeroSection title={heroTitle} subtitle={heroDesc} />
+      <section className="border-b border-border bg-background px-4 py-12 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-4xl text-center">
+          <p className="text-lg leading-relaxed text-muted-foreground sm:text-xl">
+            Madverse is a youth-led organization and creative platform based in Peja, Kosovo. Through arts, culture, sports, volunteering, and community events, Madverse creates space for young people and local talent to connect, grow, and make a positive impact.
+          </p>
+        </div>
+      </section>
       <TrustMarquee />
 
       <FeatureSection

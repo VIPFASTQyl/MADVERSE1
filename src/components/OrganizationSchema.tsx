@@ -8,41 +8,45 @@ import { Helmet } from "react-helmet-async";
 export const OrganizationSchema = () => {
   const organizationSchema = {
     "@context": "https://schema.org",
-    "@type": "NGO",
-    "name": "MADVERSE",
-    "url": "https://www.madverse-ks.page",
-    "logo": "https://www.madverse-ks.page/MADVESERlong.png",
-    "description": "MADVERSE is a dynamic organization in Peja, Kosovo dedicated to youth empowerment, urban art, culture, sports, and community exhibitions.",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Peja",
-      "addressLocality": "Peja",
-      "addressCountry": "Kosovo",
-      "postalCode": "30000"
-    },
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "contactType": "General Inquiries",
-      "url": "https://www.madverse-ks.page/contact"
-    },
-    "sameAs": [
-      "https://www.facebook.com/madverse",
-      "https://www.instagram.com/madverse"
-    ],
-    "founder": {
-      "@type": "Organization",
-      "name": "MADVERSE Team"
-    },
-    "knowsAbout": [
-      "Youth Programs",
-      "Urban Art",
-      "Street Art",
-      "Culture",
-      "Sports",
-      "Community Exhibitions",
-      "Arts and Entertainment"
-    ],
-    "awards": "Community Organization of Peja, Kosovo"
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://www.madverse-ks.page/#website",
+        "url": "https://www.madverse-ks.page/",
+        "name": "Madverse",
+        "alternateName": ["MADVERSE", "madverse-ks.page"],
+        "publisher": { "@id": "https://www.madverse-ks.page/#organization" },
+        "inLanguage": ["sq", "en"]
+      },
+      {
+        "@type": "NGO",
+        "@id": "https://www.madverse-ks.page/#organization",
+        "name": "Madverse",
+        "url": "https://www.madverse-ks.page/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.madverse-ks.page/logo.png",
+          "width": 1232,
+          "height": 1080
+        },
+        "description": "Madverse is a youth-led organization and creative platform in Peja, Kosovo, supporting arts, culture, sports, volunteering, and community engagement.",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Peja",
+          "addressCountry": "Kosovo"
+        },
+        "areaServed": {
+          "@type": "Country",
+          "name": "Kosovo"
+        },
+        "sameAs": [
+          "https://www.instagram.com/madverse.ks/",
+          "https://www.facebook.com/profile.php?id=61586336113573",
+          "https://www.youtube.com/channel/UCbowHpyDkY6y6lmtkBgjK7w"
+        ],
+        "knowsAbout": ["Youth Programs", "Urban Art", "Culture", "Sports", "Volunteering", "Community Events"]
+      }
+    ]
   };
 
   return (

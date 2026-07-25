@@ -8,6 +8,20 @@
   },
   "routes": [
     {
+      "src": "/sitemap.xml",
+      "headers": {
+        "Content-Type": "application/xml; charset=utf-8",
+        "Cache-Control": "public, max-age=3600, must-revalidate"
+      }
+    },
+    {
+      "src": "/robots.txt",
+      "headers": {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Cache-Control": "public, max-age=3600, must-revalidate"
+      }
+    },
+    {
       "src": "/api/.*",
       "status": 404
     },
@@ -18,7 +32,7 @@
       }
     },
     {
-      "src": "/(?!.*\\.(?:png|jpg|jpeg|gif|svg|webp|ico|js|css|woff|woff2|eot|ttf)\\Z).*",
+      "src": "/(?!.*\\.(?:png|jpg|jpeg|gif|svg|webp|ico|js|css|xml|txt|woff|woff2|eot|ttf)\\Z).*",
       "dest": "/index.html"
     }
   ]

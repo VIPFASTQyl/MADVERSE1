@@ -21,7 +21,7 @@ export const SEO = ({
   title,
   description,
   canonical,
-  ogImage = "https://www.madverse-ks.page/og-image.png",
+  ogImage = "https://www.madverse-ks.page/logo.png",
   ogType = "website",
   keywords = "madverse, Peja, Kosovo, urban art, street art, youth programs, culture, sports, exhibitions, Organzation, Spots, Arts, Culture, Volunteering",
   author = "madverse",
@@ -42,16 +42,19 @@ export const SEO = ({
       <meta property="og:type" content={ogType} />
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />
+      {canonical && <meta property="og:url" content={canonical} />}
       <meta property="og:image" content={ogImage} />
-      <meta property="og:site_name" content="MADVERSE" />
-      <meta property="og:locale" content="sq_XK" />
-      <meta property="og:locale:alternate" content="en_US" />
+      <meta property="og:image:alt" content="Madverse logo" />
+      <meta property="og:site_name" content="Madverse" />
+      <meta property="og:locale" content="en_US" />
+      <meta property="og:locale:alternate" content="sq_XK" />
       
       {/* Twitter Card Tags */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={ogImage} />
+      <meta name="twitter:image:alt" content="Madverse logo" />
       
       {/* Additional Meta Tags */}
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -62,11 +65,6 @@ export const SEO = ({
       {/* Canonical URL */}
       {canonical && <link rel="canonical" href={canonical} />}
       
-      {/* Language Alternatives */}
-      <link rel="alternate" hrefLang="sq" href={`https://www.madverse-ks.page${canonical || "/"}`} />
-      <link rel="alternate" hrefLang="en" href={`https://www.madverse-ks.page/en${canonical || "/"}`} />
-      <link rel="alternate" hrefLang="x-default" href={`https://www.madverse-ks.page${canonical || "/"}`} />
-
       {children}
     </Helmet>
   );

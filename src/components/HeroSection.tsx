@@ -63,14 +63,14 @@ const HeroSection = ({ title, subtitle }: HeroSectionProps) => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="w-full h-screen flex flex-col items-center justify-center"
           >
-            <div 
+            <h1 
               className={`meta-animation ${!is3D ? 'mobile-toggled' : ''}`}
               onClick={() => setIs3D(!is3D)}
               style={{ cursor: 'pointer' }}
               title={`Click to toggle ${is3D ? '2D' : '3D'} mode`}
             >
               MADVERSE
-            </div>
+            </h1>
           </motion.div>
         </div>
 

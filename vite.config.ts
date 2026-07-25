@@ -2,7 +2,6 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
-import Sitemap from "vite-plugin-sitemap";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -16,28 +15,6 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     mode === "development" && componentTagger(),
-    Sitemap({
-      hostname: "https://www.madverse-ks.page",
-      dynamicRoutes: [
-        "/",
-        "/about",
-        "/contact",
-        "/activity/youth",
-        "/activity/arts",
-        "/activity/culture",
-        "/activity/sports",
-        "/activity/exhibition",
-        "/activity/volunteering",
-      ],
-      robots: [
-        {
-          userAgent: "*",
-          allow: "/",
-          disallow: ["/admin", "/profile"],
-          sitemap: "https://www.madverse-ks.page/sitemap.xml",
-        },
-      ],
-    }),
   ].filter(Boolean),
   resolve: {
     alias: {

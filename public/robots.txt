@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
+
+# Keep private account and administration pages out of search results.
 Disallow: /admin
 Disallow: /profile
 Disallow: /signup
@@ -7,5 +9,4 @@ Disallow: /login
 Disallow: /verify
 Disallow: /verification-pending
 
-# Sitemaps
 Sitemap: https://www.madverse-ks.page/sitemap.xml
