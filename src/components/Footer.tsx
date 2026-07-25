@@ -22,7 +22,7 @@ const Footer = () => {
         {/* Logo */}
         <div className="flex justify-center mb-8">
           <motion.img
-            src="/MADVESERlong.png"
+            src="/mADVESERlong.png"
             alt="MADVERSE Logo"
             className="h-12"
             whileHover={{ scaleX: 1.2 }}

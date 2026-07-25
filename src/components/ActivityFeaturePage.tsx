@@ -92,7 +92,7 @@ const ActivityFeaturePage = ({
           openMenuButtonColor="#fff"
           accentColor="#00CED1"
           displayItemNumbering={false}
-          logoUrl="/hover.png"
+          logoUrl="/mADVESERlong.png"
           closeOnClickAway
         />
       )}
@@ -155,9 +155,9 @@ const ActivityFeaturePage = ({
           className="relative flex min-h-screen w-full items-center justify-center px-5 py-24 sm:px-8 lg:px-12"
         >
           <img
-            src="/hover.png"
-            alt="MADVERSE"
-            className="h-auto w-full max-w-[105rem] object-contain"
+            src="/mADVESERlong.png"
+            alt="MADVERSE logo"
+            className="h-auto w-full max-w-4xl object-contain drop-shadow-[0_0_30px_rgba(255,255,255,0.18)]"
             decoding="async"
           />
         </section>
