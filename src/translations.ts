@@ -235,8 +235,8 @@ export const translations = {
     leadershipDesc: "Empower the next generation with core leadership skills, mentorship programs and real-world experience. Young leaders at MADVERSE shape the future of our community through hands-on project management and decision-making opportunities.",
     creativeExpression: "Creative Expression",
     creativeExpressionDesc: "This mural serves as a living blueprint and a visual foreshadowing of MADVERSE’s vision. Each panel encapsulates a core pillar of our mission in youth culture, arts, music, and sports, foreshadowing the scale, energy, and initiatives MADVERSE is bringing to life.",
-    sportsWellness: "Sports & Wellness",
-    sportsWellnessDesc: "Build strength, character and teamwork through diverse sports programs. From competitive athletics to recreational activities, we promote a healthy lifestyle and the values of discipline, perseverance and community.",
+    youthInitiative: "Youth Initiative",
+    youthInitiativeDesc: "Build strength, character and teamwork through diverse sports programs. From competitive athletics to recreational activities, we promote a healthy lifestyle and the values of discipline, perseverance and community.\n\nThe real magic behind our initiatives is seeing how eager young people are to come out and support the cause. Their dedication, hands-on help, and enthusiasm give life to everything we build at MADVERSE. Together, we’re proving that when youth get involved, real transformation happens on our streets.",
     communityService: "Community Service",
     communityServiceDesc: "Make a lasting impact through volunteer opportunities that strengthen our community. Young volunteers gain valuable experience while contributing to meaningful projects that address real community needs.",
 
@@ -535,8 +535,8 @@ export const translations = {
     leadershipDesc: "Fuqizimi i brezit të ardhshëm me aftësi thelbore udhëheqjeje, programe mentori dhe përvojë në botën reale. Udhëheqësit e rinj të MADVERSE formojnë të ardhmen e komunitetit tonë përmes menaxhimit praktik të projekteve dhe mundësive të vendimmarrjes.",
     creativeExpression: "Shprehja Krijuese",
     creativeExpressionDesc: "Ky mural shërben si një plan i gjallë dhe si një pararendje vizuale e vizionit të MADVERSE. Çdo panel përmbledh një shtyllë kryesore të misionit tonë në kulturën rinore, art, muzikë dhe sport, duke paralajmëruar përmasat, energjinë dhe iniciativat që MADVERSE po sjell në jetë.",
-    sportsWellness: "Sporti & Mirësia",
-    sportsWellnessDesc: "Ndërtoni forcë, karakter dhe punë në ekip përmes programeve të ndryshme sportive. Nga atletika konkuruese deri në aktivitetet rekreative, ne promovojmë një jetë të shëndetshme dhe vlerat e disiplinës, përsistencës dhe komunitetit.",
+    youthInitiative: "Iniciativa Rinore",
+    youthInitiativeDesc: "Ndërtoni forcë, karakter dhe punë në ekip përmes programeve të ndryshme sportive. Nga atletika konkuruese deri në aktivitetet rekreative, ne promovojmë një jetë të shëndetshme dhe vlerat e disiplinës, përsistencës dhe komunitetit.\n\nMagjia e vërtetë pas iniciativave tona është të shohim sa të gatshëm janë të rinjtë të dalin dhe të mbështesin kauzën. Përkushtimi, ndihma praktike dhe entuziazmi i tyre i japin jetë gjithçkaje që ndërtojmë në MADVERSE. Së bashku, po dëshmojmë se kur të rinjtë përfshihen, transformimi i vërtetë ndodh në rrugët tona.",
     communityService: "Shërbimi për Komunitetin",
     communityServiceDesc: "Bëni një ndikim të qëndrueshëm përmes mundësive vullnetare që forcojnë komunitetin tonë. Vullnetarët e rinj fitojnë përvojë të vlefshme ndërsa kontribuojnë në projekte kuptimplëne që i adresojnë nevojat reale të komunitetit.",
 

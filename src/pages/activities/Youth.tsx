@@ -11,8 +11,8 @@ const Youth = () => (
     sections={[
       {
         labelKey: "youthTitle",
-        titleKey: "sportsWellness",
-        descriptionKey: "sportsWellnessDesc",
+        titleKey: "youthInitiative",
+        descriptionKey: "youthInitiativeDesc",
         image: "/youth-mural-green.jpg",
       },
       {
