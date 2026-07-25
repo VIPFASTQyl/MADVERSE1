@@ -187,6 +187,21 @@ const About = () => {
       {/* Programs Section */}
       <ProgramsCarousel3D />
 
+      {/* About Madverse summary */}
+      <section className="px-4 py-20 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{ duration: 0.6 }}
+          className="mx-auto max-w-4xl text-center"
+        >
+          <p className="text-lg leading-relaxed text-muted-foreground sm:text-xl">
+            Madverse is a youth-led organization and creative platform based in Peja, Kosovo. Through arts, culture, sports, volunteering, and community events, Madverse creates space for young people and local talent to connect, grow, and make a positive impact.
+          </p>
+        </motion.div>
+      </section>
+
       {/* Partners Section */}
       <TrustMarquee />
 
