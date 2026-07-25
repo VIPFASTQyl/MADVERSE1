@@ -261,7 +261,7 @@ export const translations = {
     // Activity Pages - Culture
     cultureTitle: "Culture",
     culturalHeritage: "Cultural Heritage",
-    culturalHeritageDesc: "Learn and celebrate diverse cultural heritage. Through exhibitions, lectures and discussion sessions, we foster intercultural dialogue and increase respect for traditions. Culture is our identity; preserving it is preserving our roots.",
+    culturalHeritageDesc: "Historically, Peja has been known as one of the definitive cultural capitals of Kosovo, a place where profound history, diverse traditions, and artistic expression defined our identity. Preserving these roots through education and discussion is essential, but it is just the beginning. The story of Peja’s culture is still being written, and we are the authors. As citizens, we can contribute to making a better, more creative, and more inclusive culture for our own city through our everyday actions and engagement.",
     culturalExchange: "Cultural Exchange",
     culturalExchangeDesc: "Join others to share cultural practices, traditions and experiences. Cultural exchanges broaden our perspectives, challenge preconceptions and build bridges between communities. MADVERSE focuses on authentic exchange experiences.",
     culturalArts: "Cultural Arts",
@@ -561,7 +561,7 @@ export const translations = {
     // Activity Pages - Culture
     cultureTitle: "Kultura",
     culturalHeritage: "Trashëgimia Kulturore",
-    culturalHeritageDesc: "Njohuni dhe nderojeni trashëgiminë kulturore të ndryshme. Përmes ekspozitave, përkthimeve dhe sesionesh diskutimi, ne e hapim dialogun ndërkulturor dhe e rritim respektin për traditat. Kultura është identiteti ynë; të ruajmë atë është të ruajmë rrënjët tona.",
+    culturalHeritageDesc: "Historikisht, Peja është njohur si një nga kryeqytetet kulturore më të rëndësishme të Kosovës, një vend ku historia e thellë, traditat e larmishme dhe shprehja artistike kanë përcaktuar identitetin tonë. Ruajtja e këtyre rrënjëve përmes edukimit dhe diskutimit është thelbësore, por ky është vetëm fillimi. Historia e kulturës së Pejës ende po shkruhet dhe ne jemi autorët. Si qytetarë, mund të kontribuojmë për një kulturë më të mirë, më kreative dhe më gjithëpërfshirëse në qytetin tonë përmes veprimeve dhe angazhimit tonë të përditshëm.",
     culturalExchange: "Këmbimi Kultuor",
     culturalExchangeDesc: "Bashkohu në ato të tjera për të ndarë praktika kulturore, tradita dhe përvojat. Këmbimet kulturore zgjerojnë perspektivat tona, sfidojnë paraparaqitjeve dhe ndërtojnë ura ndërmjet komuniteteve. MADVERSE fokuason përvojat e këmbimit autentik.",
     culturalArts: "Artet Kulturore",
