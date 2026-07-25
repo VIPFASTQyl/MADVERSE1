@@ -57,7 +57,7 @@ const Index = () => {
     { 
       text: 'Volunteering', 
       link: '/activity/volunteering', 
-      image: '/project-3.jpg'
+      image: '/volunteering-1.jpeg'
     }
   ];
 
