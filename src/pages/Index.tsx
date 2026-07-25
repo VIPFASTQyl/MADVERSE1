@@ -126,13 +126,6 @@ const Index = () => {
       <OrganizationSchema />
       <Navigation />
       <HeroSection title={heroTitle} subtitle={heroDesc} />
-      <section className="border-b border-border bg-background px-4 py-12 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-4xl text-center">
-          <p className="text-lg leading-relaxed text-muted-foreground sm:text-xl">
-            Madverse is a youth-led organization and creative platform based in Peja, Kosovo. Through arts, culture, sports, volunteering, and community events, Madverse creates space for young people and local talent to connect, grow, and make a positive impact.
-          </p>
-        </div>
-      </section>
       <TrustMarquee />
 
       <FeatureSection
