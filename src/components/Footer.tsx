@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const Footer = () => {
@@ -21,12 +20,14 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <div className="flex justify-center mb-8">
-          <motion.img
-            src="/hover.png"
+          <img
+            src="/EndOfConentLogo.png"
             alt="MADVERSE Logo"
-            className="h-12"
-            whileHover={{ scaleX: 1.2 }}
-            transition={{ duration: 0.3 }}
+            className="h-auto w-[min(90vw,18rem)] object-contain"
+            width={730}
+            height={252}
+            loading="lazy"
+            decoding="async"
           />
         </div>
 
@@ -42,16 +43,15 @@ const Footer = () => {
               { name: "YouTube", url: "https://www.youtube.com/channel/UCbowHpyDkY6y6lmtkBgjK7w" },
               { name: "Facebook", url: "https://www.facebook.com/profile.php?id=61586336113573" }
             ].map((social) => (
-              <motion.a
+              <a
                 key={social.name}
                 href={social.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={{ y: -3 }}
                 className={`text-sm text-muted-foreground ${getHoverClass(social.name)} transition-colors`}
               >
                 {social.name}
-              </motion.a>
+              </a>
             ))}
           </div>
         </div>

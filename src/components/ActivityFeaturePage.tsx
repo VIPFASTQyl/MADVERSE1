@@ -157,7 +157,10 @@ const ActivityFeaturePage = ({
           <img
             src="/hover.png"
             alt="MADVERSE logo"
-            className="h-auto w-full max-w-4xl object-contain drop-shadow-[0_0_30px_rgba(255,255,255,0.18)]"
+            className="h-auto w-full max-w-none object-contain drop-shadow-[0_0_30px_rgba(255,255,255,0.18)]"
+            width={1680}
+            height={339}
+            loading="eager"
             decoding="async"
           />
         </section>
