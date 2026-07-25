@@ -234,7 +234,7 @@ export const translations = {
     leadershipDevelopment: "Leadership Development",
     leadershipDesc: "Empower the next generation with core leadership skills, mentorship programs and real-world experience. Young leaders at MADVERSE shape the future of our community through hands-on project management and decision-making opportunities.",
     creativeExpression: "Creative Expression",
-    creativeExpressionDesc: "Arts open doors to limitless creativity and self-expression. Our programs showcase diverse artistic disciplines including visual art, performing art, music and digital media. We provide a platform for artists to share their passion and inspire others through their unique perspectives.",
+    creativeExpressionDesc: "This mural serves as a living blueprint and a visual foreshadowing of MADVERSE’s vision. Each panel encapsulates a core pillar of our mission in youth culture, arts, music, and sports, foreshadowing the scale, energy, and initiatives MADVERSE is bringing to life.",
     sportsWellness: "Sports & Wellness",
     sportsWellnessDesc: "Build strength, character and teamwork through diverse sports programs. From competitive athletics to recreational activities, we promote a healthy lifestyle and the values of discipline, perseverance and community.",
     communityService: "Community Service",
@@ -243,9 +243,9 @@ export const translations = {
     // Activity Pages - Arts
     artsTitle: "Arts",
     unleashingCreativity: "Unleashing Creativity",
-    unleashingCreativityDesc: "Arts open doors to limitless creativity and self-expression. Our programs showcase diverse artistic disciplines including visual art, performing art, music and digital media. We provide a platform for artists to share their passion and inspire others through their unique perspectives.",
+    unleashingCreativityDesc: "This mural serves as a living blueprint and a visual foreshadowing of MADVERSE’s vision. Each panel encapsulates a core pillar of our mission in youth culture, arts, music, and sports, foreshadowing the scale, energy, and initiatives MADVERSE is bringing to life.",
     artisticCollaboration: "Artistic Collaboration",
-    artisticCollaborationDesc: "Seek powerful partnerships with your fellow artists. Collaboration amplifies creativity, pushes boundaries and creates unforgettable artworks. MADVERSE connects artists from different nations and cultures to create and share.",
+    artisticCollaborationDesc: "We are incredibly grateful to Ujë Rugove for their openness and continuous support of MADVERSE initiatives. Partners like them make it possible to empower local youth, uplift community culture, and transform Peja through public art.",
     communityThroughArt: "Community Through Art",
     communityThroughArtDesc: "Art unites communities. Our collaborative projects foster connection, understanding and collective growth. From community murals to public performances, we believe in the transformative power of art to build stronger and more connected communities.",
 
@@ -534,7 +534,7 @@ export const translations = {
     leadershipDevelopment: "Zhvillimi i Udhëheqjes",
     leadershipDesc: "Fuqizimi i brezit të ardhshëm me aftësi thelbore udhëheqjeje, programe mentori dhe përvojë në botën reale. Udhëheqësit e rinj të MADVERSE formojnë të ardhmen e komunitetit tonë përmes menaxhimit praktik të projekteve dhe mundësive të vendimmarrjes.",
     creativeExpression: "Shprehja Krijuese",
-    creativeExpressionDesc: "Artet hapin dyer drejt kreativitetit të pakufishëm dhe vetëshprehjes. Programet tona përfshijnë disiplina të ndryshme artistike, si arti pamor, artet performuese, muzika dhe mediat digjitale. Ne ofrojmë një platformë ku artistët mund të ndajnë pasionin e tyre dhe të frymëzojnë të tjerët përmes perspektivave të tyre unike.",
+    creativeExpressionDesc: "Ky mural shërben si një plan i gjallë dhe si një pararendje vizuale e vizionit të MADVERSE. Çdo panel përmbledh një shtyllë kryesore të misionit tonë në kulturën rinore, art, muzikë dhe sport, duke paralajmëruar përmasat, energjinë dhe iniciativat që MADVERSE po sjell në jetë.",
     sportsWellness: "Sporti & Mirësia",
     sportsWellnessDesc: "Ndërtoni forcë, karakter dhe punë në ekip përmes programeve të ndryshme sportive. Nga atletika konkuruese deri në aktivitetet rekreative, ne promovojmë një jetë të shëndetshme dhe vlerat e disiplinës, përsistencës dhe komunitetit.",
     communityService: "Shërbimi për Komunitetin",
@@ -543,9 +543,9 @@ export const translations = {
     // Activity Pages - Arts
     artsTitle: "Artet",
     unleashingCreativity: "Çlirimi i Kreativitetit",
-    unleashingCreativityDesc: "Artet hapin dyer drejt kreativitetit të pakufishëm dhe vetëshprehjes. Programet tona përfshijnë disiplina të ndryshme artistike, si arti pamor, artet performuese, muzika dhe mediat digjitale. Ne ofrojmë një platformë ku artistët mund të ndajnë pasionin e tyre dhe të frymëzojnë të tjerët përmes perspektivave të tyre unike.",
+    unleashingCreativityDesc: "Ky mural shërben si një plan i gjallë dhe si një pararendje vizuale e vizionit të MADVERSE. Çdo panel përmbledh një shtyllë kryesore të misionit tonë në kulturën rinore, art, muzikë dhe sport, duke paralajmëruar përmasat, energjinë dhe iniciativat që MADVERSE po sjell në jetë.",
     artisticCollaboration: "Bashkëpunimi Artistik",
-    artisticCollaborationDesc: "Kërkoni partneritete të fuqishme me artistë të tjerë. Bashkëpunimi e fuqizon kreativitetin, i shtyn kufijtë dhe krijon vepra të paharrueshme. MADVERSE lidh artistë nga vende dhe kultura të ndryshme për të krijuar dhe ndarë.",
+    artisticCollaborationDesc: "Jemi jashtëzakonisht mirënjohës ndaj Ujë Rugove për hapjen dhe mbështetjen e vazhdueshme ndaj iniciativave të MADVERSE. Partnerë si ata e bëjnë të mundur fuqizimin e të rinjve lokalë, ngritjen e kulturës së komunitetit dhe transformimin e Pejës përmes artit publik.",
     communityThroughArt: "Komuniteti përmes Artit",
     communityThroughArtDesc: "Arti i bashkon komunitetet. Projektet tona kolaborative nxisin lidhjen, kuptimin dhe rritjen kolektive. Nga murale komuniteti deri në performanca publike, ne besojmë në fuqinë transformuese të artit për të ndërtuar komunitete më të forta dhe më të lidhura.",
 
