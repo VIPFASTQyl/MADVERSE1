@@ -1,494 +1,381 @@
-import { useEffect, useState, useRef } from "react";
+import { useState } from "react";
+import { ArrowUpRight, Instagram, Mail } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { getActivitiesByLanguage } from "@/lib/activityService";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
-interface Program {
-  id: string;
-  title: string;
-  category: string;
-  image: string;
-  description: string;
+interface TeamLink {
+  href: string;
+  label: string;
+  icon: "mail" | "instagram";
 }
 
-// Demo programs shown immediately
-const getDemoPrograms = (language: string): Program[] => [
-  {
-    id: "demo-1",
-    title: language === "en" ? "Klest Drançolli" : "Klest Drançolli",
-    category: language === "en" ? "Team" : "Ekipa",
-    image: "/team-klest.png",
-    description: language === "en" ? "Executive Director" : "Drejtori Ekzekutiv",
-  },
-  {
-    id: "demo-3",
-    title: language === "en" ? "Erijon Gashi" : "Erijon Gashi",
-    category: language === "en" ? "Team" : "Ekipa",
-    image: "/team-gashi.jpg",
-    description: language === "en" ? "Head of Research & Innovation" : "Përfaqësues i Kërkimit & Inovacionit",
-  },
-];
+interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  image: string;
+  bio: string;
+  links: TeamLink[];
+}
 
 const ProgramsCarousel3D = () => {
-  const { language } = useLanguage();
-  
-  // Initialize with demo programs immediately
-  const [programs, setPrograms] = useState<Program[]>(getDemoPrograms(language));
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [tiltState, setTiltState] = useState<{ [key: string]: { x: number; y: number } }>({});
-  const touchStartX = useRef<number | null>(null);
+  const { language, t } = useLanguage();
+  const [tiltState, setTiltState] = useState<Record<string, { x: number; y: number }>>({});
 
-  // Update language on demo programs when language changes
-  useEffect(() => {
-    setPrograms(getDemoPrograms(language));
-    setCurrentSlide(0); // Reset to first slide when language changes
-  }, [language]);
+  const teamMembers: TeamMember[] = [
+    {
+      id: "klest",
+      name: t("klest"),
+      role: t("klestTitleAbout"),
+      image: "/team-klest.png",
+      bio: t("klestDescAbout"),
+      links: [
+        {
+          href: "mailto:klestdrancolli@gmail.com",
+          label: language === "en" ? "Email Klest" : "Dërgo email Klestit",
+          icon: "mail",
+        },
+        {
+          href: "https://www.instagram.com/madverse.ks/",
+          label: "MADVERSE Instagram",
+          icon: "instagram",
+        },
+      ],
+    },
+    {
+      id: "guri",
+      name: t("guri"),
+      role: t("guriTitleAbout"),
+      image: "/team-guri.jpg",
+      bio: t("guriDescAbout"),
+      links: [
+        {
+          href: "mailto:gurigaca13@gmail.com",
+          label: language === "en" ? "Email Guri" : "Dërgo email Gurit",
+          icon: "mail",
+        },
+        {
+          href: "https://www.instagram.com/madverse.ks/",
+          label: "MADVERSE Instagram",
+          icon: "instagram",
+        },
+      ],
+    },
+    {
+      id: "erijon",
+      name: t("erion"),
+      role: t("erionTitleAbout"),
+      image: "/team-gashi.jpg",
+      bio: t("erionDescAbout"),
+      links: [
+        {
+          href: "mailto:erijonGashi@gmail.com",
+          label: language === "en" ? "Email Erijon" : "Dërgo email Erijonit",
+          icon: "mail",
+        },
+        {
+          href: "https://www.instagram.com/madverse.ks/",
+          label: "MADVERSE Instagram",
+          icon: "instagram",
+        },
+      ],
+    },
+  ];
 
-  const goToPrevious = () => {
-    setCurrentSlide((prev) => (prev === 0 ? programs.length - 1 : prev - 1));
-  };
+  const handleMouseMove = (event: React.MouseEvent<HTMLButtonElement>, memberId: string) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width - 0.5;
+    const y = (event.clientY - rect.top) / rect.height - 0.5;
 
-  const goToNext = () => {
-    setCurrentSlide((prev) => (prev === programs.length - 1 ? 0 : prev + 1));
-  };
-
-  const goToSlide = (index: number) => {
-    setCurrentSlide(index);
-  };
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, programId: string) => {
-    const card = e.currentTarget;
-    const rect = card.getBoundingClientRect();
-    
-    // Calculate position relative to card center
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    
-    // Calculate tilt (max 8 degrees)
-    const tiltX = y * 16;
-    const tiltY = x * -16;
-    
-    setTiltState(prev => ({
-      ...prev,
-      [programId]: { x: tiltX, y: tiltY }
+    setTiltState((previous) => ({
+      ...previous,
+      [memberId]: { x: y * -7, y: x * 7 },
     }));
   };
 
-  const handleMouseLeave = (programId: string) => {
-    setTiltState(prev => ({
-      ...prev,
-      [programId]: { x: 0, y: 0 }
+  const resetTilt = (memberId: string) => {
+    setTiltState((previous) => ({
+      ...previous,
+      [memberId]: { x: 0, y: 0 },
     }));
   };
 
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.targetTouches[0].clientX;
-  };
+  const renderLinkIcon = (icon: TeamLink["icon"]) =>
+    icon === "mail" ? <Mail aria-hidden="true" /> : <Instagram aria-hidden="true" />;
 
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX.current !== null) {
-      const touchEndX = e.changedTouches[0].clientX;
-      const distance = touchStartX.current - touchEndX;
-      
-      // 50px swipe threshold
-      if (distance > 50) {
-        // Swiped left - go to next
-        goToNext();
-      } else if (distance < -50) {
-        // Swiped right - go to previous
-        goToPrevious();
-      }
-    }
-    
-    touchStartX.current = null;
-  };
-
-  if (programs.length === 0) {
-    return null;
-  }
-
-  // Both mobile and desktop: Same 3D fan layout, responsive sizing
   return (
-    <div className="w-full py-12 md:py-20">
+    <section className="w-full py-12 md:py-20" aria-labelledby="team-heading">
       <style>{`
-        .carousel-wrapper {
-          position: relative;
-          max-width: 1200px;
+        .team-wrapper {
+          width: min(1200px, 100%);
           margin: 0 auto;
           padding: 0 16px;
-          perspective: 1200px;
         }
 
-        @media (min-width: 768px) {
-          .carousel-wrapper {
-            padding: 0 80px;
-          }
-        }
-
-        .carousel-header {
+        .team-header {
           margin-bottom: 32px;
         }
 
-        @media (min-width: 768px) {
-          .carousel-header {
-            margin-bottom: 60px;
-          }
+        .team-header h2 {
+          margin: 0 0 12px;
+          color: #fff;
+          font-size: clamp(1.75rem, 4vw, 2.5rem);
+          font-weight: 800;
+          letter-spacing: -0.03em;
         }
 
-        .carousel-header h2 {
-          font-size: 24px;
-          font-weight: bold;
-          color: white;
-          margin: 0 0 12px 0;
-        }
-
-        @media (min-width: 768px) {
-          .carousel-header h2 {
-            font-size: 36px;
-            margin: 0 0 16px 0;
-          }
-        }
-
-        .carousel-header .divider {
-          width: 60px;
-          height: 3px;
+        .team-divider {
+          width: 72px;
+          height: 4px;
+          border-radius: 999px;
           background: #ef4444;
-          border-radius: 2px;
         }
 
-        @media (min-width: 768px) {
-          .carousel-header .divider {
-            width: 80px;
-            height: 4px;
-          }
+        .team-track {
+          display: grid;
+          grid-auto-flow: column;
+          grid-auto-columns: min(82vw, 310px);
+          gap: 18px;
+          overflow-x: auto;
+          padding: 20px 2px 30px;
+          scroll-snap-type: x mandatory;
+          scrollbar-width: thin;
+          scrollbar-color: rgba(239, 68, 68, 0.8) rgba(255, 255, 255, 0.08);
         }
 
-        .slick-slider {
-          position: relative;
-          display: block;
-          padding: 30px 0 60px 0;
-          perspective: 1200px;
-          height: 280px;
-          touch-action: pan-y;
-        }
-
-        @media (min-width: 768px) {
-          /* push the carousel lower so hover lift doesn't overlap the header */
-          .slick-slider {
-            padding: 60px 0 128px 0;
-            height: 384px;
-          }
-        }
-
-        .slick-list {
+        .team-dialog-trigger {
           position: relative;
           width: 100%;
-          height: 100%;
-          margin: 0;
+          height: 390px;
           padding: 0;
-          overflow: visible;
-          touch-action: pan-y;
-        }
-
-        .slick-track {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          perspective: 1200px;
-          transform-style: preserve-3d;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .slick-slide {
-          position: relative;
-          width: 200px;
-          height: 240px;
-          margin: 0;
-          padding: 0;
-          transform-style: preserve-3d;
-          transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-          flex-shrink: 0;
-        }
-
-        @media (min-width: 768px) {
-          .slick-slide {
-            width: 384px;
-            height: 384px;
-          }
-        }
-
-        .slick-slide:hover {
-          z-index: 100 !important;
-          transform: translateY(-10px) !important;
-        }
-
-        @media (min-width: 768px) {
-          .slick-slide:hover {
-            transform: translateY(-12px) !important;
-          }
-        }
-
-        .slick-slide:nth-child(1) {
-          transform: rotateY(-20deg) rotateZ(-5deg);
-          margin-right: -40px;
-          opacity: 0.5;
-          z-index: 1;
-        }
-
-        @media (min-width: 768px) {
-          .slick-slide:nth-child(1) {
-            transform: rotateY(-28deg) rotateZ(-8deg);
-            margin-right: -80px;
-          }
-        }
-
-        .slick-slide:nth-child(2) {
-          transform: rotateY(-8deg) rotateZ(-2deg);
-          margin-right: -30px;
-          opacity: 0.75;
-          z-index: 2;
-        }
-
-        @media (min-width: 768px) {
-          .slick-slide:nth-child(2) {
-            transform: rotateY(-12deg) rotateZ(-3deg);
-            margin-right: -60px;
-          }
-        }
-
-        .slick-slide:nth-child(3) {
-          transform: rotateY(0deg) rotateZ(0deg);
-          margin: 0 -20px;
-          opacity: 1;
-          z-index: 5;
-        }
-
-        @media (min-width: 768px) {
-          .slick-slide:nth-child(3) {
-            margin: 0 -40px;
-          }
-        }
-
-        .slick-slide:nth-child(4) {
-          transform: rotateY(8deg) rotateZ(2deg);
-          margin-left: -30px;
-          opacity: 0.75;
-          z-index: 2;
-        }
-
-        @media (min-width: 768px) {
-          .slick-slide:nth-child(4) {
-            transform: rotateY(12deg) rotateZ(3deg);
-            margin-left: -60px;
-          }
-        }
-
-        .slick-slide:nth-child(5) {
-          transform: rotateY(20deg) rotateZ(5deg);
-          margin-left: -40px;
-          opacity: 0.5;
-          z-index: 1;
-        }
-
-        @media (min-width: 768px) {
-          .slick-slide:nth-child(5) {
-            transform: rotateY(28deg) rotateZ(8deg);
-            margin-left: -80px;
-          }
-        }
-
-        .slide-content {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          border-radius: 12px;
           overflow: hidden;
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-          display: flex;
-          flex-direction: column;
-          will-change: transform, box-shadow;
-          transform-style: preserve-3d;
-          perspective: 1000px;
-          transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+          border: 1px solid rgba(255, 255, 255, 0.14);
+          border-radius: 20px;
+          background: #111;
+          box-shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
+          cursor: pointer;
+          scroll-snap-align: center;
+          text-align: left;
+          transform:
+            perspective(1000px)
+            rotateX(var(--tilt-x, 0deg))
+            rotateY(var(--tilt-y, 0deg));
+          transition:
+            transform 220ms ease,
+            border-color 220ms ease,
+            box-shadow 220ms ease;
         }
 
-        @media (min-width: 768px) {
-          .slide-content {
-            border-radius: 16px;
-          }
+        .team-dialog-trigger:hover,
+        .team-dialog-trigger:focus-visible {
+          border-color: rgba(239, 68, 68, 0.8);
+          box-shadow: 0 28px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(239, 68, 68, 0.22);
+          transform:
+            perspective(1000px)
+            rotateX(var(--tilt-x, 0deg))
+            rotateY(var(--tilt-y, 0deg))
+            translateY(-7px)
+            scale(1.015);
+          outline: none;
         }
 
-        .slide-content:hover {
-          transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-6px) scale(1.05);
-          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15), 0 20px 60px rgba(0, 0, 0, 0.2), 0 40px 100px rgba(0, 0, 0, 0.3);
-          z-index: 20;
-        }
-
-        @media (min-width: 768px) {
-          .slide-content:hover {
-            transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-8px) scale(1.05);
-          }
-        }
-
-        .slide-image {
+        .team-card-image {
+          position: absolute;
+          inset: 0;
           width: 100%;
           height: 100%;
           object-fit: cover;
-          display: block;
+          object-position: center;
+          transition: transform 450ms cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .team-dialog-trigger:hover .team-card-image,
+        .team-dialog-trigger:focus-visible .team-card-image {
+          transform: scale(1.035);
+        }
+
+        .team-card-overlay {
           position: absolute;
-          top: 0;
-          left: 0;
-          transition: filter 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        .slide-content:hover .slide-image {
-          filter: brightness(1.1);
-        }
-
-        .slide-content-inner {
-          padding: 12px;
-          flex: 1;
+          inset: 0;
           display: flex;
           flex-direction: column;
           justify-content: flex-end;
-          position: relative;
-          z-index: 5;
-          background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.5), transparent);
-        }
-
-        @media (min-width: 768px) {
-          .slide-content-inner {
-            padding: 24px;
-          }
-        }
-
-        .slide-category-top {
-          position: absolute;
-          top: 12px;
-          right: 12px;
-          z-index: 6;
-        }
-
-        @media (min-width: 768px) {
-          .slide-category-top {
-            top: 24px;
-            right: 24px;
-          }
-        }
-
-        .slide-category {
-          display: inline-block;
-          padding: 4px 8px;
-          background: #ef4444;
+          padding: 22px;
           color: white;
-          font-size: 10px;
-          font-weight: 600;
-          border-radius: 20px;
-          width: fit-content;
+          background: linear-gradient(to top, rgba(0, 0, 0, 0.96) 0%, rgba(0, 0, 0, 0.48) 42%, transparent 70%);
         }
 
-        @media (min-width: 768px) {
-          .slide-category {
-            padding: 6px 12px;
-            font-size: 12px;
-          }
+        .team-card-name {
+          margin: 0 0 7px;
+          font-size: 1.35rem;
+          font-weight: 800;
+          line-height: 1.1;
         }
 
-        .slide-title {
-          font-size: 14px;
-          font-weight: 600;
-          color: #fff;
-          margin: 0 0 6px 0;
-          line-height: 1.3;
-        }
-
-        @media (min-width: 768px) {
-          .slide-title {
-            font-size: 20px;
-            margin: 0 0 12px 0;
-          }
-        }
-
-        .slide-stats {
-          font-size: 11px;
-          color: #fff;
-          display: flex;
-          align-items: center;
-          gap: 4px;
-        }
-
-        .slide-role {
-          font-size: 12px;
-          color: #ffffff;
+        .team-card-role {
+          max-width: 90%;
           margin: 0;
+          color: rgba(255, 255, 255, 0.78);
+          font-size: 0.82rem;
           font-weight: 600;
-          letter-spacing: 0.5px;
+          line-height: 1.4;
+        }
+
+        .team-card-hint {
+          position: absolute;
+          top: 16px;
+          right: 16px;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 7px 10px;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 999px;
+          color: white;
+          background: rgba(0, 0, 0, 0.52);
+          backdrop-filter: blur(10px);
+          font-size: 0.7rem;
+          font-weight: 700;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
         }
 
         @media (min-width: 768px) {
-          .slide-stats {
-            font-size: 14px;
-            gap: 8px;
+          .team-wrapper {
+            padding: 0 40px;
           }
 
-          .slide-role {
-            font-size: 14px;
+          .team-header {
+            margin-bottom: 46px;
           }
 
-          .slide-stats svg {
-            width: 20px;
-            height: 20px;
+          .team-track {
+            grid-auto-flow: initial;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 24px;
+            overflow: visible;
+            padding: 18px 0 28px;
+          }
+
+          .team-dialog-trigger {
+            height: 430px;
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .team-dialog-trigger,
+          .team-card-image {
+            transition: none;
           }
         }
       `}</style>
 
-      <div className="carousel-wrapper">
-        <div className="carousel-header">
-          <h2>{language === "en" ? "Our Team" : "Ekipa"}</h2>
-          <div className="divider"></div>
+      <div className="team-wrapper">
+        <div className="team-header">
+          <h2 id="team-heading">{language === "en" ? "Our Team" : "Ekipi ynë"}</h2>
+          <div className="team-divider" />
         </div>
 
-        <div className="slick-slider">
-          <div className="slick-list" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
-            <div className="slick-track">
-              {programs.slice(0, 2).map((program, index) => (
-                <div
-                  key={program.id}
-                  className={`slick-slide ${index === currentSlide ? "active" : ""}`}
+        <div className="team-track">
+          {teamMembers.map((member) => (
+            <Dialog key={member.id}>
+              <DialogTrigger asChild>
+                <button
+                  type="button"
+                  className="team-dialog-trigger"
+                  aria-label={
+                    language === "en"
+                      ? `Open ${member.name}'s biography`
+                      : `Hap biografinë e ${member.name}`
+                  }
+                  onMouseMove={(event) => handleMouseMove(event, member.id)}
+                  onMouseLeave={() => resetTilt(member.id)}
+                  style={
+                    {
+                      "--tilt-x": `${tiltState[member.id]?.x || 0}deg`,
+                      "--tilt-y": `${tiltState[member.id]?.y || 0}deg`,
+                    } as React.CSSProperties
+                  }
                 >
-                  <div
-                    className="slide-content"
-                    onMouseMove={(e) => handleMouseMove(e, program.id)}
-                    onMouseLeave={() => handleMouseLeave(program.id)}
-                    style={{
-                      '--tilt-x': `${tiltState[program.id]?.x || 0}deg`,
-                      '--tilt-y': `${tiltState[program.id]?.y || 0}deg`,
-                    } as React.CSSProperties & { '--tilt-x': string; '--tilt-y': string }}
-                  >
+                  <img
+                    src={member.image}
+                    alt=""
+                    className="team-card-image"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <span className="team-card-hint">
+                    {language === "en" ? "View bio" : "Shiko bio"}
+                    <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+                  </span>
+                  <span className="team-card-overlay">
+                    <span className="team-card-name">{member.name}</span>
+                    <span className="team-card-role">{member.role}</span>
+                  </span>
+                </button>
+              </DialogTrigger>
+
+              <DialogContent className="max-h-[92vh] w-[calc(100%_-_1.5rem)] max-w-4xl gap-0 overflow-y-auto border-white/15 bg-[#0b0b0d] p-0 text-white shadow-2xl sm:rounded-3xl">
+                <div className="grid min-h-0 md:grid-cols-[0.88fr_1.12fr]">
+                  <div className="relative min-h-64 overflow-hidden bg-black md:min-h-[560px]">
                     <img
-                      src={program.image}
-                      alt={program.title}
-                      className="slide-image"
+                      src={member.image}
+                      alt={member.name}
+                      className="absolute inset-0 h-full w-full object-cover object-center"
                     />
-                    <div className="slide-category-top">
-                      <div className="slide-category">{program.category}</div>
-                    </div>
-                    <div className="slide-content-inner">
-                      <h3 className="slide-title">{program.title}</h3>
-                      <div className="slide-stats">
-                        <p className="slide-role">{program.description}</p>
-                      </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent md:bg-gradient-to-r md:from-transparent md:to-black/15" />
+                  </div>
+
+                  <div className="flex flex-col justify-center px-6 py-9 sm:px-10 md:px-12">
+                    <DialogHeader>
+                      <span className="mb-3 text-xs font-bold uppercase tracking-[0.22em] text-red-400">
+                        {language === "en" ? "Team biography" : "Biografia e ekipit"}
+                      </span>
+                      <DialogTitle className="text-3xl font-black tracking-tight text-white sm:text-4xl">
+                        {member.name}
+                      </DialogTitle>
+                      <DialogDescription className="pt-2 text-sm font-semibold leading-relaxed text-red-300 sm:text-base">
+                        {member.role}
+                      </DialogDescription>
+                    </DialogHeader>
+
+                    <div className="my-7 h-px w-full bg-white/10" />
+
+                    <p className="text-base leading-7 text-white/75 sm:text-lg sm:leading-8">
+                      {member.bio}
+                    </p>
+
+                    <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                      {member.links.map((link) => (
+                        <a
+                          key={`${member.id}-${link.href}`}
+                          href={link.href}
+                          target={link.href.startsWith("http") ? "_blank" : undefined}
+                          rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.07] px-5 py-3 text-sm font-bold text-white transition hover:border-red-400/70 hover:bg-red-500/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
+                        >
+                          <span className="[&>svg]:h-4 [&>svg]:w-4">
+                            {renderLinkIcon(link.icon)}
+                          </span>
+                          {link.label}
+                        </a>
+                      ))}
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
+              </DialogContent>
+            </Dialog>
+          ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

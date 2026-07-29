@@ -44,15 +44,15 @@ export const translations = {
     klest: "Klest Drançolli",
     klestDesc: "Klest Drançolli is the Founder and Lead of MADVERSE, responsible for setting the vision, guiding growth, and driving innovation. Under his leadership, MADVERSE empowers local talent, strengthens community engagement, and develops sustainable cultural initiatives.",
     guri: "Guri Gacaferi",
-    guriDesc: "Guri Gacaferi is the Finance Administrator at MADVERSE, managing financial operations and supporting sustainable growth.",
+    guriDesc: "Guri Gacaferi is the Finance Administrator and Fundraiser at MADVERSE, managing financial operations and developing support that drives sustainable growth.",
     erion: "Erijon Gashi",
     erionDesc: "Erijon Gashi is the Research Lead at MADVERSE, exploring future technologies and identifying new opportunities to advance the organization.",
     
     // ABOUT PAGE (Detailed)
     klestTitleAbout: "Founder & Chief Executive Officer (CEO)",
     klestDescAbout: "Klest Drançolli is the Founder and Chief Executive Officer of MADVERSE. He is responsible for defining the organization's strategic vision, overseeing organizational development, and leading innovation across all operational areas. Through his leadership, MADVERSE advances its mission to empower local talent, strengthen community engagement, and deliver sustainable cultural initiatives.",
-    guriTitleAbout: "Chief Financial Administrator",
-    guriDescAbout: "Guri Gacaferi serves as the Chief Financial Administrator at MADVERSE, overseeing financial operations and ensuring the organization's financial stability. He is responsible for budgeting, financial planning, and resource optimization, contributing directly to the sustainable growth and long-term development of the organization.",
+    guriTitleAbout: "Finance Administrator & Fundraiser",
+    guriDescAbout: "Guri Gacaferi is MADVERSE's Finance Administrator and Fundraiser. He manages financial operations, budgeting, and resource planning while building relationships with supporters and developing fundraising opportunities that help the organization grow sustainably and deliver lasting community impact.",
     erionTitleAbout: "Head of Research & Innovation",
     erionDescAbout: "Erijon Gashi is the Head of Research and Innovation at MADVERSE, responsible for exploring emerging technologies and future trends. He identifies strategic opportunities that support the advancement of projects and the overall vision of the organization, helping MADVERSE remain adaptive and forward-thinking within a dynamic cultural and technological landscape.",
     
@@ -340,15 +340,15 @@ export const translations = {
     klest: "Klest Drançolli",
     klestDesc: "Klest Drançolli osht themelues edhe udhëheqës kryesor i MADVERSE. Ai e drejton vizionin, zhvillimin edhe risitë e organizatës, duke fuqizu talentin lokal, angazhimin komunitar edhe iniciativat kulturore të qëndrueshme.",
     guri: "Guri Gacaferi",
-    guriDesc: "Guri Gacaferi osht Administratori i Financave në MADVERSE, përgjegjës për menaxhimin e financave edhe rritjen e qëndrueshme.",
+    guriDesc: "Guri Gacaferi osht Administratori i Financave dhe Mbledhës i Fondeve në MADVERSE, përgjegjës për menaxhimin e financave dhe zhvillimin e mbështetjes për rritje të qëndrueshme.",
     erion: "Erijon Gashi",
     erionDesc: "Erijon Gashi osht kërkues në MADVERSE, tu eksploru teknologji t'ardhshme edhe tu gjet mundësi t'reja për zhvillimin e organizatës.",
     
     // ABOUT PAGE (Detailed)
     klestTitleAbout: "Themelues & Drejtor Ekzekutiv (CEO)",
     klestDescAbout: "Klest Drançolli osht themelues edhe Drejtor Ekzekutiv i MADVERSE. Ai osht përgjegjës për përcaktimin e vizionit strategjik, mbikëqyrjen e zhvillimit organizativ edhe udhëheqjen e inovacionit në të gjitha fushat operative. Përmes udhëheqjes së tij, MADVERSE e avancon misionin për me fuqizu talentin vendor, me forcu angazhimin komunitar edhe me realizu iniciativa kulturore të qëndrueshme.",
-    guriTitleAbout: "Drejtor i Administrimit Financiar",
-    guriDescAbout: "Guri Gacaferi osht Drejtor i Administrimit Financiar në MADVERSE, përgjegjës për menaxhimin e operacioneve financiare edhe sigurimin e stabilitetit financiar të organizatës. Ai e mbikëqyr planifikimin buxhetor, kontrollin financiar edhe optimizimin e burimeve, duke kontribu drejtpërdrejt në rritjen e qëndrueshme edhe zhvillimin afatgjatë të MADVERSE.",
+    guriTitleAbout: "Administrator i Financave & Mbledhës Fondesh",
+    guriDescAbout: "Guri Gacaferi osht Administratori i Financave dhe Mbledhës i Fondeve në MADVERSE. Ai menaxhon operacionet financiare, buxhetimin dhe planifikimin e burimeve, ndërsa ndërton marrëdhënie me mbështetës dhe zhvillon mundësi financimi që e ndihmojnë organizatën me u rrit në mënyrë të qëndrueshme dhe me kriju ndikim afatgjatë në komunitet.",
     erionTitleAbout: "Udhëheqës i Kërkimit & Inovacionit",
     erionDescAbout: "Erijon Gashi osht udhëheqës i Kërkimit edhe Inovacionit në MADVERSE. Ai merret me eksplorimin e teknologjive t'reja edhe trendeve t'ardhshme, duke identifiku mundësi strategjike që e ndihmojnë avancimin e projekteve edhe vizionit të organizatës, si dhe përshtatjen e MADVERSE në një mjedis kulturor edhe teknologjik dinamik.",
     
