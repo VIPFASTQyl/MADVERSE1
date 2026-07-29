@@ -7,7 +7,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 
 interface TeamLink {
@@ -30,6 +29,7 @@ const ProgramsCarousel3D = () => {
   const [tiltState, setTiltState] = useState<Record<string, { x: number; y: number }>>({});
   const [isMobileCarousel, setIsMobileCarousel] = useState(false);
   const [centeredMember, setCenteredMember] = useState("klest");
+  const [openMember, setOpenMember] = useState<string | null>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const shellRefs = useRef<Record<string, HTMLElement | null>>({});
 
@@ -189,7 +189,10 @@ const ProgramsCarousel3D = () => {
     event: React.MouseEvent<HTMLButtonElement>,
     memberId: string,
   ) => {
-    if (!isMobileCarousel || centeredMember === memberId) return;
+    if (!isMobileCarousel || centeredMember === memberId) {
+      setOpenMember(memberId);
+      return;
+    }
 
     event.preventDefault();
     const stage = stageRef.current;
@@ -602,43 +605,45 @@ const ProgramsCarousel3D = () => {
               }
               key={member.id}
             >
-              <Dialog>
-                <DialogTrigger asChild>
-                  <button
-                    type="button"
-                    className="mad-team-card"
-                    aria-label={
-                      language === "en"
-                        ? `Open ${member.name}'s biography`
-                        : `Hap biografinë e ${member.name}`
-                    }
-                    onMouseMove={(event) => handleMouseMove(event, member.id)}
-                    onMouseLeave={() => resetTilt(member.id)}
-                    onClick={(event) => handleCardClick(event, member.id)}
-                    style={
-                      {
-                        "--tilt-x": `${tiltState[member.id]?.x || 0}deg`,
-                        "--tilt-y": `${tiltState[member.id]?.y || 0}deg`,
-                      } as React.CSSProperties
-                    }
-                  >
-                    <img
-                      src={member.image}
-                      alt=""
-                      className="mad-team-portrait"
-                      loading="lazy"
-                      decoding="async"
-                      draggable={false}
-                    />
-                    <span className="mad-team-tag">
-                      {language === "en" ? "Team" : "Ekipa"}
-                    </span>
-                    <span className="mad-team-overlay">
-                      <span className="mad-team-name">{member.name}</span>
-                      <span className="mad-team-role">{member.role}</span>
-                    </span>
-                  </button>
-                </DialogTrigger>
+              <Dialog
+                open={openMember === member.id}
+                onOpenChange={(open) => setOpenMember(open ? member.id : null)}
+              >
+                <button
+                  type="button"
+                  className="mad-team-card"
+                  aria-haspopup="dialog"
+                  aria-label={
+                    language === "en"
+                      ? `Open ${member.name}'s biography`
+                      : `Hap biografinë e ${member.name}`
+                  }
+                  onMouseMove={(event) => handleMouseMove(event, member.id)}
+                  onMouseLeave={() => resetTilt(member.id)}
+                  onClick={(event) => handleCardClick(event, member.id)}
+                  style={
+                    {
+                      "--tilt-x": `${tiltState[member.id]?.x || 0}deg`,
+                      "--tilt-y": `${tiltState[member.id]?.y || 0}deg`,
+                    } as React.CSSProperties
+                  }
+                >
+                  <img
+                    src={member.image}
+                    alt=""
+                    className="mad-team-portrait"
+                    loading="lazy"
+                    decoding="async"
+                    draggable={false}
+                  />
+                  <span className="mad-team-tag">
+                    {language === "en" ? "Team" : "Ekipa"}
+                  </span>
+                  <span className="mad-team-overlay">
+                    <span className="mad-team-name">{member.name}</span>
+                    <span className="mad-team-role">{member.role}</span>
+                  </span>
+                </button>
 
                 <DialogContent className="max-h-[calc(100svh_-_1.75rem)] w-[calc(100%_-_1.75rem)] max-w-[880px] gap-0 overflow-y-auto border-white/15 bg-[#242424] p-0 text-white shadow-[0_40px_120px_rgba(0,0,0,0.82)] sm:rounded-3xl">
                   <div className="grid min-h-0 md:min-h-[540px] md:grid-cols-[minmax(260px,0.86fr)_minmax(320px,1.14fr)]">
