@@ -29,26 +29,8 @@ const ProgramsCarousel3D = () => {
   const { language, t } = useLanguage();
   const [tiltState, setTiltState] = useState<Record<string, { x: number; y: number }>>({});
 
+  // The order is intentional: the supplied design features Klest in the centre.
   const teamMembers: TeamMember[] = [
-    {
-      id: "klest",
-      name: t("klest"),
-      role: t("klestTitleAbout"),
-      image: "/team-klest.png",
-      bio: t("klestDescAbout"),
-      links: [
-        {
-          href: "mailto:klestdrancolli@gmail.com",
-          label: language === "en" ? "Email Klest" : "Dërgo email Klestit",
-          icon: "mail",
-        },
-        {
-          href: "https://www.instagram.com/madverse.ks/",
-          label: "MADVERSE Instagram",
-          icon: "instagram",
-        },
-      ],
-    },
     {
       id: "guri",
       name: t("guri"),
@@ -59,6 +41,25 @@ const ProgramsCarousel3D = () => {
         {
           href: "mailto:gurigaca13@gmail.com",
           label: language === "en" ? "Email Guri" : "Dërgo email Gurit",
+          icon: "mail",
+        },
+        {
+          href: "https://www.instagram.com/madverse.ks/",
+          label: "MADVERSE Instagram",
+          icon: "instagram",
+        },
+      ],
+    },
+    {
+      id: "klest",
+      name: t("klest"),
+      role: t("klestTitleAbout"),
+      image: "/team-klest.png",
+      bio: t("klestDescAbout"),
+      links: [
+        {
+          href: "mailto:klestdrancolli@gmail.com",
+          label: language === "en" ? "Email Klest" : "Dërgo email Klestit",
           icon: "mail",
         },
         {
@@ -91,12 +92,15 @@ const ProgramsCarousel3D = () => {
 
   const handleMouseMove = (event: React.MouseEvent<HTMLButtonElement>, memberId: string) => {
     const rect = event.currentTarget.getBoundingClientRect();
-    const x = (event.clientX - rect.left) / rect.width - 0.5;
-    const y = (event.clientY - rect.top) / rect.height - 0.5;
+    const horizontal = (event.clientX - rect.left) / rect.width - 0.5;
+    const vertical = (event.clientY - rect.top) / rect.height - 0.5;
 
     setTiltState((previous) => ({
       ...previous,
-      [memberId]: { x: y * -7, y: x * 7 },
+      [memberId]: {
+        x: vertical * -8,
+        y: horizontal * 8,
+      },
     }));
   };
 
@@ -111,267 +115,335 @@ const ProgramsCarousel3D = () => {
     icon === "mail" ? <Mail aria-hidden="true" /> : <Instagram aria-hidden="true" />;
 
   return (
-    <section className="w-full py-12 md:py-20" aria-labelledby="team-heading">
+    <section className="mad-team-section" aria-labelledby="team-heading">
       <style>{`
-        .team-wrapper {
-          width: min(1200px, 100%);
+        .mad-team-section {
+          --mad-team-bg: oklch(0.115 0 0);
+          --mad-team-surface: oklch(0.159 0 0);
+          --mad-team-fg: oklch(0.985 0 0);
+          --mad-team-muted: oklch(0.626 0 0);
+          --mad-team-border: oklch(0.235 0 0);
+          --mad-team-accent: oklch(0.637 0.237 25.331);
+          --mad-team-shadow: oklch(0.04 0 0 / 0.72);
+          width: 100%;
+          overflow: hidden;
+          padding: clamp(48px, 8vw, 104px) clamp(16px, 4vw, 56px);
+          background: var(--mad-team-bg);
+          color: var(--mad-team-fg);
+          font-family: "Space Grotesk", "Segoe UI", sans-serif;
+          isolation: isolate;
+        }
+
+        .mad-team-inner {
+          width: min(1240px, 100%);
           margin: 0 auto;
-          padding: 0 16px;
         }
 
-        .team-header {
-          margin-bottom: 32px;
-        }
-
-        .team-header h2 {
-          margin: 0 0 12px;
-          color: #fff;
-          font-size: clamp(1.75rem, 4vw, 2.5rem);
-          font-weight: 800;
-          letter-spacing: -0.03em;
-        }
-
-        .team-divider {
-          width: 72px;
-          height: 4px;
-          border-radius: 999px;
-          background: #ef4444;
-        }
-
-        .team-track {
-          position: relative;
+        .mad-team-header {
           display: flex;
-          height: 280px;
-          align-items: center;
-          justify-content: center;
-          padding: 30px 0 60px;
-          perspective: 1200px;
+          align-items: flex-end;
+          justify-content: space-between;
+          gap: 24px;
+          padding-inline: clamp(0px, 2vw, 24px);
+        }
+
+        .mad-team-eyebrow {
+          margin: 0 0 10px;
+          color: var(--mad-team-muted);
+          font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+          font-size: 12px;
+          font-weight: 500;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+
+        .mad-team-heading {
+          max-width: 10ch;
+          margin: 0;
+          color: var(--mad-team-fg);
+          font-family: "Space Grotesk", "Avenir Next", "Segoe UI", sans-serif;
+          font-size: clamp(36px, 6vw, 68px);
+          font-weight: 600;
+          letter-spacing: -0.03em;
+          line-height: 0.98;
+        }
+
+        .mad-team-accent-rule {
+          width: 76px;
+          height: 4px;
+          margin-top: 20px;
+          border-radius: 999px;
+          background: var(--mad-team-accent);
+        }
+
+        .mad-team-stage {
+          position: relative;
+          height: clamp(340px, 56vw, 570px);
+          margin-top: clamp(22px, 4vw, 52px);
+          perspective: 1300px;
           transform-style: preserve-3d;
         }
 
-        .team-slide {
-          position: relative;
-          width: clamp(140px, 45vw, 200px);
-          height: 240px;
-          flex-shrink: 0;
+        .mad-team-shell {
+          --x: 0px;
+          --fan-y: 0deg;
+          --fan-z: 0deg;
+          --idle-opacity: 1;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          z-index: 2;
+          width: clamp(208px, 29vw, 360px);
+          aspect-ratio: 0.83;
+          opacity: var(--idle-opacity);
+          transform:
+            translate(-50%, -50%)
+            translateX(var(--x))
+            rotateY(var(--fan-y))
+            rotateZ(var(--fan-z));
           transform-style: preserve-3d;
-          transition: all 600ms cubic-bezier(0.22, 1, 0.36, 1);
+          transition:
+            transform 560ms cubic-bezier(0.22, 1, 0.36, 1),
+            opacity 300ms ease,
+            filter 300ms ease;
         }
 
-        .team-slide:nth-child(1) {
+        .mad-team-shell:nth-child(1) {
+          --x: clamp(-330px, -24vw, -64px);
+          --fan-y: -24deg;
+          --fan-z: -7deg;
+          --idle-opacity: 0.58;
           z-index: 1;
-          margin-right: -50px;
-          opacity: 0.55;
-          transform: rotateY(-20deg) rotateZ(-5deg);
         }
 
-        .team-slide:nth-child(2) {
-          z-index: 5;
-          margin: 0 -25px;
-          opacity: 1;
+        .mad-team-shell:nth-child(2) {
+          z-index: 4;
         }
 
-        .team-slide:nth-child(3) {
+        .mad-team-shell:nth-child(3) {
+          --x: clamp(64px, 24vw, 330px);
+          --fan-y: 24deg;
+          --fan-z: 7deg;
+          --idle-opacity: 0.58;
           z-index: 1;
-          margin-left: -50px;
-          opacity: 0.55;
-          transform: rotateY(20deg) rotateZ(5deg);
         }
 
-        .team-slide:hover,
-        .team-slide:focus-within {
-          z-index: 100;
+        .mad-team-shell:hover,
+        .mad-team-shell:focus-within {
+          z-index: 20;
           opacity: 1;
-          transform: translateY(-10px);
+          filter: saturate(1.04);
+          transform:
+            translate(-50%, -50%)
+            translateX(var(--x))
+            translateY(-18px)
+            rotateY(0deg)
+            rotateZ(0deg)
+            scale(1.035);
         }
 
-        .team-dialog-trigger {
+        .mad-team-card {
           position: relative;
+          display: block;
           width: 100%;
           height: 100%;
           padding: 0;
           overflow: hidden;
           border: 0;
-          border-radius: 12px;
-          background: #111;
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+          border-radius: 18px;
+          clip-path: inset(0 round 18px);
+          isolation: isolate;
+          backface-visibility: hidden;
+          background: var(--mad-team-surface);
+          box-shadow: 0 22px 58px var(--mad-team-shadow);
+          color: inherit;
           cursor: pointer;
           text-align: left;
           transform:
-            perspective(1000px)
+            perspective(900px)
             rotateX(var(--tilt-x, 0deg))
             rotateY(var(--tilt-y, 0deg));
+          transform-style: preserve-3d;
           transition:
-            transform 350ms cubic-bezier(0.22, 1, 0.36, 1),
-            box-shadow 350ms cubic-bezier(0.22, 1, 0.36, 1);
+            transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 260ms ease;
         }
 
-        .team-dialog-trigger:hover,
-        .team-dialog-trigger:focus-visible {
+        .mad-team-card:hover,
+        .mad-team-card:focus-visible {
           box-shadow:
-            0 8px 16px rgba(0, 0, 0, 0.15),
-            0 20px 60px rgba(0, 0, 0, 0.2),
-            0 40px 100px rgba(0, 0, 0, 0.3);
-          transform:
-            perspective(1000px)
-            rotateX(var(--tilt-x, 0deg))
-            rotateY(var(--tilt-y, 0deg))
-            translateY(-6px)
-            scale(1.05);
+            0 14px 32px oklch(0.03 0 0 / 0.42),
+            0 34px 92px oklch(0.03 0 0 / 0.7);
           outline: none;
         }
 
-        .team-card-image {
+        .mad-team-card:focus-visible {
+          outline: 2px solid var(--mad-team-fg);
+          outline-offset: 5px;
+        }
+
+        .mad-team-portrait {
           position: absolute;
           inset: 0;
           width: 100%;
           height: 100%;
           object-fit: cover;
           object-position: center;
-          transition: transform 450ms cubic-bezier(0.22, 1, 0.36, 1);
+          transform: scale(1.002);
+          transition:
+            transform 480ms cubic-bezier(0.22, 1, 0.36, 1),
+            filter 300ms ease;
         }
 
-        .team-dialog-trigger:hover .team-card-image,
-        .team-dialog-trigger:focus-visible .team-card-image {
-          transform: scale(1.035);
+        .mad-team-shell:hover .mad-team-portrait,
+        .mad-team-shell:focus-within .mad-team-portrait {
+          filter: brightness(1.06);
+          transform: scale(1.045);
         }
 
-        .team-card-overlay {
+        .mad-team-overlay {
           position: absolute;
           inset: 0;
           display: flex;
           flex-direction: column;
           justify-content: flex-end;
-          padding: 12px;
-          color: white;
-          background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5), transparent);
+          padding: clamp(16px, 2.3vw, 26px);
+          background: linear-gradient(
+            to top,
+            oklch(0.035 0 0 / 0.96) 0%,
+            oklch(0.035 0 0 / 0.58) 35%,
+            transparent 68%
+          );
+          pointer-events: none;
+          transform: translateZ(30px);
         }
 
-        .team-card-name {
-          margin: 0 0 6px;
-          font-size: 0.875rem;
-          font-weight: 600;
-          line-height: 1.3;
-        }
-
-        .team-card-role {
-          margin: 0;
-          color: #fff;
-          font-size: 0.7rem;
-          font-weight: 600;
-          letter-spacing: 0.03em;
-        }
-
-        .team-card-hint {
+        .mad-team-tag {
           position: absolute;
-          top: 16px;
-          right: 16px;
-          display: inline-flex;
-          align-items: center;
-          padding: 4px 8px;
-          border: 0;
+          top: clamp(14px, 2vw, 22px);
+          right: clamp(14px, 2vw, 22px);
+          padding: 7px 11px;
+          border: 1px solid rgba(255, 255, 255, 0.18);
           border-radius: 999px;
-          color: white;
-          background: #ef4444;
-          font-size: 0.625rem;
-          font-weight: 600;
+          background: rgba(24, 24, 24, 0.68);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.32);
+          backdrop-filter: blur(12px);
+          color: var(--mad-team-fg);
+          font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+          font-size: 11px;
+          font-weight: 500;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          transform: translateZ(32px);
         }
 
-        @media (min-width: 768px) {
-          .team-wrapper {
-            padding: 0 40px;
+        .mad-team-name {
+          margin: 0 0 7px;
+          color: var(--mad-team-fg);
+          font-size: clamp(20px, 2.2vw, 28px);
+          font-weight: 600;
+          letter-spacing: -0.02em;
+          line-height: 1.05;
+        }
+
+        .mad-team-role {
+          max-width: 27ch;
+          margin: 0;
+          color: rgba(255, 255, 255, 0.78);
+          font-size: clamp(12px, 1.3vw, 14px);
+          font-weight: 500;
+          letter-spacing: 0.01em;
+          line-height: 1.45;
+        }
+
+        @media (max-width: 760px) {
+          .mad-team-section {
+            padding-top: 46px;
           }
 
-          .team-header {
-            margin-bottom: 46px;
+          .mad-team-stage {
+            height: clamp(330px, 108vw, 460px);
+            margin-inline: -4px;
           }
 
-          .team-track {
-            height: 384px;
-            padding: 60px 0 128px;
+          .mad-team-shell {
+            width: clamp(208px, 57vw, 238px);
           }
 
-          .team-slide {
-            width: 384px;
-            height: 384px;
+          .mad-team-shell:nth-child(1) {
+            --x: clamp(-132px, -19vw, -64px);
+            --fan-y: -19deg;
+            --fan-z: -6deg;
           }
 
-          .team-slide:nth-child(1) {
-            margin-right: -80px;
-            transform: rotateY(-28deg) rotateZ(-8deg);
+          .mad-team-shell:nth-child(3) {
+            --x: clamp(64px, 19vw, 132px);
+            --fan-y: 19deg;
+            --fan-z: 6deg;
           }
 
-          .team-slide:nth-child(2) {
-            margin: 0 -40px;
-          }
-
-          .team-slide:nth-child(3) {
-            margin-left: -80px;
-            transform: rotateY(28deg) rotateZ(8deg);
-          }
-
-          .team-slide:hover,
-          .team-slide:focus-within {
-            transform: translateY(-12px);
-          }
-
-          .team-dialog-trigger {
-            border-radius: 16px;
-          }
-
-          .team-dialog-trigger:hover,
-          .team-dialog-trigger:focus-visible {
+          .mad-team-shell:hover,
+          .mad-team-shell:focus-within {
             transform:
-              perspective(1000px)
-              rotateX(var(--tilt-x, 0deg))
-              rotateY(var(--tilt-y, 0deg))
-              translateY(-8px)
-              scale(1.05);
+              translate(-50%, -50%)
+              translateX(var(--x))
+              translateY(-10px)
+              rotateY(0deg)
+              rotateZ(0deg)
+              scale(1.02);
           }
 
-          .team-card-overlay {
-            padding: 24px;
+          .mad-team-name {
+            font-size: 19px;
           }
 
-          .team-card-name {
-            margin-bottom: 12px;
-            font-size: 1.25rem;
+          .mad-team-role {
+            font-size: 11px;
+          }
+        }
+
+        @media (max-width: 410px) {
+          .mad-team-heading {
+            font-size: 34px;
           }
 
-          .team-card-role {
-            font-size: 0.875rem;
-          }
-
-          .team-card-hint {
-            top: 24px;
-            right: 24px;
-            padding: 6px 12px;
-            font-size: 0.75rem;
+          .mad-team-shell {
+            width: 208px;
           }
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .team-dialog-trigger,
-          .team-card-image {
-            transition: none;
+          .mad-team-section *,
+          .mad-team-section *::before,
+          .mad-team-section *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
           }
         }
       `}</style>
 
-      <div className="team-wrapper">
-        <div className="team-header">
-          <h2 id="team-heading">{language === "en" ? "Our Team" : "Ekipi ynë"}</h2>
-          <div className="team-divider" />
-        </div>
+      <div className="mad-team-inner">
+        <header className="mad-team-header">
+          <div>
+            <p className="mad-team-eyebrow">
+              {language === "en" ? "MADVERSE / People" : "MADVERSE / Njerëzit"}
+            </p>
+            <h2 id="team-heading" className="mad-team-heading">
+              {language === "en" ? "Our Team" : "Ekipi ynë"}
+            </h2>
+            <div className="mad-team-accent-rule" aria-hidden="true" />
+          </div>
+        </header>
 
-        <div className="team-track">
+        <div className="mad-team-stage">
           {teamMembers.map((member) => (
-            <div className="team-slide" key={member.id}>
+            <article className="mad-team-shell" key={member.id}>
               <Dialog>
                 <DialogTrigger asChild>
                   <button
                     type="button"
-                    className="team-dialog-trigger"
+                    className="mad-team-card"
                     aria-label={
                       language === "en"
                         ? `Open ${member.name}'s biography`
@@ -389,58 +461,56 @@ const ProgramsCarousel3D = () => {
                     <img
                       src={member.image}
                       alt=""
-                      className="team-card-image"
+                      className="mad-team-portrait"
                       loading="lazy"
                       decoding="async"
+                      draggable={false}
                     />
-                    <span className="team-card-hint">
+                    <span className="mad-team-tag">
                       {language === "en" ? "Team" : "Ekipa"}
                     </span>
-                    <span className="team-card-overlay">
-                      <span className="team-card-name">{member.name}</span>
-                      <span className="team-card-role">{member.role}</span>
+                    <span className="mad-team-overlay">
+                      <span className="mad-team-name">{member.name}</span>
+                      <span className="mad-team-role">{member.role}</span>
                     </span>
                   </button>
                 </DialogTrigger>
 
-                <DialogContent className="max-h-[92vh] w-[calc(100%_-_1.5rem)] max-w-4xl gap-0 overflow-y-auto border-white/15 bg-[#0b0b0d] p-0 text-white shadow-2xl sm:rounded-3xl">
-                  <div className="grid min-h-0 md:grid-cols-[0.88fr_1.12fr]">
-                    <div className="relative min-h-64 overflow-hidden bg-black md:min-h-[560px]">
+                <DialogContent className="max-h-[calc(100svh_-_1.75rem)] w-[calc(100%_-_1.75rem)] max-w-[880px] gap-0 overflow-y-auto border-white/15 bg-[#242424] p-0 text-white shadow-[0_40px_120px_rgba(0,0,0,0.82)] sm:rounded-3xl">
+                  <div className="grid min-h-0 md:min-h-[540px] md:grid-cols-[minmax(260px,0.86fr)_minmax(320px,1.14fr)]">
+                    <div className="relative min-h-[250px] overflow-hidden bg-black sm:min-h-[320px] md:min-h-full">
                       <img
                         src={member.image}
                         alt={member.name}
                         className="absolute inset-0 h-full w-full object-cover object-center"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent md:bg-gradient-to-r md:from-transparent md:to-black/15" />
                     </div>
 
-                    <div className="flex flex-col justify-center px-6 py-9 sm:px-10 md:px-12">
+                    <div className="flex flex-col justify-center px-6 py-9 sm:px-10 md:px-14">
                       <DialogHeader>
-                        <span className="mb-3 text-xs font-bold uppercase tracking-[0.22em] text-red-400">
+                        <span className="mb-3 font-mono text-xs font-medium uppercase tracking-[0.08em] text-white/55">
                           {language === "en" ? "Team biography" : "Biografia e ekipit"}
                         </span>
-                        <DialogTitle className="text-3xl font-black tracking-tight text-white sm:text-4xl">
+                        <DialogTitle className="text-[clamp(2.125rem,5vw,3.25rem)] font-semibold leading-none tracking-[-0.03em] text-white">
                           {member.name}
                         </DialogTitle>
-                        <DialogDescription className="pt-2 text-sm font-semibold leading-relaxed text-red-300 sm:text-base">
+                        <DialogDescription className="pt-3 text-[15px] font-semibold leading-relaxed text-white">
                           {member.role}
                         </DialogDescription>
                       </DialogHeader>
 
-                      <div className="my-7 h-px w-full bg-white/10" />
-
-                      <p className="text-base leading-7 text-white/75 sm:text-lg sm:leading-8">
+                      <p className="mt-7 border-t border-white/10 pt-6 text-[15px] leading-[1.65] text-white/75">
                         {member.bio}
                       </p>
 
-                      <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                      <div className="mt-7 flex flex-col gap-2.5 sm:flex-row sm:flex-wrap">
                         {member.links.map((link) => (
                           <a
                             key={`${member.id}-${link.href}`}
                             href={link.href}
                             target={link.href.startsWith("http") ? "_blank" : undefined}
                             rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.07] px-5 py-3 text-sm font-bold text-white transition hover:border-red-400/70 hover:bg-red-500/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
+                            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-white/20 bg-transparent px-[18px] text-[13px] font-semibold tracking-[0.02em] text-white transition hover:border-white/40 hover:bg-white/[0.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
                           >
                             <span className="[&>svg]:h-4 [&>svg]:w-4">
                               {renderLinkIcon(link.icon)}
@@ -453,7 +523,7 @@ const ProgramsCarousel3D = () => {
                   </div>
                 </DialogContent>
               </Dialog>
-            </div>
+            </article>
           ))}
         </div>
       </div>
