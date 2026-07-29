@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowUpRight, Instagram, Mail } from "lucide-react";
+import { Instagram, Mail } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import {
   Dialog,
@@ -139,50 +139,85 @@ const ProgramsCarousel3D = () => {
         }
 
         .team-track {
-          display: grid;
-          grid-auto-flow: column;
-          grid-auto-columns: min(82vw, 310px);
-          gap: 18px;
-          overflow-x: auto;
-          padding: 20px 2px 30px;
-          scroll-snap-type: x mandatory;
-          scrollbar-width: thin;
-          scrollbar-color: rgba(239, 68, 68, 0.8) rgba(255, 255, 255, 0.08);
+          position: relative;
+          display: flex;
+          height: 280px;
+          align-items: center;
+          justify-content: center;
+          padding: 30px 0 60px;
+          perspective: 1200px;
+          transform-style: preserve-3d;
+        }
+
+        .team-slide {
+          position: relative;
+          width: clamp(140px, 45vw, 200px);
+          height: 240px;
+          flex-shrink: 0;
+          transform-style: preserve-3d;
+          transition: all 600ms cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .team-slide:nth-child(1) {
+          z-index: 1;
+          margin-right: -50px;
+          opacity: 0.55;
+          transform: rotateY(-20deg) rotateZ(-5deg);
+        }
+
+        .team-slide:nth-child(2) {
+          z-index: 5;
+          margin: 0 -25px;
+          opacity: 1;
+        }
+
+        .team-slide:nth-child(3) {
+          z-index: 1;
+          margin-left: -50px;
+          opacity: 0.55;
+          transform: rotateY(20deg) rotateZ(5deg);
+        }
+
+        .team-slide:hover,
+        .team-slide:focus-within {
+          z-index: 100;
+          opacity: 1;
+          transform: translateY(-10px);
         }
 
         .team-dialog-trigger {
           position: relative;
           width: 100%;
-          height: 390px;
+          height: 100%;
           padding: 0;
           overflow: hidden;
-          border: 1px solid rgba(255, 255, 255, 0.14);
-          border-radius: 20px;
+          border: 0;
+          border-radius: 12px;
           background: #111;
-          box-shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
           cursor: pointer;
-          scroll-snap-align: center;
           text-align: left;
           transform:
             perspective(1000px)
             rotateX(var(--tilt-x, 0deg))
             rotateY(var(--tilt-y, 0deg));
           transition:
-            transform 220ms ease,
-            border-color 220ms ease,
-            box-shadow 220ms ease;
+            transform 350ms cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 350ms cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         .team-dialog-trigger:hover,
         .team-dialog-trigger:focus-visible {
-          border-color: rgba(239, 68, 68, 0.8);
-          box-shadow: 0 28px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(239, 68, 68, 0.22);
+          box-shadow:
+            0 8px 16px rgba(0, 0, 0, 0.15),
+            0 20px 60px rgba(0, 0, 0, 0.2),
+            0 40px 100px rgba(0, 0, 0, 0.3);
           transform:
             perspective(1000px)
             rotateX(var(--tilt-x, 0deg))
             rotateY(var(--tilt-y, 0deg))
-            translateY(-7px)
-            scale(1.015);
+            translateY(-6px)
+            scale(1.05);
           outline: none;
         }
 
@@ -207,25 +242,24 @@ const ProgramsCarousel3D = () => {
           display: flex;
           flex-direction: column;
           justify-content: flex-end;
-          padding: 22px;
+          padding: 12px;
           color: white;
-          background: linear-gradient(to top, rgba(0, 0, 0, 0.96) 0%, rgba(0, 0, 0, 0.48) 42%, transparent 70%);
+          background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5), transparent);
         }
 
         .team-card-name {
-          margin: 0 0 7px;
-          font-size: 1.35rem;
-          font-weight: 800;
-          line-height: 1.1;
+          margin: 0 0 6px;
+          font-size: 0.875rem;
+          font-weight: 600;
+          line-height: 1.3;
         }
 
         .team-card-role {
-          max-width: 90%;
           margin: 0;
-          color: rgba(255, 255, 255, 0.78);
-          font-size: 0.82rem;
+          color: #fff;
+          font-size: 0.7rem;
           font-weight: 600;
-          line-height: 1.4;
+          letter-spacing: 0.03em;
         }
 
         .team-card-hint {
@@ -234,17 +268,13 @@ const ProgramsCarousel3D = () => {
           right: 16px;
           display: inline-flex;
           align-items: center;
-          gap: 6px;
-          padding: 7px 10px;
-          border: 1px solid rgba(255, 255, 255, 0.2);
+          padding: 4px 8px;
+          border: 0;
           border-radius: 999px;
           color: white;
-          background: rgba(0, 0, 0, 0.52);
-          backdrop-filter: blur(10px);
-          font-size: 0.7rem;
-          font-weight: 700;
-          letter-spacing: 0.04em;
-          text-transform: uppercase;
+          background: #ef4444;
+          font-size: 0.625rem;
+          font-weight: 600;
         }
 
         @media (min-width: 768px) {
@@ -257,15 +287,66 @@ const ProgramsCarousel3D = () => {
           }
 
           .team-track {
-            grid-auto-flow: initial;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 24px;
-            overflow: visible;
-            padding: 18px 0 28px;
+            height: 384px;
+            padding: 60px 0 128px;
+          }
+
+          .team-slide {
+            width: 384px;
+            height: 384px;
+          }
+
+          .team-slide:nth-child(1) {
+            margin-right: -80px;
+            transform: rotateY(-28deg) rotateZ(-8deg);
+          }
+
+          .team-slide:nth-child(2) {
+            margin: 0 -40px;
+          }
+
+          .team-slide:nth-child(3) {
+            margin-left: -80px;
+            transform: rotateY(28deg) rotateZ(8deg);
+          }
+
+          .team-slide:hover,
+          .team-slide:focus-within {
+            transform: translateY(-12px);
           }
 
           .team-dialog-trigger {
-            height: 430px;
+            border-radius: 16px;
+          }
+
+          .team-dialog-trigger:hover,
+          .team-dialog-trigger:focus-visible {
+            transform:
+              perspective(1000px)
+              rotateX(var(--tilt-x, 0deg))
+              rotateY(var(--tilt-y, 0deg))
+              translateY(-8px)
+              scale(1.05);
+          }
+
+          .team-card-overlay {
+            padding: 24px;
+          }
+
+          .team-card-name {
+            margin-bottom: 12px;
+            font-size: 1.25rem;
+          }
+
+          .team-card-role {
+            font-size: 0.875rem;
+          }
+
+          .team-card-hint {
+            top: 24px;
+            right: 24px;
+            padding: 6px 12px;
+            font-size: 0.75rem;
           }
         }
 
@@ -285,93 +366,94 @@ const ProgramsCarousel3D = () => {
 
         <div className="team-track">
           {teamMembers.map((member) => (
-            <Dialog key={member.id}>
-              <DialogTrigger asChild>
-                <button
-                  type="button"
-                  className="team-dialog-trigger"
-                  aria-label={
-                    language === "en"
-                      ? `Open ${member.name}'s biography`
-                      : `Hap biografinë e ${member.name}`
-                  }
-                  onMouseMove={(event) => handleMouseMove(event, member.id)}
-                  onMouseLeave={() => resetTilt(member.id)}
-                  style={
-                    {
-                      "--tilt-x": `${tiltState[member.id]?.x || 0}deg`,
-                      "--tilt-y": `${tiltState[member.id]?.y || 0}deg`,
-                    } as React.CSSProperties
-                  }
-                >
-                  <img
-                    src={member.image}
-                    alt=""
-                    className="team-card-image"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <span className="team-card-hint">
-                    {language === "en" ? "View bio" : "Shiko bio"}
-                    <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-                  </span>
-                  <span className="team-card-overlay">
-                    <span className="team-card-name">{member.name}</span>
-                    <span className="team-card-role">{member.role}</span>
-                  </span>
-                </button>
-              </DialogTrigger>
-
-              <DialogContent className="max-h-[92vh] w-[calc(100%_-_1.5rem)] max-w-4xl gap-0 overflow-y-auto border-white/15 bg-[#0b0b0d] p-0 text-white shadow-2xl sm:rounded-3xl">
-                <div className="grid min-h-0 md:grid-cols-[0.88fr_1.12fr]">
-                  <div className="relative min-h-64 overflow-hidden bg-black md:min-h-[560px]">
+            <div className="team-slide" key={member.id}>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <button
+                    type="button"
+                    className="team-dialog-trigger"
+                    aria-label={
+                      language === "en"
+                        ? `Open ${member.name}'s biography`
+                        : `Hap biografinë e ${member.name}`
+                    }
+                    onMouseMove={(event) => handleMouseMove(event, member.id)}
+                    onMouseLeave={() => resetTilt(member.id)}
+                    style={
+                      {
+                        "--tilt-x": `${tiltState[member.id]?.x || 0}deg`,
+                        "--tilt-y": `${tiltState[member.id]?.y || 0}deg`,
+                      } as React.CSSProperties
+                    }
+                  >
                     <img
                       src={member.image}
-                      alt={member.name}
-                      className="absolute inset-0 h-full w-full object-cover object-center"
+                      alt=""
+                      className="team-card-image"
+                      loading="lazy"
+                      decoding="async"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent md:bg-gradient-to-r md:from-transparent md:to-black/15" />
-                  </div>
+                    <span className="team-card-hint">
+                      {language === "en" ? "Team" : "Ekipa"}
+                    </span>
+                    <span className="team-card-overlay">
+                      <span className="team-card-name">{member.name}</span>
+                      <span className="team-card-role">{member.role}</span>
+                    </span>
+                  </button>
+                </DialogTrigger>
 
-                  <div className="flex flex-col justify-center px-6 py-9 sm:px-10 md:px-12">
-                    <DialogHeader>
-                      <span className="mb-3 text-xs font-bold uppercase tracking-[0.22em] text-red-400">
-                        {language === "en" ? "Team biography" : "Biografia e ekipit"}
-                      </span>
-                      <DialogTitle className="text-3xl font-black tracking-tight text-white sm:text-4xl">
-                        {member.name}
-                      </DialogTitle>
-                      <DialogDescription className="pt-2 text-sm font-semibold leading-relaxed text-red-300 sm:text-base">
-                        {member.role}
-                      </DialogDescription>
-                    </DialogHeader>
+                <DialogContent className="max-h-[92vh] w-[calc(100%_-_1.5rem)] max-w-4xl gap-0 overflow-y-auto border-white/15 bg-[#0b0b0d] p-0 text-white shadow-2xl sm:rounded-3xl">
+                  <div className="grid min-h-0 md:grid-cols-[0.88fr_1.12fr]">
+                    <div className="relative min-h-64 overflow-hidden bg-black md:min-h-[560px]">
+                      <img
+                        src={member.image}
+                        alt={member.name}
+                        className="absolute inset-0 h-full w-full object-cover object-center"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent md:bg-gradient-to-r md:from-transparent md:to-black/15" />
+                    </div>
 
-                    <div className="my-7 h-px w-full bg-white/10" />
+                    <div className="flex flex-col justify-center px-6 py-9 sm:px-10 md:px-12">
+                      <DialogHeader>
+                        <span className="mb-3 text-xs font-bold uppercase tracking-[0.22em] text-red-400">
+                          {language === "en" ? "Team biography" : "Biografia e ekipit"}
+                        </span>
+                        <DialogTitle className="text-3xl font-black tracking-tight text-white sm:text-4xl">
+                          {member.name}
+                        </DialogTitle>
+                        <DialogDescription className="pt-2 text-sm font-semibold leading-relaxed text-red-300 sm:text-base">
+                          {member.role}
+                        </DialogDescription>
+                      </DialogHeader>
 
-                    <p className="text-base leading-7 text-white/75 sm:text-lg sm:leading-8">
-                      {member.bio}
-                    </p>
+                      <div className="my-7 h-px w-full bg-white/10" />
 
-                    <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                      {member.links.map((link) => (
-                        <a
-                          key={`${member.id}-${link.href}`}
-                          href={link.href}
-                          target={link.href.startsWith("http") ? "_blank" : undefined}
-                          rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.07] px-5 py-3 text-sm font-bold text-white transition hover:border-red-400/70 hover:bg-red-500/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
-                        >
-                          <span className="[&>svg]:h-4 [&>svg]:w-4">
-                            {renderLinkIcon(link.icon)}
-                          </span>
-                          {link.label}
-                        </a>
-                      ))}
+                      <p className="text-base leading-7 text-white/75 sm:text-lg sm:leading-8">
+                        {member.bio}
+                      </p>
+
+                      <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                        {member.links.map((link) => (
+                          <a
+                            key={`${member.id}-${link.href}`}
+                            href={link.href}
+                            target={link.href.startsWith("http") ? "_blank" : undefined}
+                            rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.07] px-5 py-3 text-sm font-bold text-white transition hover:border-red-400/70 hover:bg-red-500/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
+                          >
+                            <span className="[&>svg]:h-4 [&>svg]:w-4">
+                              {renderLinkIcon(link.icon)}
+                            </span>
+                            {link.label}
+                          </a>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </DialogContent>
-            </Dialog>
+                </DialogContent>
+              </Dialog>
+            </div>
           ))}
         </div>
       </div>
