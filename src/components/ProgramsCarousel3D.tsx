@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Instagram, Mail } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import {
@@ -28,6 +28,10 @@ interface TeamMember {
 const ProgramsCarousel3D = () => {
   const { language, t } = useLanguage();
   const [tiltState, setTiltState] = useState<Record<string, { x: number; y: number }>>({});
+  const [isMobileCarousel, setIsMobileCarousel] = useState(false);
+  const [centeredMember, setCenteredMember] = useState("klest");
+  const stageRef = useRef<HTMLDivElement>(null);
+  const shellRefs = useRef<Record<string, HTMLElement | null>>({});
 
   // The order is intentional: the supplied design features Klest in the centre.
   const teamMembers: TeamMember[] = [
@@ -109,6 +113,92 @@ const ProgramsCarousel3D = () => {
       ...previous,
       [memberId]: { x: 0, y: 0 },
     }));
+  };
+
+  useEffect(() => {
+    const mobileQuery = window.matchMedia("(max-width: 760px)");
+    let animationFrame = 0;
+
+    const updateCenteredMember = () => {
+      animationFrame = 0;
+      const stage = stageRef.current;
+
+      if (!stage || !mobileQuery.matches) {
+        return;
+      }
+
+      const stageRect = stage.getBoundingClientRect();
+      const stageCenter = stageRect.left + stage.clientWidth / 2;
+      let closestMember = "klest";
+      let closestDistance = Number.POSITIVE_INFINITY;
+
+      Object.entries(shellRefs.current).forEach(([memberId, shell]) => {
+        if (!shell) return;
+        const shellRect = shell.getBoundingClientRect();
+        const distance = Math.abs(shellRect.left + shellRect.width / 2 - stageCenter);
+
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestMember = memberId;
+        }
+      });
+
+      setCenteredMember(closestMember);
+    };
+
+    const requestCenterUpdate = () => {
+      if (animationFrame) return;
+      animationFrame = window.requestAnimationFrame(updateCenteredMember);
+    };
+
+    const initializeCarousel = () => {
+      const isMobile = mobileQuery.matches;
+      setIsMobileCarousel(isMobile);
+
+      if (!isMobile) {
+        setCenteredMember("klest");
+        return;
+      }
+
+      window.requestAnimationFrame(() => {
+        const stage = stageRef.current;
+        const klestCard = shellRefs.current.klest;
+        if (!stage || !klestCard) return;
+
+        stage.scrollLeft =
+          klestCard.offsetLeft - (stage.clientWidth - klestCard.offsetWidth) / 2;
+        updateCenteredMember();
+      });
+    };
+
+    const stage = stageRef.current;
+    stage?.addEventListener("scroll", requestCenterUpdate, { passive: true });
+    window.addEventListener("resize", requestCenterUpdate, { passive: true });
+    mobileQuery.addEventListener("change", initializeCarousel);
+    initializeCarousel();
+
+    return () => {
+      if (animationFrame) window.cancelAnimationFrame(animationFrame);
+      stage?.removeEventListener("scroll", requestCenterUpdate);
+      window.removeEventListener("resize", requestCenterUpdate);
+      mobileQuery.removeEventListener("change", initializeCarousel);
+    };
+  }, []);
+
+  const handleCardClick = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    memberId: string,
+  ) => {
+    if (!isMobileCarousel || centeredMember === memberId) return;
+
+    event.preventDefault();
+    const stage = stageRef.current;
+    const shell = shellRefs.current[memberId];
+    if (!stage || !shell) return;
+
+    const targetLeft =
+      shell.offsetLeft - (stage.clientWidth - shell.offsetWidth) / 2;
+    stage.scrollTo({ left: targetLeft, behavior: "smooth" });
   };
 
   const renderLinkIcon = (icon: TeamLink["icon"]) =>
@@ -362,35 +452,97 @@ const ProgramsCarousel3D = () => {
           }
 
           .mad-team-stage {
-            height: clamp(330px, 108vw, 460px);
-            margin-inline: -4px;
+            --mobile-card-width: min(76vw, 300px);
+            display: flex;
+            width: 100vw;
+            height: auto;
+            gap: 18px;
+            margin-top: 26px;
+            margin-left: calc(50% - 50vw);
+            padding: 20px calc((100vw - var(--mobile-card-width)) / 2) 34px;
+            overflow-x: auto;
+            overflow-y: visible;
+            perspective: none;
+            scroll-snap-type: x mandatory;
+            scroll-padding-inline: calc((100vw - var(--mobile-card-width)) / 2);
+            overscroll-behavior-x: contain;
+            touch-action: pan-x;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+          }
+
+          .mad-team-stage::-webkit-scrollbar {
+            display: none;
           }
 
           .mad-team-shell {
-            width: clamp(208px, 57vw, 238px);
+            --x: 0px;
+            --fan-y: 0deg;
+            --fan-z: 0deg;
+            --idle-opacity: 1;
+            position: relative;
+            top: auto;
+            left: auto;
+            width: var(--mobile-card-width);
+            flex: 0 0 var(--mobile-card-width);
+            z-index: 1;
+            opacity: 0.46;
+            filter: saturate(0.7) brightness(0.72);
+            scroll-snap-align: center;
+            scroll-snap-stop: always;
+            transform: scale(0.94);
+            transition:
+              transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 280ms ease,
+              filter 280ms ease;
           }
 
-          .mad-team-shell:nth-child(1) {
-            --x: clamp(-132px, -19vw, -64px);
-            --fan-y: -19deg;
-            --fan-z: -6deg;
-          }
-
+          .mad-team-shell:nth-child(1),
+          .mad-team-shell:nth-child(2),
           .mad-team-shell:nth-child(3) {
-            --x: clamp(64px, 19vw, 132px);
-            --fan-y: 19deg;
-            --fan-z: 6deg;
+            z-index: 1;
+            margin: 0;
+            opacity: 0.46;
+            transform: scale(0.94);
           }
 
           .mad-team-shell:hover,
           .mad-team-shell:focus-within {
-            transform:
-              translate(-50%, -50%)
-              translateX(var(--x))
-              translateY(-10px)
-              rotateY(0deg)
-              rotateZ(0deg)
-              scale(1.02);
+            z-index: 1;
+            opacity: 0.46;
+            filter: saturate(0.7) brightness(0.72);
+            transform: scale(0.94);
+          }
+
+          .mad-team-shell.is-centered,
+          .mad-team-shell.is-centered:hover,
+          .mad-team-shell.is-centered:focus-within {
+            z-index: 4;
+            opacity: 1;
+            filter: saturate(1.04) brightness(1);
+            transform: translateY(-6px) scale(1);
+          }
+
+          .mad-team-shell:not(.is-centered):hover .mad-team-card,
+          .mad-team-shell:not(.is-centered):focus-within .mad-team-card {
+            box-shadow: 0 22px 58px var(--mad-team-shadow);
+          }
+
+          .mad-team-shell:not(.is-centered):hover .mad-team-portrait,
+          .mad-team-shell:not(.is-centered):focus-within .mad-team-portrait {
+            filter: none;
+            transform: scale(1.002);
+          }
+
+          .mad-team-shell.is-centered .mad-team-card {
+            box-shadow:
+              0 14px 32px oklch(0.03 0 0 / 0.42),
+              0 34px 92px oklch(0.03 0 0 / 0.7);
+          }
+
+          .mad-team-shell.is-centered .mad-team-portrait {
+            filter: brightness(1.06);
+            transform: scale(1.045);
           }
 
           .mad-team-name {
@@ -407,8 +559,8 @@ const ProgramsCarousel3D = () => {
             font-size: 34px;
           }
 
-          .mad-team-shell {
-            width: 208px;
+          .mad-team-stage {
+            --mobile-card-width: 78vw;
           }
         }
 
@@ -436,9 +588,20 @@ const ProgramsCarousel3D = () => {
           </div>
         </header>
 
-        <div className="mad-team-stage">
+        <div ref={stageRef} className="mad-team-stage">
           {teamMembers.map((member) => (
-            <article className="mad-team-shell" key={member.id}>
+            <article
+              ref={(element) => {
+                shellRefs.current[member.id] = element;
+              }}
+              className={`mad-team-shell ${
+                isMobileCarousel && centeredMember === member.id ? "is-centered" : ""
+              }`}
+              aria-current={
+                isMobileCarousel && centeredMember === member.id ? "true" : undefined
+              }
+              key={member.id}
+            >
               <Dialog>
                 <DialogTrigger asChild>
                   <button
@@ -451,6 +614,7 @@ const ProgramsCarousel3D = () => {
                     }
                     onMouseMove={(event) => handleMouseMove(event, member.id)}
                     onMouseLeave={() => resetTilt(member.id)}
+                    onClick={(event) => handleCardClick(event, member.id)}
                     style={
                       {
                         "--tilt-x": `${tiltState[member.id]?.x || 0}deg`,
