@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Instagram, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import {
   Dialog,
@@ -12,7 +12,6 @@ import {
 interface TeamLink {
   href: string;
   label: string;
-  icon: "mail" | "instagram";
 }
 
 interface TeamMember {
@@ -29,6 +28,7 @@ const ProgramsCarousel3D = () => {
   const [tiltState, setTiltState] = useState<Record<string, { x: number; y: number }>>({});
   const [isMobileCarousel, setIsMobileCarousel] = useState(false);
   const [centeredMember, setCenteredMember] = useState("klest");
+  const [activeMember, setActiveMember] = useState<string | null>(null);
   const [openMember, setOpenMember] = useState<string | null>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const shellRefs = useRef<Record<string, HTMLElement | null>>({});
@@ -43,9 +43,8 @@ const ProgramsCarousel3D = () => {
       bio: t("lauraDescAbout"),
       links: [
         {
-          href: "https://www.instagram.com/madverse.ks/",
-          label: "MADVERSE Instagram",
-          icon: "instagram",
+          href: "mailto:lauralaiq1@gmail.com",
+          label: language === "en" ? "Email Laura" : "Dërgo email Laurës",
         },
       ],
     },
@@ -57,14 +56,8 @@ const ProgramsCarousel3D = () => {
       bio: t("guriDescAbout"),
       links: [
         {
-          href: "mailto:gurigaca13@gmail.com",
+          href: "mailto:gurigaca12@gmail.com",
           label: language === "en" ? "Email Guri" : "Dërgo email Gurit",
-          icon: "mail",
-        },
-        {
-          href: "https://www.instagram.com/madverse.ks/",
-          label: "MADVERSE Instagram",
-          icon: "instagram",
         },
       ],
     },
@@ -76,14 +69,8 @@ const ProgramsCarousel3D = () => {
       bio: t("klestDescAbout"),
       links: [
         {
-          href: "mailto:klestdrancolli@gmail.com",
+          href: "mailto:klestdrancolli@gmai.com",
           label: language === "en" ? "Email Klest" : "Dërgo email Klestit",
-          icon: "mail",
-        },
-        {
-          href: "https://www.instagram.com/madverse.ks/",
-          label: "MADVERSE Instagram",
-          icon: "instagram",
         },
       ],
     },
@@ -95,20 +82,15 @@ const ProgramsCarousel3D = () => {
       bio: t("erionDescAbout"),
       links: [
         {
-          href: "mailto:erijonGashi@gmail.com",
+          href: "mailto:gashierjon31@gmail.com",
           label: language === "en" ? "Email Erijon" : "Dërgo email Erijonit",
-          icon: "mail",
-        },
-        {
-          href: "https://www.instagram.com/madverse.ks/",
-          label: "MADVERSE Instagram",
-          icon: "instagram",
         },
       ],
     },
   ];
 
   const handleMouseMove = (event: React.MouseEvent<HTMLButtonElement>, memberId: string) => {
+    setActiveMember(memberId);
     const rect = event.currentTarget.getBoundingClientRect();
     const horizontal = (event.clientX - rect.left) / rect.width - 0.5;
     const vertical = (event.clientY - rect.top) / rect.height - 0.5;
@@ -218,9 +200,6 @@ const ProgramsCarousel3D = () => {
     stage.scrollTo({ left: targetLeft, behavior: "smooth" });
   };
 
-  const renderLinkIcon = (icon: TeamLink["icon"]) =>
-    icon === "mail" ? <Mail aria-hidden="true" /> : <Instagram aria-hidden="true" />;
-
   return (
     <section className="mad-team-section" aria-labelledby="team-heading">
       <style>{`
@@ -287,14 +266,12 @@ const ProgramsCarousel3D = () => {
           height: clamp(340px, 56vw, 570px);
           margin-top: clamp(22px, 4vw, 52px);
           perspective: 1300px;
-          transform-style: preserve-3d;
         }
 
         .mad-team-shell {
           --x: 0px;
           --fan-y: 0deg;
           --fan-z: 0deg;
-          --depth: 0px;
           --card-scale: 1;
           --idle-opacity: 1;
           position: absolute;
@@ -306,23 +283,27 @@ const ProgramsCarousel3D = () => {
           opacity: var(--idle-opacity);
           transform:
             translate(-50%, -50%)
-            translateX(var(--x))
-            translateZ(var(--depth))
+            translateX(var(--x));
+          transition:
+            opacity 300ms ease,
+            filter 300ms ease;
+        }
+
+        .mad-team-motion {
+          width: 100%;
+          height: 100%;
+          transform:
             rotateY(var(--fan-y))
             rotateZ(var(--fan-z))
             scale(var(--card-scale));
           transform-style: preserve-3d;
-          transition:
-            transform 560ms cubic-bezier(0.22, 1, 0.36, 1),
-            opacity 300ms ease,
-            filter 300ms ease;
+          transition: transform 560ms cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         .mad-team-shell:nth-child(1) {
           --x: clamp(-440px, -34vw, -170px);
           --fan-y: -28deg;
           --fan-z: -8deg;
-          --depth: -150px;
           --card-scale: 0.9;
           --idle-opacity: 0.5;
           z-index: 1;
@@ -332,7 +313,6 @@ const ProgramsCarousel3D = () => {
           --x: clamp(-255px, -19vw, -95px);
           --fan-y: -17deg;
           --fan-z: -4deg;
-          --depth: -70px;
           --card-scale: 0.96;
           --idle-opacity: 0.68;
           z-index: 2;
@@ -346,22 +326,24 @@ const ProgramsCarousel3D = () => {
           --x: clamp(95px, 24vw, 330px);
           --fan-y: 24deg;
           --fan-z: 7deg;
-          --depth: -90px;
           --card-scale: 0.94;
           --idle-opacity: 0.6;
           z-index: 2;
         }
 
         .mad-team-shell:hover,
+        .mad-team-shell.is-active,
         .mad-team-shell:focus-within {
           z-index: 20;
           opacity: 1;
           filter: saturate(1.04);
+        }
+
+        .mad-team-shell:hover .mad-team-motion,
+        .mad-team-shell.is-active .mad-team-motion,
+        .mad-team-shell:focus-within .mad-team-motion {
           transform:
-            translate(-50%, -50%)
-            translateX(var(--x))
             translateY(-18px)
-            translateZ(80px)
             rotateY(0deg)
             rotateZ(0deg)
             scale(1.035);
@@ -514,7 +496,6 @@ const ProgramsCarousel3D = () => {
             --x: 0px;
             --fan-y: 0deg;
             --fan-z: 0deg;
-            --depth: 0px;
             --card-scale: 1;
             --idle-opacity: 1;
             position: relative;
@@ -527,11 +508,14 @@ const ProgramsCarousel3D = () => {
             filter: saturate(0.7) brightness(0.72);
             scroll-snap-align: center;
             scroll-snap-stop: always;
-            transform: scale(0.94);
             transition:
-              transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
               opacity 280ms ease,
               filter 280ms ease;
+          }
+
+          .mad-team-motion {
+            transform: scale(0.94);
+            transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
           }
 
           .mad-team-shell:nth-child(1),
@@ -541,23 +525,35 @@ const ProgramsCarousel3D = () => {
             z-index: 1;
             margin: 0;
             opacity: 0.46;
-            transform: scale(0.94);
           }
 
           .mad-team-shell:hover,
+          .mad-team-shell.is-active,
           .mad-team-shell:focus-within {
             z-index: 1;
             opacity: 0.46;
             filter: saturate(0.7) brightness(0.72);
+          }
+
+          .mad-team-shell:hover .mad-team-motion,
+          .mad-team-shell.is-active .mad-team-motion,
+          .mad-team-shell:focus-within .mad-team-motion {
             transform: scale(0.94);
           }
 
           .mad-team-shell.is-centered,
           .mad-team-shell.is-centered:hover,
+          .mad-team-shell.is-centered.is-active,
           .mad-team-shell.is-centered:focus-within {
             z-index: 4;
             opacity: 1;
             filter: saturate(1.04) brightness(1);
+          }
+
+          .mad-team-shell.is-centered .mad-team-motion,
+          .mad-team-shell.is-centered:hover .mad-team-motion,
+          .mad-team-shell.is-centered.is-active .mad-team-motion,
+          .mad-team-shell.is-centered:focus-within .mad-team-motion {
             transform: translateY(-6px) scale(1);
           }
 
@@ -634,51 +630,58 @@ const ProgramsCarousel3D = () => {
               }}
               className={`mad-team-shell ${
                 isMobileCarousel && centeredMember === member.id ? "is-centered" : ""
-              }`}
+              } ${!isMobileCarousel && activeMember === member.id ? "is-active" : ""}`}
               aria-current={
                 isMobileCarousel && centeredMember === member.id ? "true" : undefined
               }
+              onMouseEnter={() => setActiveMember(member.id)}
+              onMouseLeave={() => {
+                setActiveMember(null);
+                resetTilt(member.id);
+              }}
               key={member.id}
             >
               <Dialog
                 open={openMember === member.id}
                 onOpenChange={(open) => setOpenMember(open ? member.id : null)}
               >
-                <button
-                  type="button"
-                  className="mad-team-card"
-                  aria-haspopup="dialog"
-                  aria-label={
-                    language === "en"
-                      ? `Open ${member.name}'s biography`
-                      : `Hap biografinë e ${member.name}`
-                  }
-                  onMouseMove={(event) => handleMouseMove(event, member.id)}
-                  onMouseLeave={() => resetTilt(member.id)}
-                  onClick={(event) => handleCardClick(event, member.id)}
-                  style={
-                    {
-                      "--tilt-x": `${tiltState[member.id]?.x || 0}deg`,
-                      "--tilt-y": `${tiltState[member.id]?.y || 0}deg`,
-                    } as React.CSSProperties
-                  }
-                >
-                  <img
-                    src={member.image}
-                    alt=""
-                    className="mad-team-portrait"
-                    loading="lazy"
-                    decoding="async"
-                    draggable={false}
-                  />
-                  <span className="mad-team-tag">
-                    {language === "en" ? "Team" : "Ekipa"}
-                  </span>
-                  <span className="mad-team-overlay">
-                    <span className="mad-team-name">{member.name}</span>
-                    <span className="mad-team-role">{member.role}</span>
-                  </span>
-                </button>
+                <div className="mad-team-motion">
+                  <button
+                    type="button"
+                    className="mad-team-card"
+                    aria-haspopup="dialog"
+                    aria-label={
+                      language === "en"
+                        ? `Open ${member.name}'s biography`
+                        : `Hap biografinë e ${member.name}`
+                    }
+                    onMouseMove={(event) => handleMouseMove(event, member.id)}
+                    onMouseLeave={() => resetTilt(member.id)}
+                    onClick={(event) => handleCardClick(event, member.id)}
+                    style={
+                      {
+                        "--tilt-x": `${tiltState[member.id]?.x || 0}deg`,
+                        "--tilt-y": `${tiltState[member.id]?.y || 0}deg`,
+                      } as React.CSSProperties
+                    }
+                  >
+                    <img
+                      src={member.image}
+                      alt=""
+                      className="mad-team-portrait"
+                      loading="lazy"
+                      decoding="async"
+                      draggable={false}
+                    />
+                    <span className="mad-team-tag">
+                      {language === "en" ? "Team" : "Ekipa"}
+                    </span>
+                    <span className="mad-team-overlay">
+                      <span className="mad-team-name">{member.name}</span>
+                      <span className="mad-team-role">{member.role}</span>
+                    </span>
+                  </button>
+                </div>
 
                 <DialogContent className="max-h-[calc(100svh_-_1.75rem)] w-[calc(100%_-_1.75rem)] max-w-[880px] gap-0 overflow-y-auto border-white/15 bg-[#242424] p-0 text-white shadow-[0_40px_120px_rgba(0,0,0,0.82)] sm:rounded-3xl">
                   <div className="grid min-h-0 md:min-h-[540px] md:grid-cols-[minmax(260px,0.86fr)_minmax(320px,1.14fr)]">
@@ -716,9 +719,7 @@ const ProgramsCarousel3D = () => {
                             rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
                             className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-white/20 bg-transparent px-[18px] text-[13px] font-semibold tracking-[0.02em] text-white transition hover:border-white/40 hover:bg-white/[0.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
                           >
-                            <span className="[&>svg]:h-4 [&>svg]:w-4">
-                              {renderLinkIcon(link.icon)}
-                            </span>
+                            <Mail aria-hidden="true" className="h-4 w-4" />
                             {link.label}
                           </a>
                         ))}
