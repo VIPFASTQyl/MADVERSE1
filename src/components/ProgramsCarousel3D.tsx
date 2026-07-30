@@ -125,7 +125,7 @@ const ProgramsCarousel3D = () => {
 
       const stageRect = stage.getBoundingClientRect();
       const stageCenter = stageRect.left + stage.clientWidth / 2;
-      let closestMember = "klest";
+      let closestMember = "laura";
       let closestDistance = Number.POSITIVE_INFINITY;
 
       Object.entries(shellRefs.current).forEach(([memberId, shell]) => {
@@ -158,11 +158,9 @@ const ProgramsCarousel3D = () => {
 
       window.requestAnimationFrame(() => {
         const stage = stageRef.current;
-        const klestCard = shellRefs.current.klest;
-        if (!stage || !klestCard) return;
+        if (!stage) return;
 
-        stage.scrollLeft =
-          klestCard.offsetLeft - (stage.clientWidth - klestCard.offsetWidth) / 2;
+        stage.scrollLeft = 0;
         updateCenteredMember();
       });
     };
@@ -504,8 +502,9 @@ const ProgramsCarousel3D = () => {
             width: var(--mobile-card-width);
             flex: 0 0 var(--mobile-card-width);
             z-index: 1;
-            opacity: 0.46;
-            filter: saturate(0.7) brightness(0.72);
+            opacity: 1;
+            filter: none;
+            transform: none;
             scroll-snap-align: center;
             scroll-snap-stop: always;
             transition:
@@ -514,7 +513,7 @@ const ProgramsCarousel3D = () => {
           }
 
           .mad-team-motion {
-            transform: scale(0.94);
+            transform: scale(1);
             transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
           }
 
@@ -524,37 +523,37 @@ const ProgramsCarousel3D = () => {
           .mad-team-shell:nth-child(4) {
             z-index: 1;
             margin: 0;
-            opacity: 0.46;
+            opacity: 1;
           }
 
           .mad-team-shell:hover,
           .mad-team-shell.is-active,
           .mad-team-shell:focus-within {
             z-index: 1;
-            opacity: 0.46;
-            filter: saturate(0.7) brightness(0.72);
+            opacity: 1;
+            filter: none;
           }
 
           .mad-team-shell:hover .mad-team-motion,
           .mad-team-shell.is-active .mad-team-motion,
           .mad-team-shell:focus-within .mad-team-motion {
-            transform: scale(0.94);
+            transform: scale(1);
           }
 
           .mad-team-shell.is-centered,
           .mad-team-shell.is-centered:hover,
           .mad-team-shell.is-centered.is-active,
           .mad-team-shell.is-centered:focus-within {
-            z-index: 4;
+            z-index: 1;
             opacity: 1;
-            filter: saturate(1.04) brightness(1);
+            filter: none;
           }
 
           .mad-team-shell.is-centered .mad-team-motion,
           .mad-team-shell.is-centered:hover .mad-team-motion,
           .mad-team-shell.is-centered.is-active .mad-team-motion,
           .mad-team-shell.is-centered:focus-within .mad-team-motion {
-            transform: translateY(-6px) scale(1);
+            transform: scale(1);
           }
 
           .mad-team-shell:not(.is-centered):hover .mad-team-card,
@@ -569,14 +568,12 @@ const ProgramsCarousel3D = () => {
           }
 
           .mad-team-shell.is-centered .mad-team-card {
-            box-shadow:
-              0 14px 32px oklch(0.03 0 0 / 0.42),
-              0 34px 92px oklch(0.03 0 0 / 0.7);
+            box-shadow: 0 22px 58px var(--mad-team-shadow);
           }
 
           .mad-team-shell.is-centered .mad-team-portrait {
-            filter: brightness(1.06);
-            transform: scale(1.045);
+            filter: none;
+            transform: scale(1.002);
           }
 
           .mad-team-name {
