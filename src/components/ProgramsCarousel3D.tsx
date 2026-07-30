@@ -33,8 +33,22 @@ const ProgramsCarousel3D = () => {
   const stageRef = useRef<HTMLDivElement>(null);
   const shellRefs = useRef<Record<string, HTMLElement | null>>({});
 
-  // The order is intentional: the supplied design features Klest in the centre.
+  // The order is intentional: Laura sits to Guri's left while Klest remains centred.
   const teamMembers: TeamMember[] = [
+    {
+      id: "laura",
+      name: t("laura"),
+      role: t("lauraTitleAbout"),
+      image: "/team-laura.png",
+      bio: t("lauraDescAbout"),
+      links: [
+        {
+          href: "https://www.instagram.com/madverse.ks/",
+          label: "MADVERSE Instagram",
+          icon: "instagram",
+        },
+      ],
+    },
     {
       id: "guri",
       name: t("guri"),
@@ -211,7 +225,6 @@ const ProgramsCarousel3D = () => {
     <section className="mad-team-section" aria-labelledby="team-heading">
       <style>{`
         .mad-team-section {
-          --mad-team-bg: oklch(0.115 0 0);
           --mad-team-surface: oklch(0.159 0 0);
           --mad-team-fg: oklch(0.985 0 0);
           --mad-team-muted: oklch(0.626 0 0);
@@ -221,7 +234,7 @@ const ProgramsCarousel3D = () => {
           width: 100%;
           overflow: hidden;
           padding: clamp(48px, 8vw, 104px) clamp(16px, 4vw, 56px);
-          background: var(--mad-team-bg);
+          background: transparent;
           color: var(--mad-team-fg);
           font-family: "Space Grotesk", "Segoe UI", sans-serif;
           isolation: isolate;
@@ -281,6 +294,8 @@ const ProgramsCarousel3D = () => {
           --x: 0px;
           --fan-y: 0deg;
           --fan-z: 0deg;
+          --depth: 0px;
+          --card-scale: 1;
           --idle-opacity: 1;
           position: absolute;
           top: 50%;
@@ -292,8 +307,10 @@ const ProgramsCarousel3D = () => {
           transform:
             translate(-50%, -50%)
             translateX(var(--x))
+            translateZ(var(--depth))
             rotateY(var(--fan-y))
-            rotateZ(var(--fan-z));
+            rotateZ(var(--fan-z))
+            scale(var(--card-scale));
           transform-style: preserve-3d;
           transition:
             transform 560ms cubic-bezier(0.22, 1, 0.36, 1),
@@ -302,23 +319,37 @@ const ProgramsCarousel3D = () => {
         }
 
         .mad-team-shell:nth-child(1) {
-          --x: clamp(-330px, -24vw, -64px);
-          --fan-y: -24deg;
-          --fan-z: -7deg;
-          --idle-opacity: 0.58;
+          --x: clamp(-440px, -34vw, -170px);
+          --fan-y: -28deg;
+          --fan-z: -8deg;
+          --depth: -150px;
+          --card-scale: 0.9;
+          --idle-opacity: 0.5;
           z-index: 1;
         }
 
         .mad-team-shell:nth-child(2) {
-          z-index: 4;
+          --x: clamp(-255px, -19vw, -95px);
+          --fan-y: -17deg;
+          --fan-z: -4deg;
+          --depth: -70px;
+          --card-scale: 0.96;
+          --idle-opacity: 0.68;
+          z-index: 2;
         }
 
         .mad-team-shell:nth-child(3) {
-          --x: clamp(64px, 24vw, 330px);
+          z-index: 5;
+        }
+
+        .mad-team-shell:nth-child(4) {
+          --x: clamp(95px, 24vw, 330px);
           --fan-y: 24deg;
           --fan-z: 7deg;
-          --idle-opacity: 0.58;
-          z-index: 1;
+          --depth: -90px;
+          --card-scale: 0.94;
+          --idle-opacity: 0.6;
+          z-index: 2;
         }
 
         .mad-team-shell:hover,
@@ -330,6 +361,7 @@ const ProgramsCarousel3D = () => {
             translate(-50%, -50%)
             translateX(var(--x))
             translateY(-18px)
+            translateZ(80px)
             rotateY(0deg)
             rotateZ(0deg)
             scale(1.035);
@@ -482,6 +514,8 @@ const ProgramsCarousel3D = () => {
             --x: 0px;
             --fan-y: 0deg;
             --fan-z: 0deg;
+            --depth: 0px;
+            --card-scale: 1;
             --idle-opacity: 1;
             position: relative;
             top: auto;
@@ -502,7 +536,8 @@ const ProgramsCarousel3D = () => {
 
           .mad-team-shell:nth-child(1),
           .mad-team-shell:nth-child(2),
-          .mad-team-shell:nth-child(3) {
+          .mad-team-shell:nth-child(3),
+          .mad-team-shell:nth-child(4) {
             z-index: 1;
             margin: 0;
             opacity: 0.46;
