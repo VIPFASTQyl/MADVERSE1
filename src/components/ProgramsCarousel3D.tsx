@@ -87,6 +87,22 @@ const ProgramsCarousel3D = () => {
         },
       ],
     },
+    {
+      id: "viola",
+      name: "Viola Shala",
+      role: language === "en" ? "Artist" : "Artiste",
+      image: "/team-viola.png",
+      bio:
+        language === "en"
+          ? "Viola Shala is an Artist at MADVERSE, contributing her creative perspective and artistic work to the organization's cultural projects and initiatives."
+          : "Viola Shala është Artiste në MADVERSE, duke kontribuar me perspektivën kreative dhe punën e saj artistike në projektet dhe iniciativat kulturore të organizatës.",
+      links: [
+        {
+          href: "mailto:violaashalaa15@gmail.com",
+          label: language === "en" ? "Email Viola" : "Dërgo email Violës",
+        },
+      ],
+    },
   ];
 
   const handleMouseMove = (event: React.MouseEvent<HTMLButtonElement>, memberId: string) => {
@@ -321,12 +337,21 @@ const ProgramsCarousel3D = () => {
         }
 
         .mad-team-shell:nth-child(4) {
-          --x: clamp(95px, 24vw, 330px);
-          --fan-y: 24deg;
-          --fan-z: 7deg;
-          --card-scale: 0.94;
-          --idle-opacity: 0.6;
+          --x: clamp(95px, 19vw, 255px);
+          --fan-y: 17deg;
+          --fan-z: 4deg;
+          --card-scale: 0.96;
+          --idle-opacity: 0.68;
           z-index: 2;
+        }
+
+        .mad-team-shell:nth-child(5) {
+          --x: clamp(170px, 34vw, 440px);
+          --fan-y: 28deg;
+          --fan-z: 8deg;
+          --card-scale: 0.9;
+          --idle-opacity: 0.5;
+          z-index: 1;
         }
 
         .mad-team-shell:hover,
@@ -520,7 +545,8 @@ const ProgramsCarousel3D = () => {
           .mad-team-shell:nth-child(1),
           .mad-team-shell:nth-child(2),
           .mad-team-shell:nth-child(3),
-          .mad-team-shell:nth-child(4) {
+          .mad-team-shell:nth-child(4),
+          .mad-team-shell:nth-child(5) {
             z-index: 1;
             margin: 0;
             opacity: 1;
