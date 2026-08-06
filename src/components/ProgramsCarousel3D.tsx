@@ -103,6 +103,22 @@ const ProgramsCarousel3D = () => {
         },
       ],
     },
+    {
+      id: "albina",
+      name: "Albina Bersha",
+      role: language === "en" ? "Team Member" : "Anëtare e Ekipit",
+      image: "/team-albina.png",
+      bio:
+        language === "en"
+          ? "Albina Bersha is a member of the MADVERSE team, contributing her perspective, creativity, and collaborative spirit to the organization's projects and community initiatives."
+          : "Albina Bersha është anëtare e ekipit të MADVERSE, duke kontribuar me perspektivën, kreativitetin dhe frymën e saj bashkëpunuese në projektet dhe iniciativat komunitare të organizatës.",
+      links: [
+        {
+          href: "mailto:albinaberisha183@gmail.com",
+          label: language === "en" ? "Email Albina" : "Dërgo email Albinës",
+        },
+      ],
+    },
   ];
 
   const handleMouseMove = (event: React.MouseEvent<HTMLButtonElement>, memberId: string) => {
@@ -337,16 +353,25 @@ const ProgramsCarousel3D = () => {
         }
 
         .mad-team-shell:nth-child(4) {
-          --x: clamp(95px, 19vw, 255px);
-          --fan-y: 17deg;
-          --fan-z: 4deg;
-          --card-scale: 0.96;
-          --idle-opacity: 0.68;
-          z-index: 2;
+          --x: clamp(82px, 14vw, 180px);
+          --fan-y: 13deg;
+          --fan-z: 3deg;
+          --card-scale: 0.98;
+          --idle-opacity: 0.76;
+          z-index: 3;
         }
 
         .mad-team-shell:nth-child(5) {
-          --x: clamp(170px, 34vw, 440px);
+          --x: clamp(150px, 25vw, 320px);
+          --fan-y: 21deg;
+          --fan-z: 6deg;
+          --card-scale: 0.94;
+          --idle-opacity: 0.62;
+          z-index: 2;
+        }
+
+        .mad-team-shell:nth-child(6) {
+          --x: clamp(215px, 36vw, 450px);
           --fan-y: 28deg;
           --fan-z: 8deg;
           --card-scale: 0.9;
@@ -546,7 +571,8 @@ const ProgramsCarousel3D = () => {
           .mad-team-shell:nth-child(2),
           .mad-team-shell:nth-child(3),
           .mad-team-shell:nth-child(4),
-          .mad-team-shell:nth-child(5) {
+          .mad-team-shell:nth-child(5),
+          .mad-team-shell:nth-child(6) {
             z-index: 1;
             margin: 0;
             opacity: 1;
