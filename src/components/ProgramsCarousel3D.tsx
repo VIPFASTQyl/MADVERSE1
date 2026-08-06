@@ -106,12 +106,12 @@ const ProgramsCarousel3D = () => {
     {
       id: "albina",
       name: "Albina Bersha",
-      role: language === "en" ? "Team Member" : "Anëtare e Ekipit",
+      role: language === "en" ? "Artist" : "Artiste",
       image: "/team-albina.png",
       bio:
         language === "en"
-          ? "Albina Bersha is a member of the MADVERSE team, contributing her perspective, creativity, and collaborative spirit to the organization's projects and community initiatives."
-          : "Albina Bersha është anëtare e ekipit të MADVERSE, duke kontribuar me perspektivën, kreativitetin dhe frymën e saj bashkëpunuese në projektet dhe iniciativat komunitare të organizatës.",
+          ? "Albina Bersha is an Artist at MADVERSE, contributing her creative perspective and artistic work to the organization's cultural projects and initiatives."
+          : "Albina Bersha është Artiste në MADVERSE, duke kontribuar me perspektivën kreative dhe punën e saj artistike në projektet dhe iniciativat kulturore të organizatës.",
       links: [
         {
           href: "mailto:albinaberisha183@gmail.com",
