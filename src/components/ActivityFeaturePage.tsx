@@ -79,17 +79,31 @@ const ActivityFeaturePage = ({
   }, [activityType, loadCustomSections]);
 
   const displaySections = [
-    ...sections.map((section, index) => ({
-      key: `built-in-${index}`,
-      label: t(section.labelKey),
-      title: section.titleKey ? t(section.titleKey) : pageTitle,
-      description: t(section.descriptionKey),
-      image: section.image,
-      labelColor: accentColor,
-      headingLevel: "h2" as const,
-      imageSide: (index % 2 === 1 ? "left" : "right") as "left" | "right",
-    })),
-    ...customSections.map((section) => ({
+    ...sections.map((section, index) => {
+      const override = customSections.find((item) => item.builtInKey === `built-in-${index}`);
+      return override
+        ? {
+            key: `built-in-${index}`,
+            label: override.label,
+            title: override.heading,
+            description: override.description,
+            image: override.imageUrl,
+            labelColor: override.labelColor,
+            headingLevel: override.headingLevel,
+            imageSide: override.imageSide,
+          }
+        : {
+            key: `built-in-${index}`,
+            label: t(section.labelKey),
+            title: section.titleKey ? t(section.titleKey) : pageTitle,
+            description: t(section.descriptionKey),
+            image: section.image,
+            labelColor: accentColor,
+            headingLevel: "h2" as const,
+            imageSide: (index % 2 === 1 ? "left" : "right") as "left" | "right",
+          };
+    }),
+    ...customSections.filter((section) => !section.builtInKey).map((section) => ({
       key: section.id,
       label: section.label,
       title: section.heading,

@@ -18,6 +18,7 @@ import {
   subscribeToActivityPageSections,
   uploadActivityPageImage,
 } from "@/lib/activityPageSectionService";
+import { translations } from "@/translations";
 
 const PAGE_LABELS: Record<ActivityPageType, string> = {
   youth: "Youth",
@@ -26,6 +27,56 @@ const PAGE_LABELS: Record<ActivityPageType, string> = {
   sports: "Sports",
   exhibition: "Exhibition",
   volunteering: "Volunteering",
+};
+
+interface BuiltInSectionSpec {
+  labelKey: string;
+  titleKey?: string;
+  descriptionKey: string;
+  imageUrl: string;
+}
+
+const PAGE_TITLE_KEYS: Record<ActivityPageType, string> = {
+  youth: "youthTitle",
+  arts: "artsTitle",
+  culture: "cultureTitle",
+  sports: "sportsTitle",
+  exhibition: "exhibitionTitle",
+  volunteering: "volunteeringTitle",
+};
+
+const PAGE_ACCENTS: Record<ActivityPageType, string> = {
+  youth: "#F0A533",
+  arts: "#E40A0A",
+  culture: "#BA011A",
+  sports: "#0B4B8B",
+  exhibition: "#00CED1",
+  volunteering: "#22C55E",
+};
+
+const BUILT_IN_SECTIONS: Record<ActivityPageType, BuiltInSectionSpec[]> = {
+  youth: [
+    { labelKey: "youthTitle", titleKey: "youthInitiative", descriptionKey: "youthInitiativeDesc", imageUrl: "/youth-mural-green.jpg" },
+    { labelKey: "youthTitle", titleKey: "communityService", descriptionKey: "communityServiceDesc", imageUrl: "/youth-mural-painting.jpg" },
+  ],
+  arts: [
+    { labelKey: "unleashingCreativity", descriptionKey: "unleashingCreativityDesc", imageUrl: "/arts-1.jpeg" },
+    { labelKey: "artsTitle", titleKey: "artisticCollaboration", descriptionKey: "artisticCollaborationDesc", imageUrl: "/arts-2.jpeg" },
+    { labelKey: "artsTitle", titleKey: "communityThroughArt", descriptionKey: "communityThroughArtDesc", imageUrl: "/arts-3.jpeg" },
+  ],
+  culture: [
+    { labelKey: "culturalHeritage", descriptionKey: "culturalHeritageDesc", imageUrl: "/culture-1.jpeg" },
+    { labelKey: "cultureTitle", titleKey: "culturalExchange", descriptionKey: "culturalExchangeDesc", imageUrl: "/culture-2.jpeg" },
+  ],
+  sports: [],
+  exhibition: [],
+  volunteering: [
+    { labelKey: "communityImpact", descriptionKey: "communityImpactDesc", imageUrl: "/volunteering-1.jpeg" },
+    { labelKey: "volunteeringTitle", titleKey: "youthEmpowerment", descriptionKey: "youthEmpowermentDesc", imageUrl: "/volunteering-2.jpeg" },
+    { labelKey: "volunteeringTitle", titleKey: "socialCause", descriptionKey: "socialCauseDesc", imageUrl: "/volunteering-3.jpeg" },
+    { labelKey: "volunteeringTitle", titleKey: "publicArtAction", descriptionKey: "publicArtActionDesc", imageUrl: "/volunteering-6.jpeg" },
+    { labelKey: "volunteeringTitle", titleKey: "volunteerLegacy", descriptionKey: "volunteerLegacyDesc", imageUrl: "/volunteering-7.jpeg" },
+  ],
 };
 
 const emptyForm = (activityType: ActivityPageType, language: ActivityLanguage): ActivityPageSectionInput => ({
@@ -52,6 +103,7 @@ export const ActivityPageManagement = () => {
   const [sections, setSections] = useState<ActivityPageSection[]>([]);
   const [form, setForm] = useState<ActivityPageSectionInput>(() => emptyForm("youth", "en"));
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingBuiltInKey, setEditingBuiltInKey] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -75,16 +127,66 @@ export const ActivityPageManagement = () => {
 
   useEffect(() => {
     setEditingId(null);
+    setEditingBuiltInKey(null);
     setForm(emptyForm(page, language));
   }, [page, language]);
 
+  const builtInSections = useMemo(() => {
+    const copy = translations[language] as Record<string, string>;
+    return BUILT_IN_SECTIONS[page].map((spec, index) => {
+      const builtInKey = `built-in-${index}`;
+      const override = sections.find((section) => section.builtInKey === builtInKey);
+      return {
+        builtInKey,
+        override,
+        section: override ?? {
+          id: builtInKey,
+          activityType: page,
+          language,
+          label: copy[spec.labelKey] ?? spec.labelKey,
+          labelColor: PAGE_ACCENTS[page],
+          heading: copy[spec.titleKey ?? PAGE_TITLE_KEYS[page]] ?? spec.titleKey ?? PAGE_TITLE_KEYS[page],
+          headingLevel: "h2" as const,
+          description: copy[spec.descriptionKey] ?? spec.descriptionKey,
+          imageUrl: spec.imageUrl,
+          imageSide: (index % 2 === 1 ? "left" : "right") as "left" | "right",
+          sortOrder: index + 1,
+          published: true,
+          builtInKey,
+        },
+      };
+    });
+  }, [language, page, sections]);
+
+  const addedSections = useMemo(
+    () => sections.filter((section) => !section.builtInKey),
+    [sections],
+  );
+
+  const visibleEntries = [
+    ...builtInSections.map(({ builtInKey, override, section }) => ({
+      section,
+      builtInKey,
+      override,
+      isBuiltIn: true,
+    })),
+    ...addedSections.map((section) => ({
+      section,
+      builtInKey: undefined,
+      override: undefined,
+      isBuiltIn: false,
+    })),
+  ];
+
   const resetForm = () => {
     setEditingId(null);
-    setForm({ ...emptyForm(page, language), sortOrder: sections.length + 1 });
+    setEditingBuiltInKey(null);
+    setForm({ ...emptyForm(page, language), sortOrder: builtInSections.length + addedSections.length + 1 });
   };
 
-  const handleEdit = (section: ActivityPageSection) => {
-    setEditingId(section.id);
+  const handleEdit = (section: ActivityPageSection, builtInKey?: string, overrideId?: string) => {
+    setEditingId(overrideId ?? (builtInKey ? null : section.id));
+    setEditingBuiltInKey(builtInKey ?? null);
     setForm({
       activityType: section.activityType,
       language: section.language,
@@ -97,6 +199,7 @@ export const ActivityPageManagement = () => {
       imageSide: section.imageSide,
       sortOrder: section.sortOrder,
       published: section.published,
+      builtInKey,
     });
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -147,13 +250,16 @@ export const ActivityPageManagement = () => {
     }
   };
 
-  const handleDelete = async (section: ActivityPageSection) => {
-    if (!window.confirm(`Delete “${section.heading}”?`)) return;
+  const handleDelete = async (section: ActivityPageSection, revertToOriginal = false) => {
+    const prompt = revertToOriginal
+      ? `Revert “${section.heading}” to its original content?`
+      : `Delete “${section.heading}”?`;
+    if (!window.confirm(prompt)) return;
     try {
       await deleteActivityPageSection(section.id);
       if (editingId === section.id) resetForm();
       setSections((current) => current.filter((item) => item.id !== section.id));
-      toast.success("Activity block deleted.");
+      toast.success(revertToOriginal ? "Original activity block restored." : "Activity block deleted.");
     } catch (error) {
       console.error(error);
       toast.error("Could not delete this block.");
@@ -204,7 +310,7 @@ export const ActivityPageManagement = () => {
       <form onSubmit={handleSubmit} className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_minmax(360px,.9fr)]">
         <Card>
           <CardHeader>
-            <CardTitle>{editingId ? "Edit block" : "Add a new block"}</CardTitle>
+            <CardTitle>{editingId || editingBuiltInKey ? "Edit block" : "Add a new block"}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-5">
             <div className="grid gap-4 sm:grid-cols-[1fr_100px]">
@@ -280,7 +386,7 @@ export const ActivityPageManagement = () => {
                 {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
                 {form.published ? "Publish to live page" : "Save draft"}
               </Button>
-              {editingId && <Button type="button" variant="outline" onClick={resetForm}>Cancel edit</Button>}
+              {(editingId || editingBuiltInKey) && <Button type="button" variant="outline" onClick={resetForm}>Cancel edit</Button>}
             </div>
           </CardContent>
         </Card>
@@ -311,12 +417,12 @@ export const ActivityPageManagement = () => {
         </div>
         {loading ? (
           <div className="flex justify-center py-12"><Loader2 className="h-7 w-7 animate-spin" /></div>
-        ) : sections.length === 0 ? (
-          <Card><CardContent className="py-10 text-center text-muted-foreground">No custom blocks yet.</CardContent></Card>
+        ) : visibleEntries.length === 0 ? (
+          <Card><CardContent className="py-10 text-center text-muted-foreground">No blocks yet.</CardContent></Card>
         ) : (
           <div className="grid gap-4 md:grid-cols-2">
-            {sections.map((section) => (
-              <Card key={section.id} className="overflow-hidden">
+            {visibleEntries.map(({ section, builtInKey, override, isBuiltIn }) => (
+              <Card key={builtInKey ?? section.id} className="overflow-hidden">
                 <img src={section.imageUrl} alt="" className="h-40 w-full object-cover" />
                 <CardContent className="space-y-3 p-5">
                   <div className="flex items-start justify-between gap-3">
@@ -324,12 +430,18 @@ export const ActivityPageManagement = () => {
                       <p className="text-xs font-bold uppercase tracking-wider" style={{ color: section.labelColor }}>{section.label}</p>
                       <h4 className="mt-1 text-lg font-bold">{section.heading}</h4>
                     </div>
-                    <span className={`rounded-full px-2 py-1 text-[11px] font-semibold ${section.published ? "bg-green-500/15 text-green-600" : "bg-amber-500/15 text-amber-600"}`}>{section.published ? "Live" : "Draft"}</span>
+                    <span className={`rounded-full px-2 py-1 text-[11px] font-semibold ${section.published ? "bg-green-500/15 text-green-600" : "bg-amber-500/15 text-amber-600"}`}>
+                      {isBuiltIn ? (override ? (section.published ? "Edited" : "Draft") : "Original") : (section.published ? "Live" : "Draft")}
+                    </span>
                   </div>
                   <p className="line-clamp-2 text-sm text-muted-foreground">{section.description}</p>
                   <div className="flex gap-2">
-                    <Button type="button" size="sm" variant="outline" onClick={() => handleEdit(section)} className="gap-2"><Edit3 className="h-3.5 w-3.5" /> Edit</Button>
-                    <Button type="button" size="sm" variant="destructive" onClick={() => void handleDelete(section)} className="gap-2"><Trash2 className="h-3.5 w-3.5" /> Delete</Button>
+                    <Button type="button" size="sm" variant="outline" onClick={() => handleEdit(section, builtInKey, override?.id)} className="gap-2"><Edit3 className="h-3.5 w-3.5" /> Edit</Button>
+                    {isBuiltIn ? (
+                      override && <Button type="button" size="sm" variant="outline" onClick={() => void handleDelete(override, true)} className="gap-2"><Trash2 className="h-3.5 w-3.5" /> Revert</Button>
+                    ) : (
+                      <Button type="button" size="sm" variant="destructive" onClick={() => void handleDelete(section)} className="gap-2"><Trash2 className="h-3.5 w-3.5" /> Delete</Button>
+                    )}
                   </div>
                 </CardContent>
               </Card>
