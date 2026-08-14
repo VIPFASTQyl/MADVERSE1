@@ -1,11 +1,10 @@
 import { Navigate } from "react-router-dom";
 import { useUser } from "@clerk/clerk-react";
+import { isAdminEmail } from "@/lib/adminAccess";
 
 interface AdminRouteProps {
   children: React.ReactNode;
 }
-
-const ADMIN_EMAIL = "fastvip02@gmail.com";
 
 export const AdminRoute = ({ children }: AdminRouteProps) => {
   const { user, isLoaded } = useUser();
@@ -25,7 +24,7 @@ export const AdminRoute = ({ children }: AdminRouteProps) => {
   }
 
   const userEmail = user.primaryEmailAddress?.emailAddress;
-  const isAdmin = userEmail === ADMIN_EMAIL;
+  const isAdmin = isAdminEmail(userEmail);
 
   // Not admin
   if (!isAdmin) {
@@ -34,8 +33,8 @@ export const AdminRoute = ({ children }: AdminRouteProps) => {
         <div className="text-center space-y-4">
           <h1 className="text-3xl font-bold">Access Denied</h1>
           <p className="text-muted-foreground text-lg">You don't have permission to access this page.</p>
-          <p className="text-sm text-muted-foreground">Current user: {userEmail}</p>
-          <Navigate to="/" replace />
+          <p className="text-sm text-muted-foreground">Signed in as {userEmail}</p>
+          <a className="inline-block text-sm underline" href="/">Return home</a>
         </div>
       </div>
     );

@@ -16,7 +16,7 @@ const Navigation = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t, setLanguage, language } = useLanguage();
-  const { session, isAdmin } = useAuth();
+  const { isAdmin } = useAuth();
   const { isSignedIn } = useClerkAuth();
 
   // Scroll-based navbar animation
@@ -128,6 +128,14 @@ const Navigation = () => {
             >
               {t('contact')}
             </Link>
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className="rounded border border-white/40 px-4 py-2 text-sm text-white transition-colors hover:bg-white hover:text-black"
+              >
+                Admin
+              </Link>
+            )}
 
             {/* Language Switcher */}
             <div className="flex items-center gap-2 ml-4">
@@ -330,6 +338,15 @@ const Navigation = () => {
               >
                 {t('contact')}
               </Link>
+              {isAdmin && (
+                <Link
+                  to="/admin"
+                  className="block py-2 font-semibold text-white"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Admin dashboard
+                </Link>
+              )}
 
               {/* Auth Buttons Mobile */}
               <div className="pt-4 border-t border-transparent space-y-2">

@@ -1,9 +1,21 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext } from "react";
+import { useAuth as useClerkAuth, useUser } from "@clerk/clerk-react";
+import { isAdminEmail } from "@/lib/adminAccess";
+
+interface AuthSession {
+  user: {
+    id: string | null | undefined;
+    email: string | undefined;
+    user_metadata: {
+      email_verified: boolean;
+    };
+  };
+}
 
 interface AuthContextType {
-  session: any;
+  session: AuthSession | null;
   loading: boolean;
-  user: any;
+  user: ReturnType<typeof useUser>["user"];
   isAdmin: boolean;
 }
 
@@ -27,41 +39,30 @@ export const FallbackAuthProvider = ({ children }: { children: React.ReactNode }
 
 // Clerk-based provider
 export const ClerkAuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [authState, setAuthState] = useState<AuthContextType>({
-    session: null,
-    loading: true,
-    user: null,
-    isAdmin: false
-  });
-
-  useEffect(() => {
-    // Dynamically import and use Clerk hooks
-    const initClerk = async () => {
-      try {
-        const { useUser, useAuth: useClerkAuth } = await import("@clerk/clerk-react");
-        // Note: We can't use hooks in useEffect, so we'll just set loading to false
-        setAuthState({
-          session: null,
-          loading: false,
-          user: null,
-          isAdmin: false
-        });
-      } catch (error) {
-        console.error('Failed to initialize Clerk:', error);
-        setAuthState({
-          session: null,
-          loading: false,
-          user: null,
-          isAdmin: false
-        });
+  const { user, isLoaded } = useUser();
+  const { userId } = useClerkAuth();
+  const email = user?.primaryEmailAddress?.emailAddress;
+  const session = user
+    ? {
+        user: {
+          id: userId,
+          email,
+          user_metadata: {
+            email_verified: user.primaryEmailAddress?.verification?.status === "verified",
+          },
+        },
       }
-    };
-    
-    initClerk();
-  }, []);
+    : null;
 
   return (
-    <AuthContext.Provider value={authState}>
+    <AuthContext.Provider
+      value={{
+        session,
+        loading: !isLoaded,
+        user,
+        isAdmin: isAdminEmail(email),
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

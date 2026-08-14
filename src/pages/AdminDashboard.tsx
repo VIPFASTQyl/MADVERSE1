@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { supabase } from "@/lib/supabaseClient";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Mail, Trash2, Eye, LogOut } from "lucide-react";
-import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ActivityManagement } from "@/components/ActivityManagement";
 import { RegistrationsView } from "@/components/RegistrationsView";
 import { ContentManagement } from "@/components/ContentManagement";
+import { ActivityPageManagement } from "@/components/admin/ActivityPageManagement";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useClerk } from "@clerk/clerk-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -36,7 +36,7 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
-  const navigate = useNavigate();
+  const { signOut } = useClerk();
   const { t } = useLanguage();
 
   useEffect(() => {
@@ -84,9 +84,7 @@ const AdminDashboard = () => {
           </div>
           <Button
             variant="destructive"
-            onClick={() => {
-              navigate('/', { replace: true });
-            }}
+            onClick={() => void signOut({ redirectUrl: "/" })}
             className="flex items-center gap-2"
           >
             <LogOut size={16} />
@@ -94,13 +92,18 @@ const AdminDashboard = () => {
           </Button>
         </div>
 
-        <Tabs defaultValue="messages" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+        <Tabs defaultValue="activity-pages" className="w-full">
+          <TabsList className="grid h-auto w-full grid-cols-2 sm:grid-cols-5">
+            <TabsTrigger value="activity-pages">Activity pages</TabsTrigger>
             <TabsTrigger value="messages">{t('messagesTab')}</TabsTrigger>
             <TabsTrigger value="content">Content</TabsTrigger>
             <TabsTrigger value="programs">{t('programsTab')}</TabsTrigger>
             <TabsTrigger value="registrations">{t('registrationsTab')}</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="activity-pages" className="space-y-4 mt-6">
+            <ActivityPageManagement />
+          </TabsContent>
 
           {/* Messages Tab */}
           <TabsContent value="messages" className="space-y-4 mt-6">

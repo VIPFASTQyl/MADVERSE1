@@ -1,10 +1,9 @@
 import { supabase } from "./supabaseClient";
+import { ADMIN_EMAIL, isAdminEmail } from "./adminAccess";
 
 // List of admin emails - customize these 3
 const ADMIN_EMAILS = [
-  "klestdrancolli@gmail.com",
-  "gurigaca13@gmail.com",
-  "erijonGashi@gmail.com",
+  ADMIN_EMAIL,
 ];
 
 export const checkIsAdmin = async (userId: string) => {
@@ -19,7 +18,7 @@ export const checkIsAdmin = async (userId: string) => {
 export const createOrUpdateUser = async (userId: string, email: string): Promise<boolean> => {
   try {
     // The ADMIN_EMAILS list is the source of truth
-    const isAdmin = ADMIN_EMAILS.includes(email);
+    const isAdmin = isAdminEmail(email);
     console.log('👑 ADMIN CHECK - Email:', email);
     console.log('👑 ADMIN CHECK - Result:', isAdmin, '(', ADMIN_EMAILS.includes(email) ? 'ADMIN' : 'USER', ')');
     
@@ -47,6 +46,6 @@ export const createOrUpdateUser = async (userId: string, email: string): Promise
   } catch (error) {
     console.error("Error checking admin status:", error);
     // Fallback: check email list directly
-    return ADMIN_EMAILS.includes(email);
+    return isAdminEmail(email);
   }
 };

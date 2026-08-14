@@ -5,8 +5,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ClerkProvider } from "@clerk/clerk-react";
 import { LanguageProvider } from "./contexts/LanguageContext";
-import { AuthProvider } from "./contexts/AuthContext";
+import { ClerkAuthProvider, FallbackAuthProvider } from "./contexts/AuthContext";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import { AdminRoute } from "./components/AdminRoute";
 import ScrollToTop from "./components/ScrollToTop";
 import { lazy, Suspense } from "react";
 import BackToTop from "@/components/BackToTop";
@@ -35,6 +36,7 @@ const Culture = lazy(() => import("./pages/activities/Culture"));
 const Sports = lazy(() => import("./pages/activities/Sports"));
 const Exhibition = lazy(() => import("./pages/activities/Exhibition"));
 const Volunteering = lazy(() => import("./pages/activities/Volunteering"));
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -85,7 +87,7 @@ const App = () => {
       <HelmetProvider>
         <QueryClientProvider client={queryClient}>
           <LanguageProvider>
-            <AuthProvider>
+            <FallbackAuthProvider>
               <TooltipProvider>
                 <Toaster />
                 <Sonner />
@@ -118,7 +120,7 @@ const App = () => {
                   <BackToTop />
                 </BrowserRouter>
               </TooltipProvider>
-            </AuthProvider>
+            </FallbackAuthProvider>
           </LanguageProvider>
         </QueryClientProvider>
       </HelmetProvider>
@@ -130,7 +132,7 @@ const App = () => {
       <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
         <QueryClientProvider client={queryClient}>
           <LanguageProvider>
-            <AuthProvider>
+            <ClerkAuthProvider>
               <TooltipProvider>
               <Toaster />
               <Sonner />
@@ -151,6 +153,14 @@ const App = () => {
                       path="/profile"
                       element={<Profile />}
                     />
+                    <Route
+                      path="/admin"
+                      element={
+                        <AdminRoute>
+                          <AdminDashboard />
+                        </AdminRoute>
+                      }
+                    />
                     {/* Simple activity detail pages (title + LiquidEther) */}
                     <Route path="/activity/youth" element={<Youth />} />
                     <Route path="/activity/arts" element={<Arts />} />
@@ -165,7 +175,7 @@ const App = () => {
                 <BackToTop />
               </BrowserRouter>
             </TooltipProvider>
-          </AuthProvider>
+          </ClerkAuthProvider>
         </LanguageProvider>
       </QueryClientProvider>
     </ClerkProvider>
