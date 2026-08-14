@@ -19,6 +19,7 @@ import {
   uploadActivityPageImage,
 } from "@/lib/activityPageSectionService";
 import { translations } from "@/translations";
+import { translateActivityCopyToAlbanian } from "@/lib/translationService";
 
 const PAGE_LABELS: Record<ActivityPageType, string> = {
   youth: "Youth",
@@ -107,6 +108,7 @@ export const ActivityPageManagement = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [autoTranslate, setAutoTranslate] = useState(true);
 
   const loadSections = useCallback(async () => {
     try {
@@ -129,6 +131,7 @@ export const ActivityPageManagement = () => {
     setEditingId(null);
     setEditingBuiltInKey(null);
     setForm(emptyForm(page, language));
+    setAutoTranslate(language === "en");
   }, [page, language]);
 
   const builtInSections = useMemo(() => {
@@ -200,6 +203,7 @@ export const ActivityPageManagement = () => {
       sortOrder: section.sortOrder,
       published: section.published,
       builtInKey,
+      translationGroupId: section.translationGroupId,
     });
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -229,17 +233,47 @@ export const ActivityPageManagement = () => {
 
     try {
       setSaving(true);
-      await saveActivityPageSection(
-        {
-          ...form,
-          label: form.label.trim(),
-          heading: form.heading.trim(),
-          description: form.description.trim(),
-        },
-        user.id,
-        editingId ?? undefined,
-      );
-      toast.success(form.published ? "Published to the live activity page." : "Draft saved.");
+      const normalizedForm: ActivityPageSectionInput = {
+        ...form,
+        label: form.label.trim(),
+        heading: form.heading.trim(),
+        description: form.description.trim(),
+      };
+
+      if (language === "en" && autoTranslate) {
+        const translationGroupId =
+          normalizedForm.translationGroupId ??
+          (normalizedForm.builtInKey ? undefined : crypto.randomUUID());
+        const translated = await translateActivityCopyToAlbanian(normalizedForm);
+        const albanianSections = await getActivityPageSections(page, "al", true);
+        const albanianCounterpart = albanianSections.find((section) =>
+          normalizedForm.builtInKey
+            ? section.builtInKey === normalizedForm.builtInKey
+            : Boolean(translationGroupId && section.translationGroupId === translationGroupId),
+        );
+
+        await Promise.all([
+          saveActivityPageSection(
+            { ...normalizedForm, translationGroupId },
+            user.id,
+            editingId ?? undefined,
+          ),
+          saveActivityPageSection(
+            {
+              ...normalizedForm,
+              ...translated,
+              language: "al",
+              translationGroupId,
+            },
+            user.id,
+            albanianCounterpart?.id,
+          ),
+        ]);
+        toast.success(form.published ? "Published in English and Albanian." : "English and Albanian drafts saved.");
+      } else {
+        await saveActivityPageSection(normalizedForm, user.id, editingId ?? undefined);
+        toast.success(form.published ? "Published to the live activity page." : "Draft saved.");
+      }
       resetForm();
       await loadSections();
     } catch (error) {
@@ -381,10 +415,26 @@ export const ActivityPageManagement = () => {
               <span><strong>Publish live</strong><span className="block text-muted-foreground">Turn this off to keep the block as a draft.</span></span>
             </label>
 
+            {language === "en" && (
+              <label className="flex items-center gap-3 rounded-lg border border-sky-500/30 bg-sky-500/5 p-4 text-sm">
+                <input type="checkbox" checked={autoTranslate} onChange={(event) => setAutoTranslate(event.target.checked)} className="h-4 w-4" />
+                <span>
+                  <strong>Automatically translate and save in Albanian</strong>
+                  <span className="block text-muted-foreground">
+                    The Albanian version will use the same image, style, position, and display order.
+                  </span>
+                </span>
+              </label>
+            )}
+
             <div className="flex flex-wrap gap-3">
               <Button type="submit" disabled={saving || uploading} className="gap-2">
                 {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-                {form.published ? "Publish to live page" : "Save draft"}
+                {saving
+                  ? (language === "en" && autoTranslate ? "Translating and savingâ€¦" : "Savingâ€¦")
+                  : (form.published
+                    ? (language === "en" && autoTranslate ? "Publish English + Albanian" : "Publish to live page")
+                    : (language === "en" && autoTranslate ? "Save both drafts" : "Save draft"))}
               </Button>
               {(editingId || editingBuiltInKey) && <Button type="button" variant="outline" onClick={resetForm}>Cancel edit</Button>}
             </div>

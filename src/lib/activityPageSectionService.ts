@@ -35,6 +35,7 @@ interface SectionMetadata {
   sortOrder: number;
   published: boolean;
   builtInKey?: string;
+  translationGroupId?: string;
 }
 
 export interface ActivityPageSection {
@@ -51,6 +52,7 @@ export interface ActivityPageSection {
   sortOrder: number;
   published: boolean;
   builtInKey?: string;
+  translationGroupId?: string;
 }
 
 export type ActivityPageSectionInput = Omit<ActivityPageSection, "id">;
@@ -98,6 +100,7 @@ const toSection = (row: ActivityContentRow): ActivityPageSection | null => {
     sortOrder: metadata.sortOrder,
     published: metadata.published,
     builtInKey: metadata.builtInKey,
+    translationGroupId: metadata.translationGroupId,
   };
 };
 
@@ -135,6 +138,7 @@ export const saveActivityPageSection = async (
     sortOrder: input.sortOrder,
     published: input.published,
     builtInKey: input.builtInKey,
+    translationGroupId: input.translationGroupId,
   };
 
   const row = {
