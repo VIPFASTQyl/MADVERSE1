@@ -35,6 +35,24 @@ type TeamCardLayout = {
 
 const DEFAULT_CENTER_ID = "klest";
 
+const SURROUND_SLOTS = [
+  { key: "topLeft", angle: -135 },
+  { key: "topRight", angle: -45 },
+  { key: "bottomRight", angle: 45 },
+  { key: "bottom", angle: 108 },
+  { key: "bottomLeft", angle: 168 },
+] as const;
+
+const SLOT_PREFERENCE: Record<string, (typeof SURROUND_SLOTS)[number]["key"]> = {
+  guri: "topLeft",
+  erijon: "topRight",
+  laura: "bottomLeft",
+  albina: "bottomRight",
+  viola: "bottom",
+};
+
+const degreesToRadians = (degrees: number) => (degrees * Math.PI) / 180;
+
 const clampNumber = (min: number, preferred: number, max: number) =>
   Math.min(Math.max(preferred, min), max);
 
@@ -53,37 +71,67 @@ const getIdleTeamLayout = (viewportWidth: number, count: number): TeamCardLayout
 };
 
 const getSurroundTeamLayout = (
-  focusIndex: number,
-  count: number,
+  memberIds: string[],
+  focusId: string,
   stageWidth: number,
   stageHeight: number,
 ): TeamCardLayout[] => {
   const radiusX = clampNumber(210, stageWidth * 0.34, 300);
   const radiusY = clampNumber(132, stageHeight * 0.3, 188);
-  const others = Math.max(count - 1, 1);
+  const layouts: TeamCardLayout[] = memberIds.map(() => ({
+    x: 0,
+    y: 0,
+    fanY: 0,
+    fanZ: 0,
+    scale: 0.9,
+    opacity: 1,
+    zIndex: 2,
+  }));
 
-  return Array.from({ length: count }, (_, index) => {
-    if (index === focusIndex) {
-      return {
-        x: 0,
-        y: 0,
-        fanY: 0,
-        fanZ: 0,
-        scale: 0.9,
-        opacity: 1,
-        zIndex: 20,
-      };
-    }
+  const focusIndex = memberIds.indexOf(focusId);
+  if (focusIndex >= 0) {
+    layouts[focusIndex] = {
+      x: 0,
+      y: 0,
+      fanY: 0,
+      fanZ: 0,
+      scale: 0.9,
+      opacity: 1,
+      zIndex: 20,
+    };
+  }
 
-    let order = index - focusIndex;
-    if (order < 0) order += count;
-    const surroundIndex = order - 1;
-    const angle = -Math.PI / 2 + (surroundIndex / others) * Math.PI * 2;
+  const remainingIds = memberIds.filter((id) => id !== focusId);
+  const usedSlots = new Set<string>();
+  const assignedSlots = new Map<string, (typeof SURROUND_SLOTS)[number]>();
+
+  remainingIds.forEach((id) => {
+    const preferred = SLOT_PREFERENCE[id];
+    if (!preferred || usedSlots.has(preferred)) return;
+    const slot = SURROUND_SLOTS.find((item) => item.key === preferred);
+    if (!slot) return;
+    assignedSlots.set(id, slot);
+    usedSlots.add(preferred);
+  });
+
+  const freeSlots = SURROUND_SLOTS.filter((slot) => !usedSlots.has(slot.key));
+  remainingIds.forEach((id) => {
+    if (assignedSlots.has(id)) return;
+    const slot = freeSlots.shift();
+    if (slot) assignedSlots.set(id, slot);
+  });
+
+  remainingIds.forEach((id) => {
+    const slot = assignedSlots.get(id);
+    const index = memberIds.indexOf(id);
+    if (!slot || index < 0) return;
+
+    const angle = degreesToRadians(slot.angle);
     const x = Math.round(Math.cos(angle) * radiusX);
     const y = Math.round(Math.sin(angle) * radiusY);
     const depth = (y + radiusY) / Math.max(radiusY * 2, 1);
 
-    return {
+    layouts[index] = {
       x,
       y,
       fanY: Math.round(Math.cos(angle) * 18),
@@ -93,6 +141,8 @@ const getSurroundTeamLayout = (
       zIndex: 4 + Math.round(depth * 8),
     };
   });
+
+  return layouts;
 };
 
 const ProgramsCarousel3D = () => {
@@ -100,7 +150,7 @@ const ProgramsCarousel3D = () => {
   const [tiltState, setTiltState] = useState<Record<string, { x: number; y: number }>>({});
   const [isMobileCarousel, setIsMobileCarousel] = useState(false);
   const [centeredMember, setCenteredMember] = useState(DEFAULT_CENTER_ID);
-  const [activeMember, setActiveMember] = useState(DEFAULT_CENTER_ID);
+  const [activeMember, setActiveMember] = useState<string | null>(null);
   const [openMember, setOpenMember] = useState<string | null>(null);
   const [viewportWidth, setViewportWidth] = useState(
     typeof window === "undefined" ? 1280 : window.innerWidth,
@@ -109,6 +159,7 @@ const ProgramsCarousel3D = () => {
   const stageRef = useRef<HTMLDivElement>(null);
   const shellRefs = useRef<Record<string, HTMLElement | null>>({});
   const isMobileCarouselRef = useRef(false);
+  const centerIdRef = useRef<string | null>(null);
 
   // The order is intentional: Laura sits to Guri's left while Klest remains centred.
   const teamMembers: TeamMember[] = [
@@ -199,16 +250,20 @@ const ProgramsCarousel3D = () => {
   ];
 
   const spotlightId = !isMobileCarousel ? activeMember : null;
-  const spotlightIndex = teamMembers.findIndex((member) => member.id === spotlightId);
-  const cardLayouts =
-    spotlightIndex >= 0
-      ? getSurroundTeamLayout(
-          spotlightIndex,
-          teamMembers.length,
-          stageSize.width,
-          stageSize.height,
-        )
-      : getIdleTeamLayout(viewportWidth, teamMembers.length);
+  const cardLayouts = spotlightId
+    ? getSurroundTeamLayout(
+        teamMembers.map((member) => member.id),
+        spotlightId,
+        stageSize.width,
+        stageSize.height,
+      )
+    : getIdleTeamLayout(viewportWidth, teamMembers.length);
+
+  const enterOrbit = () => {
+    if (isMobileCarouselRef.current || centerIdRef.current) return;
+    centerIdRef.current = DEFAULT_CENTER_ID;
+    setActiveMember(DEFAULT_CENTER_ID);
+  };
 
   const handleMouseMove = (event: React.MouseEvent<HTMLButtonElement>, memberId: string) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -274,7 +329,8 @@ const ProgramsCarousel3D = () => {
 
       if (!isMobile) {
         setCenteredMember(DEFAULT_CENTER_ID);
-        setActiveMember(DEFAULT_CENTER_ID);
+        centerIdRef.current = null;
+        setActiveMember(null);
         return;
       }
 
@@ -346,12 +402,19 @@ const ProgramsCarousel3D = () => {
       return;
     }
 
-    if (memberId === activeMember) {
+    if (!centerIdRef.current) {
+      enterOrbit();
+      if (memberId === DEFAULT_CENTER_ID) setOpenMember(memberId);
+      return;
+    }
+
+    if (memberId === centerIdRef.current) {
       setOpenMember(memberId);
       return;
     }
 
     event.preventDefault();
+    centerIdRef.current = memberId;
     setActiveMember(memberId);
   };
 
@@ -557,6 +620,7 @@ const ProgramsCarousel3D = () => {
           filter: saturate(1.04);
         }
 
+        .mad-team-stage:not(.is-orbiting) .mad-team-shell:hover .mad-team-motion,
         .mad-team-stage:not(.is-orbiting) .mad-team-shell.is-active .mad-team-motion,
         .mad-team-stage:not(.is-orbiting) .mad-team-shell:focus-within .mad-team-motion {
           transform:
@@ -644,6 +708,7 @@ const ProgramsCarousel3D = () => {
             filter 300ms ease;
         }
 
+        .mad-team-stage:not(.is-orbiting) .mad-team-shell:hover .mad-team-portrait,
         .mad-team-shell.is-active .mad-team-portrait,
         .mad-team-shell.is-spotlight .mad-team-portrait,
         .mad-team-shell:focus-within .mad-team-portrait {
@@ -929,6 +994,7 @@ const ProgramsCarousel3D = () => {
                             ? `Move ${member.name} to the center`
                             : `Vendos ${member.name} në qendër`
                     }
+                    onMouseEnter={enterOrbit}
                     onMouseMove={(event) => handleMouseMove(event, member.id)}
                     onMouseLeave={() => resetTilt(member.id)}
                     onClick={(event) => handleCardClick(event, member.id)}
