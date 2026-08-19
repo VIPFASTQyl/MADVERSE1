@@ -33,7 +33,8 @@ type TeamCardLayout = {
   zIndex: number;
 };
 
-const POINTER_MOVE_THRESHOLD = 3;
+const SETTLE_MS = 900;
+const SWITCH_DISTANCE = 84;
 
 const clampNumber = (min: number, preferred: number, max: number) =>
   Math.min(Math.max(preferred, min), max);
@@ -108,9 +109,10 @@ const ProgramsCarousel3D = () => {
   const [stageSize, setStageSize] = useState({ width: 1100, height: 520 });
   const stageRef = useRef<HTMLDivElement>(null);
   const shellRefs = useRef<Record<string, HTMLElement | null>>({});
-  const lastPointerRef = useRef({ x: 0, y: 0 });
   const activeMemberRef = useRef<string | null>(null);
   const isMobileCarouselRef = useRef(false);
+  const selectionPointRef = useRef({ x: 0, y: 0 });
+  const selectionAtRef = useRef(0);
 
   // The order is intentional: Laura sits to Guri's left while Klest remains centred.
   const teamMembers: TeamMember[] = [
@@ -214,36 +216,48 @@ const ProgramsCarousel3D = () => {
         )
       : getIdleTeamLayout(viewportWidth, teamMembers.length);
 
-  const rememberPointer = (clientX: number, clientY: number) => {
-    lastPointerRef.current = { x: clientX, y: clientY };
+  const canSwitchSelection = (clientX: number, clientY: number) => {
+    if (!activeMemberRef.current) return true;
+    if (Date.now() - selectionAtRef.current < SETTLE_MS) return false;
+
+    const deltaX = clientX - selectionPointRef.current.x;
+    const deltaY = clientY - selectionPointRef.current.y;
+    return deltaX * deltaX + deltaY * deltaY >= SWITCH_DISTANCE * SWITCH_DISTANCE;
   };
 
-  const pointerHasMoved = (clientX: number, clientY: number) => {
-    const deltaX = clientX - lastPointerRef.current.x;
-    const deltaY = clientY - lastPointerRef.current.y;
-    return deltaX * deltaX + deltaY * deltaY >= POINTER_MOVE_THRESHOLD * POINTER_MOVE_THRESHOLD;
-  };
-
-  const activateMember = (memberId: string) => {
+  const activateMember = (
+    memberId: string,
+    clientX?: number,
+    clientY?: number,
+    force = false,
+  ) => {
     if (isMobileCarouselRef.current || activeMemberRef.current === memberId) return;
+    if (
+      !force &&
+      activeMemberRef.current &&
+      (clientX == null || !canSwitchSelection(clientX, clientY))
+    ) {
+      return;
+    }
+
     activeMemberRef.current = memberId;
     setActiveMember(memberId);
+    selectionAtRef.current = Date.now();
+    if (clientX != null && clientY != null) {
+      selectionPointRef.current = { x: clientX, y: clientY };
+    }
   };
 
   const clearActiveMember = () => {
     activeMemberRef.current = null;
+    selectionAtRef.current = 0;
     setActiveMember(null);
   };
 
   const handleStageMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    const { clientX, clientY } = event;
-    const moved = pointerHasMoved(clientX, clientY);
-    rememberPointer(clientX, clientY);
-    if (!moved) return;
-
     const hoveredShell = (event.target as HTMLElement | null)?.closest?.(".mad-team-shell");
     const hoveredId = hoveredShell?.getAttribute("data-member-id");
-    if (hoveredId) activateMember(hoveredId);
+    if (hoveredId) activateMember(hoveredId, event.clientX, event.clientY);
   };
 
   const handleStageMouseLeave = () => {
@@ -252,15 +266,7 @@ const ProgramsCarousel3D = () => {
   };
 
   const handleMemberEnter = (memberId: string, event: React.MouseEvent<HTMLElement>) => {
-    const { clientX, clientY } = event;
-    const alreadyFocused = Boolean(activeMemberRef.current);
-    const moved = pointerHasMoved(clientX, clientY);
-    rememberPointer(clientX, clientY);
-
-    // Cards sliding under a parked cursor fire mouseenter without the pointer moving.
-    // Keep the current person until the cursor actually travels to someone else.
-    if (alreadyFocused && !moved) return;
-    activateMember(memberId);
+    activateMember(memberId, event.clientX, event.clientY);
   };
 
   const handleMouseMove = (event: React.MouseEvent<HTMLButtonElement>, memberId: string) => {
@@ -966,7 +972,7 @@ const ProgramsCarousel3D = () => {
                     onMouseMove={(event) => handleMouseMove(event, member.id)}
                     onMouseLeave={() => resetTilt(member.id)}
                     onFocus={() => {
-                      if (!isMobileCarouselRef.current) activateMember(member.id);
+                      if (!isMobileCarouselRef.current) activateMember(member.id, undefined, undefined, true);
                     }}
                     onClick={(event) => handleCardClick(event, member.id)}
                     style={
