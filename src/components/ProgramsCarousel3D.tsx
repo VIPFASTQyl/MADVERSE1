@@ -33,7 +33,7 @@ type TeamCardLayout = {
   zIndex: number;
 };
 
-const HOVER_LOCK_DISTANCE = 14;
+const POINTER_MOVE_THRESHOLD = 3;
 
 const clampNumber = (min: number, preferred: number, max: number) =>
   Math.min(Math.max(preferred, min), max);
@@ -108,9 +108,9 @@ const ProgramsCarousel3D = () => {
   const [stageSize, setStageSize] = useState({ width: 1100, height: 520 });
   const stageRef = useRef<HTMLDivElement>(null);
   const shellRefs = useRef<Record<string, HTMLElement | null>>({});
-  const pointerRef = useRef({ x: 0, y: 0 });
-  const hoverLockOriginRef = useRef<{ x: number; y: number } | null>(null);
-  const hoverLockUntilRef = useRef(0);
+  const lastPointerRef = useRef({ x: 0, y: 0 });
+  const activeMemberRef = useRef<string | null>(null);
+  const isMobileCarouselRef = useRef(false);
 
   // The order is intentional: Laura sits to Guri's left while Klest remains centred.
   const teamMembers: TeamMember[] = [
@@ -214,53 +214,56 @@ const ProgramsCarousel3D = () => {
         )
       : getIdleTeamLayout(viewportWidth, teamMembers.length);
 
-  const unlockHoverIfMoved = (clientX: number, clientY: number) => {
-    const lockOrigin = hoverLockOriginRef.current;
-    if (!lockOrigin) return false;
+  const rememberPointer = (clientX: number, clientY: number) => {
+    lastPointerRef.current = { x: clientX, y: clientY };
+  };
 
-    const deltaX = clientX - lockOrigin.x;
-    const deltaY = clientY - lockOrigin.y;
-    if (deltaX * deltaX + deltaY * deltaY < HOVER_LOCK_DISTANCE * HOVER_LOCK_DISTANCE) {
-      return false;
-    }
-
-    return true;
+  const pointerHasMoved = (clientX: number, clientY: number) => {
+    const deltaX = clientX - lastPointerRef.current.x;
+    const deltaY = clientY - lastPointerRef.current.y;
+    return deltaX * deltaX + deltaY * deltaY >= POINTER_MOVE_THRESHOLD * POINTER_MOVE_THRESHOLD;
   };
 
   const activateMember = (memberId: string) => {
-    if (isMobileCarousel || activeMember === memberId) return;
-    if (hoverLockOriginRef.current) return;
-    if (Date.now() < hoverLockUntilRef.current) return;
-
+    if (isMobileCarouselRef.current || activeMemberRef.current === memberId) return;
+    activeMemberRef.current = memberId;
     setActiveMember(memberId);
-    hoverLockOriginRef.current = { ...pointerRef.current };
-    hoverLockUntilRef.current = Date.now() + 480;
+  };
+
+  const clearActiveMember = () => {
+    activeMemberRef.current = null;
+    setActiveMember(null);
   };
 
   const handleStageMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    pointerRef.current = { x: event.clientX, y: event.clientY };
+    const { clientX, clientY } = event;
+    const moved = pointerHasMoved(clientX, clientY);
+    rememberPointer(clientX, clientY);
+    if (!moved) return;
+
     const hoveredShell = (event.target as HTMLElement | null)?.closest?.(".mad-team-shell");
     const hoveredId = hoveredShell?.getAttribute("data-member-id");
-
-    if (hoverLockOriginRef.current) {
-      if (!unlockHoverIfMoved(event.clientX, event.clientY)) return;
-      if (!hoveredId || hoveredId === activeMember) return;
-      if (Date.now() < hoverLockUntilRef.current) return;
-      hoverLockOriginRef.current = null;
-    }
-
     if (hoveredId) activateMember(hoveredId);
   };
 
   const handleStageMouseLeave = () => {
-    if (isMobileCarousel) return;
-    hoverLockOriginRef.current = null;
-    hoverLockUntilRef.current = 0;
-    setActiveMember(null);
+    if (isMobileCarouselRef.current) return;
+    clearActiveMember();
+  };
+
+  const handleMemberEnter = (memberId: string, event: React.MouseEvent<HTMLElement>) => {
+    const { clientX, clientY } = event;
+    const alreadyFocused = Boolean(activeMemberRef.current);
+    const moved = pointerHasMoved(clientX, clientY);
+    rememberPointer(clientX, clientY);
+
+    // Cards sliding under a parked cursor fire mouseenter without the pointer moving.
+    // Keep the current person until the cursor actually travels to someone else.
+    if (alreadyFocused && !moved) return;
+    activateMember(memberId);
   };
 
   const handleMouseMove = (event: React.MouseEvent<HTMLButtonElement>, memberId: string) => {
-    pointerRef.current = { x: event.clientX, y: event.clientY };
     const rect = event.currentTarget.getBoundingClientRect();
     const horizontal = (event.clientX - rect.left) / rect.width - 0.5;
     const vertical = (event.clientY - rect.top) / rect.height - 0.5;
@@ -319,6 +322,7 @@ const ProgramsCarousel3D = () => {
 
     const initializeCarousel = () => {
       const isMobile = mobileQuery.matches;
+      isMobileCarouselRef.current = isMobile;
       setIsMobileCarousel(isMobile);
 
       if (!isMobile) {
@@ -326,9 +330,7 @@ const ProgramsCarousel3D = () => {
         return;
       }
 
-      hoverLockOriginRef.current = null;
-      hoverLockUntilRef.current = 0;
-      setActiveMember(null);
+      clearActiveMember();
 
       window.requestAnimationFrame(() => {
         const stage = stageRef.current;
@@ -930,10 +932,7 @@ const ProgramsCarousel3D = () => {
               aria-current={
                 isMobileCarousel && centeredMember === member.id ? "true" : undefined
               }
-              onMouseEnter={(event) => {
-                pointerRef.current = { x: event.clientX, y: event.clientY };
-                activateMember(member.id);
-              }}
+              onMouseEnter={(event) => handleMemberEnter(member.id, event)}
               onMouseLeave={() => {
                 resetTilt(member.id);
               }}
@@ -966,7 +965,9 @@ const ProgramsCarousel3D = () => {
                     }
                     onMouseMove={(event) => handleMouseMove(event, member.id)}
                     onMouseLeave={() => resetTilt(member.id)}
-                    onFocus={() => activateMember(member.id)}
+                    onFocus={() => {
+                      if (!isMobileCarouselRef.current) activateMember(member.id);
+                    }}
                     onClick={(event) => handleCardClick(event, member.id)}
                     style={
                       {
