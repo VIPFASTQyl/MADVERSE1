@@ -35,6 +35,11 @@ type TeamCardLayout = {
 
 const SETTLE_MS = 900;
 const SWITCH_DISTANCE = 84;
+const CARD_MIN_WIDTH = 208;
+const CARD_VW = 0.29;
+const CARD_MAX_WIDTH = 360;
+const CARD_ASPECT = 0.83;
+const HIT_ZONE = 0.74;
 
 const clampNumber = (min: number, preferred: number, max: number) =>
   Math.min(Math.max(preferred, min), max);
@@ -60,7 +65,7 @@ const getSurroundTeamLayout = (
   stageHeight: number,
 ): TeamCardLayout[] => {
   const radiusX = clampNumber(210, stageWidth * 0.34, 300);
-  const radiusY = clampNumber(118, stageHeight * 0.26, 168);
+  const radiusY = clampNumber(132, stageHeight * 0.3, 188);
   const others = Math.max(count - 1, 1);
 
   return Array.from({ length: count }, (_, index) => {
@@ -94,6 +99,49 @@ const getSurroundTeamLayout = (
       zIndex: 4 + Math.round(depth * 8),
     };
   });
+};
+
+const getCardPixelSize = (viewportWidth: number) => {
+  const width = clampNumber(CARD_MIN_WIDTH, viewportWidth * CARD_VW, CARD_MAX_WIDTH);
+  return { width, height: width / CARD_ASPECT };
+};
+
+const pickTeamMemberAtPoint = (
+  clientX: number,
+  clientY: number,
+  stage: HTMLElement,
+  members: { id: string }[],
+  layouts: TeamCardLayout[],
+  viewportWidth: number,
+): string | null => {
+  const stageRect = stage.getBoundingClientRect();
+  const originX = stageRect.left + stageRect.width / 2;
+  const originY = stageRect.top + stageRect.height / 2;
+  const { width: cardWidth, height: cardHeight } = getCardPixelSize(viewportWidth);
+
+  let bestId: string | null = null;
+  let bestDist = Number.POSITIVE_INFINITY;
+
+  members.forEach((member, index) => {
+    const layout = layouts[index];
+    if (!layout) return;
+
+    const centerX = originX + layout.x;
+    const centerY = originY + layout.y;
+    const radiusX = (cardWidth * layout.scale * HIT_ZONE) / 2;
+    const radiusY = (cardHeight * layout.scale * HIT_ZONE) / 2;
+    const normalX = (clientX - centerX) / Math.max(radiusX, 1);
+    const normalY = (clientY - centerY) / Math.max(radiusY, 1);
+    if (normalX * normalX + normalY * normalY > 1) return;
+
+    const dist = (clientX - centerX) ** 2 + (clientY - centerY) ** 2;
+    if (dist < bestDist) {
+      bestDist = dist;
+      bestId = member.id;
+    }
+  });
+
+  return bestId;
 };
 
 const ProgramsCarousel3D = () => {
@@ -254,9 +302,21 @@ const ProgramsCarousel3D = () => {
     setActiveMember(null);
   };
 
+  const pickMemberAtPointer = (clientX: number, clientY: number) => {
+    const stage = stageRef.current;
+    if (!stage) return null;
+    return pickTeamMemberAtPoint(
+      clientX,
+      clientY,
+      stage,
+      teamMembers,
+      cardLayouts,
+      viewportWidth,
+    );
+  };
+
   const handleStageMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    const hoveredShell = (event.target as HTMLElement | null)?.closest?.(".mad-team-shell");
-    const hoveredId = hoveredShell?.getAttribute("data-member-id");
+    const hoveredId = pickMemberAtPointer(event.clientX, event.clientY);
     if (hoveredId) activateMember(hoveredId, event.clientX, event.clientY);
   };
 
@@ -265,8 +325,9 @@ const ProgramsCarousel3D = () => {
     clearActiveMember();
   };
 
-  const handleMemberEnter = (memberId: string, event: React.MouseEvent<HTMLElement>) => {
-    activateMember(memberId, event.clientX, event.clientY);
+  const handleMemberEnter = (event: React.MouseEvent<HTMLElement>) => {
+    const hoveredId = pickMemberAtPointer(event.clientX, event.clientY);
+    if (hoveredId) activateMember(hoveredId, event.clientX, event.clientY);
   };
 
   const handleMouseMove = (event: React.MouseEvent<HTMLButtonElement>, memberId: string) => {
@@ -389,19 +450,25 @@ const ProgramsCarousel3D = () => {
     event: React.MouseEvent<HTMLButtonElement>,
     memberId: string,
   ) => {
-    if (!isMobileCarousel || centeredMember === memberId) {
-      setOpenMember(memberId);
+    if (isMobileCarousel) {
+      if (centeredMember === memberId) {
+        setOpenMember(memberId);
+        return;
+      }
+
+      event.preventDefault();
+      const stage = stageRef.current;
+      const shell = shellRefs.current[memberId];
+      if (!stage || !shell) return;
+
+      const targetLeft =
+        shell.offsetLeft - (stage.clientWidth - shell.offsetWidth) / 2;
+      stage.scrollTo({ left: targetLeft, behavior: "smooth" });
       return;
     }
 
-    event.preventDefault();
-    const stage = stageRef.current;
-    const shell = shellRefs.current[memberId];
-    if (!stage || !shell) return;
-
-    const targetLeft =
-      shell.offsetLeft - (stage.clientWidth - shell.offsetWidth) / 2;
-    stage.scrollTo({ left: targetLeft, behavior: "smooth" });
+    const pickedId = pickMemberAtPointer(event.clientX, event.clientY) ?? memberId;
+    setOpenMember(pickedId);
   };
 
   return (
@@ -522,6 +589,7 @@ const ProgramsCarousel3D = () => {
           width: clamp(208px, 29vw, 360px);
           aspect-ratio: 0.83;
           opacity: var(--idle-opacity);
+          pointer-events: none;
           transform:
             translate(-50%, -50%)
             translate3d(var(--x), var(--y), 0);
@@ -539,6 +607,7 @@ const ProgramsCarousel3D = () => {
         .mad-team-motion {
           width: 100%;
           height: 100%;
+          pointer-events: auto;
           transform:
             rotateY(var(--fan-y))
             rotateZ(var(--fan-z))
@@ -596,7 +665,6 @@ const ProgramsCarousel3D = () => {
           z-index: 1;
         }
 
-        .mad-team-shell:hover,
         .mad-team-shell.is-active,
         .mad-team-shell.is-spotlight,
         .mad-team-shell:focus-within {
@@ -605,9 +673,8 @@ const ProgramsCarousel3D = () => {
           filter: saturate(1.04);
         }
 
-        .mad-team-shell:hover .mad-team-motion,
-        .mad-team-shell.is-active .mad-team-motion,
-        .mad-team-shell:focus-within .mad-team-motion {
+        .mad-team-stage:not(.is-orbiting) .mad-team-shell.is-active .mad-team-motion,
+        .mad-team-stage:not(.is-orbiting) .mad-team-shell:focus-within .mad-team-motion {
           transform:
             translateY(-18px)
             rotateY(0deg)
@@ -693,7 +760,8 @@ const ProgramsCarousel3D = () => {
             filter 300ms ease;
         }
 
-        .mad-team-shell:hover .mad-team-portrait,
+        .mad-team-shell.is-active .mad-team-portrait,
+        .mad-team-shell.is-spotlight .mad-team-portrait,
         .mad-team-shell:focus-within .mad-team-portrait {
           filter: brightness(1.06);
           transform: scale(1.045);
@@ -798,6 +866,7 @@ const ProgramsCarousel3D = () => {
             z-index: 1;
             opacity: 1;
             filter: none;
+            pointer-events: auto;
             transform: none;
             scroll-snap-align: center;
             scroll-snap-stop: always;
@@ -938,7 +1007,7 @@ const ProgramsCarousel3D = () => {
               aria-current={
                 isMobileCarousel && centeredMember === member.id ? "true" : undefined
               }
-              onMouseEnter={(event) => handleMemberEnter(member.id, event)}
+              onMouseEnter={handleMemberEnter}
               onMouseLeave={() => {
                 resetTilt(member.id);
               }}
