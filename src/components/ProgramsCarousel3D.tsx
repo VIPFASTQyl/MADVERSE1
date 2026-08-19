@@ -33,13 +33,7 @@ type TeamCardLayout = {
   zIndex: number;
 };
 
-const SETTLE_MS = 900;
-const SWITCH_DISTANCE = 84;
-const CARD_MIN_WIDTH = 208;
-const CARD_VW = 0.29;
-const CARD_MAX_WIDTH = 360;
-const CARD_ASPECT = 0.83;
-const HIT_ZONE = 0.74;
+const DEFAULT_CENTER_ID = "klest";
 
 const clampNumber = (min: number, preferred: number, max: number) =>
   Math.min(Math.max(preferred, min), max);
@@ -101,55 +95,12 @@ const getSurroundTeamLayout = (
   });
 };
 
-const getCardPixelSize = (viewportWidth: number) => {
-  const width = clampNumber(CARD_MIN_WIDTH, viewportWidth * CARD_VW, CARD_MAX_WIDTH);
-  return { width, height: width / CARD_ASPECT };
-};
-
-const pickTeamMemberAtPoint = (
-  clientX: number,
-  clientY: number,
-  stage: HTMLElement,
-  members: { id: string }[],
-  layouts: TeamCardLayout[],
-  viewportWidth: number,
-): string | null => {
-  const stageRect = stage.getBoundingClientRect();
-  const originX = stageRect.left + stageRect.width / 2;
-  const originY = stageRect.top + stageRect.height / 2;
-  const { width: cardWidth, height: cardHeight } = getCardPixelSize(viewportWidth);
-
-  let bestId: string | null = null;
-  let bestDist = Number.POSITIVE_INFINITY;
-
-  members.forEach((member, index) => {
-    const layout = layouts[index];
-    if (!layout) return;
-
-    const centerX = originX + layout.x;
-    const centerY = originY + layout.y;
-    const radiusX = (cardWidth * layout.scale * HIT_ZONE) / 2;
-    const radiusY = (cardHeight * layout.scale * HIT_ZONE) / 2;
-    const normalX = (clientX - centerX) / Math.max(radiusX, 1);
-    const normalY = (clientY - centerY) / Math.max(radiusY, 1);
-    if (normalX * normalX + normalY * normalY > 1) return;
-
-    const dist = (clientX - centerX) ** 2 + (clientY - centerY) ** 2;
-    if (dist < bestDist) {
-      bestDist = dist;
-      bestId = member.id;
-    }
-  });
-
-  return bestId;
-};
-
 const ProgramsCarousel3D = () => {
   const { language, t } = useLanguage();
   const [tiltState, setTiltState] = useState<Record<string, { x: number; y: number }>>({});
   const [isMobileCarousel, setIsMobileCarousel] = useState(false);
-  const [centeredMember, setCenteredMember] = useState("klest");
-  const [activeMember, setActiveMember] = useState<string | null>(null);
+  const [centeredMember, setCenteredMember] = useState(DEFAULT_CENTER_ID);
+  const [activeMember, setActiveMember] = useState(DEFAULT_CENTER_ID);
   const [openMember, setOpenMember] = useState<string | null>(null);
   const [viewportWidth, setViewportWidth] = useState(
     typeof window === "undefined" ? 1280 : window.innerWidth,
@@ -157,10 +108,7 @@ const ProgramsCarousel3D = () => {
   const [stageSize, setStageSize] = useState({ width: 1100, height: 520 });
   const stageRef = useRef<HTMLDivElement>(null);
   const shellRefs = useRef<Record<string, HTMLElement | null>>({});
-  const activeMemberRef = useRef<string | null>(null);
   const isMobileCarouselRef = useRef(false);
-  const selectionPointRef = useRef({ x: 0, y: 0 });
-  const selectionAtRef = useRef(0);
 
   // The order is intentional: Laura sits to Guri's left while Klest remains centred.
   const teamMembers: TeamMember[] = [
@@ -250,10 +198,8 @@ const ProgramsCarousel3D = () => {
     },
   ];
 
-  const spotlightId = !isMobileCarousel ? (openMember ?? activeMember) : null;
-  const spotlightIndex = spotlightId
-    ? teamMembers.findIndex((member) => member.id === spotlightId)
-    : -1;
+  const spotlightId = !isMobileCarousel ? activeMember : null;
+  const spotlightIndex = teamMembers.findIndex((member) => member.id === spotlightId);
   const cardLayouts =
     spotlightIndex >= 0
       ? getSurroundTeamLayout(
@@ -263,72 +209,6 @@ const ProgramsCarousel3D = () => {
           stageSize.height,
         )
       : getIdleTeamLayout(viewportWidth, teamMembers.length);
-
-  const canSwitchSelection = (clientX: number, clientY: number) => {
-    if (!activeMemberRef.current) return true;
-    if (Date.now() - selectionAtRef.current < SETTLE_MS) return false;
-
-    const deltaX = clientX - selectionPointRef.current.x;
-    const deltaY = clientY - selectionPointRef.current.y;
-    return deltaX * deltaX + deltaY * deltaY >= SWITCH_DISTANCE * SWITCH_DISTANCE;
-  };
-
-  const activateMember = (
-    memberId: string,
-    clientX?: number,
-    clientY?: number,
-    force = false,
-  ) => {
-    if (isMobileCarouselRef.current || activeMemberRef.current === memberId) return;
-    if (
-      !force &&
-      activeMemberRef.current &&
-      (clientX == null || !canSwitchSelection(clientX, clientY))
-    ) {
-      return;
-    }
-
-    activeMemberRef.current = memberId;
-    setActiveMember(memberId);
-    selectionAtRef.current = Date.now();
-    if (clientX != null && clientY != null) {
-      selectionPointRef.current = { x: clientX, y: clientY };
-    }
-  };
-
-  const clearActiveMember = () => {
-    activeMemberRef.current = null;
-    selectionAtRef.current = 0;
-    setActiveMember(null);
-  };
-
-  const pickMemberAtPointer = (clientX: number, clientY: number) => {
-    const stage = stageRef.current;
-    if (!stage) return null;
-    return pickTeamMemberAtPoint(
-      clientX,
-      clientY,
-      stage,
-      teamMembers,
-      cardLayouts,
-      viewportWidth,
-    );
-  };
-
-  const handleStageMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    const hoveredId = pickMemberAtPointer(event.clientX, event.clientY);
-    if (hoveredId) activateMember(hoveredId, event.clientX, event.clientY);
-  };
-
-  const handleStageMouseLeave = () => {
-    if (isMobileCarouselRef.current) return;
-    clearActiveMember();
-  };
-
-  const handleMemberEnter = (event: React.MouseEvent<HTMLElement>) => {
-    const hoveredId = pickMemberAtPointer(event.clientX, event.clientY);
-    if (hoveredId) activateMember(hoveredId, event.clientX, event.clientY);
-  };
 
   const handleMouseMove = (event: React.MouseEvent<HTMLButtonElement>, memberId: string) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -393,11 +273,10 @@ const ProgramsCarousel3D = () => {
       setIsMobileCarousel(isMobile);
 
       if (!isMobile) {
-        setCenteredMember("klest");
+        setCenteredMember(DEFAULT_CENTER_ID);
+        setActiveMember(DEFAULT_CENTER_ID);
         return;
       }
-
-      clearActiveMember();
 
       window.requestAnimationFrame(() => {
         const stage = stageRef.current;
@@ -467,8 +346,13 @@ const ProgramsCarousel3D = () => {
       return;
     }
 
-    const pickedId = pickMemberAtPointer(event.clientX, event.clientY) ?? memberId;
-    setOpenMember(pickedId);
+    if (memberId === activeMember) {
+      setOpenMember(memberId);
+      return;
+    }
+
+    event.preventDefault();
+    setActiveMember(memberId);
   };
 
   return (
@@ -800,6 +684,7 @@ const ProgramsCarousel3D = () => {
           font-weight: 500;
           letter-spacing: 0.08em;
           text-transform: uppercase;
+          pointer-events: none;
           transform: translateZ(32px);
         }
 
@@ -984,12 +869,7 @@ const ProgramsCarousel3D = () => {
           </div>
         </header>
 
-        <div
-          ref={stageRef}
-          className={`mad-team-stage ${spotlightId ? "is-orbiting" : ""}`}
-          onMouseMove={handleStageMouseMove}
-          onMouseLeave={handleStageMouseLeave}
-        >
+        <div ref={stageRef} className={`mad-team-stage ${spotlightId ? "is-orbiting" : ""}`}>
           {teamMembers.map((member, index) => {
             const layout = cardLayouts[index] ?? cardLayouts[0];
 
@@ -1007,7 +887,6 @@ const ProgramsCarousel3D = () => {
               aria-current={
                 isMobileCarousel && centeredMember === member.id ? "true" : undefined
               }
-              onMouseEnter={handleMemberEnter}
               onMouseLeave={() => {
                 resetTilt(member.id);
               }}
@@ -1032,17 +911,26 @@ const ProgramsCarousel3D = () => {
                   <button
                     type="button"
                     className="mad-team-card"
-                    aria-haspopup="dialog"
+                    aria-haspopup={
+                      (isMobileCarousel ? centeredMember : activeMember) === member.id
+                        ? "dialog"
+                        : undefined
+                    }
                     aria-label={
-                      language === "en"
-                        ? `Open ${member.name}'s biography`
-                        : `Hap biografinë e ${member.name}`
+                      isMobileCarousel
+                        ? language === "en"
+                          ? `Open ${member.name}'s biography`
+                          : `Hap biografinë e ${member.name}`
+                        : member.id === activeMember
+                          ? language === "en"
+                            ? `Open ${member.name}'s biography`
+                            : `Hap biografinë e ${member.name}`
+                          : language === "en"
+                            ? `Move ${member.name} to the center`
+                            : `Vendos ${member.name} në qendër`
                     }
                     onMouseMove={(event) => handleMouseMove(event, member.id)}
                     onMouseLeave={() => resetTilt(member.id)}
-                    onFocus={() => {
-                      if (!isMobileCarouselRef.current) activateMember(member.id, undefined, undefined, true);
-                    }}
                     onClick={(event) => handleCardClick(event, member.id)}
                     style={
                       {
