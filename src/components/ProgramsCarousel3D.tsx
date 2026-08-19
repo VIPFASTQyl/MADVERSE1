@@ -23,6 +23,78 @@ interface TeamMember {
   links: TeamLink[];
 }
 
+type TeamCardLayout = {
+  x: number;
+  y: number;
+  fanY: number;
+  fanZ: number;
+  scale: number;
+  opacity: number;
+  zIndex: number;
+};
+
+const HOVER_LOCK_DISTANCE = 14;
+
+const clampNumber = (min: number, preferred: number, max: number) =>
+  Math.min(Math.max(preferred, min), max);
+
+const getIdleTeamLayout = (viewportWidth: number, count: number): TeamCardLayout[] => {
+  const vw = viewportWidth / 100;
+  const idle: TeamCardLayout[] = [
+    { x: clampNumber(-440, -34 * vw, -170), y: 0, fanY: -28, fanZ: -8, scale: 0.9, opacity: 0.5, zIndex: 1 },
+    { x: clampNumber(-255, -19 * vw, -95), y: 0, fanY: -17, fanZ: -4, scale: 0.96, opacity: 0.68, zIndex: 2 },
+    { x: 0, y: 0, fanY: 0, fanZ: 0, scale: 1, opacity: 1, zIndex: 5 },
+    { x: clampNumber(82, 14 * vw, 180), y: 0, fanY: 13, fanZ: 3, scale: 0.98, opacity: 0.76, zIndex: 3 },
+    { x: clampNumber(150, 25 * vw, 320), y: 0, fanY: 21, fanZ: 6, scale: 0.94, opacity: 0.62, zIndex: 2 },
+    { x: clampNumber(215, 36 * vw, 450), y: 0, fanY: 28, fanZ: 8, scale: 0.9, opacity: 0.5, zIndex: 1 },
+  ];
+
+  return idle.slice(0, count);
+};
+
+const getSurroundTeamLayout = (
+  focusIndex: number,
+  count: number,
+  stageWidth: number,
+  stageHeight: number,
+): TeamCardLayout[] => {
+  const radiusX = clampNumber(210, stageWidth * 0.34, 300);
+  const radiusY = clampNumber(118, stageHeight * 0.26, 168);
+  const others = Math.max(count - 1, 1);
+
+  return Array.from({ length: count }, (_, index) => {
+    if (index === focusIndex) {
+      return {
+        x: 0,
+        y: 0,
+        fanY: 0,
+        fanZ: 0,
+        scale: 0.9,
+        opacity: 1,
+        zIndex: 20,
+      };
+    }
+
+    let order = index - focusIndex;
+    if (order < 0) order += count;
+    const surroundIndex = order - 1;
+    const angle = -Math.PI / 2 + (surroundIndex / others) * Math.PI * 2;
+    const x = Math.round(Math.cos(angle) * radiusX);
+    const y = Math.round(Math.sin(angle) * radiusY);
+    const depth = (y + radiusY) / Math.max(radiusY * 2, 1);
+
+    return {
+      x,
+      y,
+      fanY: Math.round(Math.cos(angle) * 18),
+      fanZ: Math.round(Math.sin(angle) * 5),
+      scale: 0.56,
+      opacity: 0.78,
+      zIndex: 4 + Math.round(depth * 8),
+    };
+  });
+};
+
 const ProgramsCarousel3D = () => {
   const { language, t } = useLanguage();
   const [tiltState, setTiltState] = useState<Record<string, { x: number; y: number }>>({});
@@ -30,8 +102,15 @@ const ProgramsCarousel3D = () => {
   const [centeredMember, setCenteredMember] = useState("klest");
   const [activeMember, setActiveMember] = useState<string | null>(null);
   const [openMember, setOpenMember] = useState<string | null>(null);
+  const [viewportWidth, setViewportWidth] = useState(
+    typeof window === "undefined" ? 1280 : window.innerWidth,
+  );
+  const [stageSize, setStageSize] = useState({ width: 1100, height: 520 });
   const stageRef = useRef<HTMLDivElement>(null);
   const shellRefs = useRef<Record<string, HTMLElement | null>>({});
+  const pointerRef = useRef({ x: 0, y: 0 });
+  const hoverLockOriginRef = useRef<{ x: number; y: number } | null>(null);
+  const hoverLockUntilRef = useRef(0);
 
   // The order is intentional: Laura sits to Guri's left while Klest remains centred.
   const teamMembers: TeamMember[] = [
@@ -121,8 +200,67 @@ const ProgramsCarousel3D = () => {
     },
   ];
 
-  const handleMouseMove = (event: React.MouseEvent<HTMLButtonElement>, memberId: string) => {
+  const spotlightId = !isMobileCarousel ? (openMember ?? activeMember) : null;
+  const spotlightIndex = spotlightId
+    ? teamMembers.findIndex((member) => member.id === spotlightId)
+    : -1;
+  const cardLayouts =
+    spotlightIndex >= 0
+      ? getSurroundTeamLayout(
+          spotlightIndex,
+          teamMembers.length,
+          stageSize.width,
+          stageSize.height,
+        )
+      : getIdleTeamLayout(viewportWidth, teamMembers.length);
+
+  const unlockHoverIfMoved = (clientX: number, clientY: number) => {
+    const lockOrigin = hoverLockOriginRef.current;
+    if (!lockOrigin) return false;
+
+    const deltaX = clientX - lockOrigin.x;
+    const deltaY = clientY - lockOrigin.y;
+    if (deltaX * deltaX + deltaY * deltaY < HOVER_LOCK_DISTANCE * HOVER_LOCK_DISTANCE) {
+      return false;
+    }
+
+    return true;
+  };
+
+  const activateMember = (memberId: string) => {
+    if (isMobileCarousel || activeMember === memberId) return;
+    if (hoverLockOriginRef.current) return;
+    if (Date.now() < hoverLockUntilRef.current) return;
+
     setActiveMember(memberId);
+    hoverLockOriginRef.current = { ...pointerRef.current };
+    hoverLockUntilRef.current = Date.now() + 480;
+  };
+
+  const handleStageMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    pointerRef.current = { x: event.clientX, y: event.clientY };
+    const hoveredShell = (event.target as HTMLElement | null)?.closest?.(".mad-team-shell");
+    const hoveredId = hoveredShell?.getAttribute("data-member-id");
+
+    if (hoverLockOriginRef.current) {
+      if (!unlockHoverIfMoved(event.clientX, event.clientY)) return;
+      if (!hoveredId || hoveredId === activeMember) return;
+      if (Date.now() < hoverLockUntilRef.current) return;
+      hoverLockOriginRef.current = null;
+    }
+
+    if (hoveredId) activateMember(hoveredId);
+  };
+
+  const handleStageMouseLeave = () => {
+    if (isMobileCarousel) return;
+    hoverLockOriginRef.current = null;
+    hoverLockUntilRef.current = 0;
+    setActiveMember(null);
+  };
+
+  const handleMouseMove = (event: React.MouseEvent<HTMLButtonElement>, memberId: string) => {
+    pointerRef.current = { x: event.clientX, y: event.clientY };
     const rect = event.currentTarget.getBoundingClientRect();
     const horizontal = (event.clientX - rect.left) / rect.width - 0.5;
     const vertical = (event.clientY - rect.top) / rect.height - 0.5;
@@ -188,6 +326,10 @@ const ProgramsCarousel3D = () => {
         return;
       }
 
+      hoverLockOriginRef.current = null;
+      hoverLockUntilRef.current = 0;
+      setActiveMember(null);
+
       window.requestAnimationFrame(() => {
         const stage = stageRef.current;
         if (!stage) return;
@@ -209,6 +351,30 @@ const ProgramsCarousel3D = () => {
       window.removeEventListener("resize", requestCenterUpdate);
       mobileQuery.removeEventListener("change", initializeCarousel);
     };
+  }, []);
+
+  useEffect(() => {
+    const updateViewportWidth = () => setViewportWidth(window.innerWidth);
+    updateViewportWidth();
+    window.addEventListener("resize", updateViewportWidth, { passive: true });
+    return () => window.removeEventListener("resize", updateViewportWidth);
+  }, []);
+
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage || typeof ResizeObserver === "undefined") return;
+
+    const observer = new ResizeObserver((entries) => {
+      const contentRect = entries[0]?.contentRect;
+      if (!contentRect) return;
+      setStageSize({
+        width: contentRect.width,
+        height: contentRect.height,
+      });
+    });
+
+    observer.observe(stage);
+    return () => observer.disconnect();
   }, []);
 
   const handleCardClick = (
@@ -291,15 +457,52 @@ const ProgramsCarousel3D = () => {
           background: var(--mad-team-accent);
         }
 
+        @property --x {
+          syntax: "<length>";
+          inherits: true;
+          initial-value: 0px;
+        }
+
+        @property --y {
+          syntax: "<length>";
+          inherits: true;
+          initial-value: 0px;
+        }
+
+        @property --card-scale {
+          syntax: "<number>";
+          inherits: true;
+          initial-value: 1;
+        }
+
+        @property --fan-y {
+          syntax: "<angle>";
+          inherits: true;
+          initial-value: 0deg;
+        }
+
+        @property --fan-z {
+          syntax: "<angle>";
+          inherits: true;
+          initial-value: 0deg;
+        }
+
+        @property --idle-opacity {
+          syntax: "<number>";
+          inherits: true;
+          initial-value: 1;
+        }
+
         .mad-team-stage {
           position: relative;
-          height: clamp(340px, 56vw, 570px);
+          height: clamp(380px, 58vw, 620px);
           margin-top: clamp(22px, 4vw, 52px);
           perspective: 1300px;
         }
 
         .mad-team-shell {
           --x: 0px;
+          --y: 0px;
           --fan-y: 0deg;
           --fan-z: 0deg;
           --card-scale: 1;
@@ -313,10 +516,16 @@ const ProgramsCarousel3D = () => {
           opacity: var(--idle-opacity);
           transform:
             translate(-50%, -50%)
-            translateX(var(--x));
+            translate3d(var(--x), var(--y), 0);
           transition:
-            opacity 300ms ease,
-            filter 300ms ease;
+            --x 640ms cubic-bezier(0.22, 1, 0.36, 1),
+            --y 640ms cubic-bezier(0.22, 1, 0.36, 1),
+            --fan-y 640ms cubic-bezier(0.22, 1, 0.36, 1),
+            --fan-z 640ms cubic-bezier(0.22, 1, 0.36, 1),
+            --card-scale 640ms cubic-bezier(0.22, 1, 0.36, 1),
+            --idle-opacity 320ms ease,
+            opacity 320ms ease,
+            filter 320ms ease;
         }
 
         .mad-team-motion {
@@ -327,7 +536,7 @@ const ProgramsCarousel3D = () => {
             rotateZ(var(--fan-z))
             scale(var(--card-scale));
           transform-style: preserve-3d;
-          transition: transform 560ms cubic-bezier(0.22, 1, 0.36, 1);
+          transition: transform 640ms cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         .mad-team-shell:nth-child(1) {
@@ -381,6 +590,7 @@ const ProgramsCarousel3D = () => {
 
         .mad-team-shell:hover,
         .mad-team-shell.is-active,
+        .mad-team-shell.is-spotlight,
         .mad-team-shell:focus-within {
           z-index: 20;
           opacity: 1;
@@ -395,6 +605,31 @@ const ProgramsCarousel3D = () => {
             rotateY(0deg)
             rotateZ(0deg)
             scale(1.035);
+        }
+
+        .mad-team-stage.is-orbiting .mad-team-shell:hover .mad-team-motion,
+        .mad-team-stage.is-orbiting .mad-team-shell.is-active .mad-team-motion,
+        .mad-team-stage.is-orbiting .mad-team-shell:focus-within .mad-team-motion,
+        .mad-team-stage.is-orbiting .mad-team-shell.is-spotlight .mad-team-motion {
+          transform:
+            rotateY(var(--fan-y))
+            rotateZ(var(--fan-z))
+            scale(var(--card-scale));
+        }
+
+        .mad-team-stage.is-orbiting .mad-team-shell.is-spotlight {
+          z-index: 20;
+        }
+
+        .mad-team-stage.is-orbiting .mad-team-shell.is-spotlight .mad-team-card {
+          box-shadow:
+            0 14px 32px oklch(0.03 0 0 / 0.42),
+            0 34px 92px oklch(0.03 0 0 / 0.7);
+        }
+
+        .mad-team-stage.is-orbiting .mad-team-shell.is-spotlight .mad-team-portrait {
+          filter: brightness(1.06);
+          transform: scale(1.045);
         }
 
         .mad-team-card {
@@ -542,6 +777,7 @@ const ProgramsCarousel3D = () => {
 
           .mad-team-shell {
             --x: 0px;
+            --y: 0px;
             --fan-y: 0deg;
             --fan-z: 0deg;
             --card-scale: 1;
@@ -671,24 +907,48 @@ const ProgramsCarousel3D = () => {
           </div>
         </header>
 
-        <div ref={stageRef} className="mad-team-stage">
-          {teamMembers.map((member) => (
+        <div
+          ref={stageRef}
+          className={`mad-team-stage ${spotlightId ? "is-orbiting" : ""}`}
+          onMouseMove={handleStageMouseMove}
+          onMouseLeave={handleStageMouseLeave}
+        >
+          {teamMembers.map((member, index) => {
+            const layout = cardLayouts[index] ?? cardLayouts[0];
+
+            return (
             <article
               ref={(element) => {
                 shellRefs.current[member.id] = element;
               }}
+              data-member-id={member.id}
               className={`mad-team-shell ${
                 isMobileCarousel && centeredMember === member.id ? "is-centered" : ""
-              } ${!isMobileCarousel && activeMember === member.id ? "is-active" : ""}`}
+              } ${!isMobileCarousel && activeMember === member.id ? "is-active" : ""} ${
+                spotlightId === member.id ? "is-spotlight" : ""
+              }`}
               aria-current={
                 isMobileCarousel && centeredMember === member.id ? "true" : undefined
               }
-              onMouseEnter={() => setActiveMember(member.id)}
+              onMouseEnter={(event) => {
+                pointerRef.current = { x: event.clientX, y: event.clientY };
+                activateMember(member.id);
+              }}
               onMouseLeave={() => {
-                setActiveMember(null);
                 resetTilt(member.id);
               }}
               key={member.id}
+              style={
+                {
+                  "--x": `${layout.x}px`,
+                  "--y": `${layout.y}px`,
+                  "--fan-y": `${layout.fanY}deg`,
+                  "--fan-z": `${layout.fanZ}deg`,
+                  "--card-scale": String(layout.scale),
+                  "--idle-opacity": String(layout.opacity),
+                  zIndex: layout.zIndex,
+                } as React.CSSProperties
+              }
             >
               <Dialog
                 open={openMember === member.id}
@@ -706,6 +966,7 @@ const ProgramsCarousel3D = () => {
                     }
                     onMouseMove={(event) => handleMouseMove(event, member.id)}
                     onMouseLeave={() => resetTilt(member.id)}
+                    onFocus={() => activateMember(member.id)}
                     onClick={(event) => handleCardClick(event, member.id)}
                     style={
                       {
@@ -778,7 +1039,8 @@ const ProgramsCarousel3D = () => {
                 </DialogContent>
               </Dialog>
             </article>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
